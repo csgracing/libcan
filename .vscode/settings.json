@@ -1,0 +1,6 @@
+{
+    "cmake.sourceDirectory": "/home/jamie/Code/libembeddedcan/can",
+    "files.associations": {
+        "type_traits": "cpp"
+    }
+}

@@ -1,10 +1,10 @@
 #include <stdio.h>
 
-#include "base.h"
+#include "core/providers/base.h"
 
-namespace CAN::Providers::Base
+namespace can::providers::base
 {
-    CANBus::CANBus(CAN::Providers::Bitrate b, Options o)
+    CANBus::CANBus(bitrate_enum_t b, Options o)
     {
         printf("CANBus Base init\n");
     }

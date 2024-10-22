@@ -3,12 +3,11 @@
 
 #include <type_traits> //for std::underlying_type
 
-#include "mcp2515/bitrate.h"
+// core
+#include "core/message.h"
+#include "core/providers/base.h"
 
-#include "../base.h"
-#include "../bitrate.h"
-
-namespace CAN::Providers::RP2040::MCP2515
+namespace can::providers::rp2040::mcp2515
 {
 
     // implementation specific
@@ -21,17 +20,17 @@ namespace CAN::Providers::RP2040::MCP2515
         MCP_8MHZ
     };
 
-    struct Options : CAN::Providers::Base::Options
+    struct Options : can::providers::base::Options
     {
         Clock clock;
     };
 
-    class CANBus : CAN::Providers::Base::CANBus
+    class CANBus : can::providers::base::CANBus
     {
     public:
-        CANBus(CAN::Providers::Bitrate b, CAN::Providers::Base::Options o);
+        CANBus(can::providers::base::bitrate_enum_t b, can::providers::base::Options o);
         virtual ~CANBus(); // desructor
     };
-};
+}
 
 #endif /* RP2040_MCP2515_H_ */

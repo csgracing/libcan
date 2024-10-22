@@ -1,7 +1,7 @@
 #ifndef MCP2515_BITRATE_H_
 #define MCP2515_BITRATE_H_
 
-namespace CAN::Providers::RP2040::MCP2515
+namespace can::providers::rp2040::mcp2515
 {
     enum Bitrate
     {
