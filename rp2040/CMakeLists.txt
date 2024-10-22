@@ -1,15 +1,29 @@
-set(SUBPROJECT rp2040)
+set(namespace "can")
+set(PROJECT can_rp2040)
 
-add_library(${SUBPROJECT})
+project(
+    ${PROJECT}
+    VERSION ${CMAKE_PROJECT_VERSION}
+    LANGUAGES CXX
+)
 
-# These sources should be PUBLIC so dependents linking against this library inherit these.
-target_sources(${SUBPROJECT} PUBLIC
-    ${CMAKE_CURRENT_LIST_DIR}/src/mcp2515/provider.cpp
+add_library(${PROJECT})
+
+add_library(libcan::rp2040 ALIAS ${PROJECT})
+
+target_sources(${PROJECT}
+    PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}/src/mcp2515/provider.cpp
 )
 
 
-target_include_directories(${SUBPROJECT} PUBLIC
-     ${CMAKE_CURRENT_LIST_DIR}/include/
+target_include_directories(${PROJECT}
+     PRIVATE
+          # internal headers
+          ${CMAKE_CURRENT_SOURCE_DIR}/src
+     PUBLIC
+          # exported headers
+          ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_link_libraries(${SUBPROJECT} core)
+target_link_libraries(${PROJECT} PRIVATE libcan::core)
