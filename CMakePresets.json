@@ -1,0 +1,17 @@
+{
+    "version": 3,
+    "configurePresets": [
+        {
+            "name": "pico",
+            "binaryDir": "build/${presetName}",
+            "installDir": "build/${presetName}",
+            "cacheVariables": {
+                "CAN_TARGET": "pico"
+            },
+            "architecture": {
+                "value": "arm",
+                "strategy": "external"
+            }
+        }
+    ]
+}

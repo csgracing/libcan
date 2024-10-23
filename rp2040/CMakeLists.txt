@@ -1,29 +1,5 @@
-set(namespace "can")
-set(PROJECT can_rp2040)
+set(namespace "can::rp2040")
 
-project(
-    ${PROJECT}
-    VERSION ${CMAKE_PROJECT_VERSION}
-    LANGUAGES CXX
-)
-
-add_library(${PROJECT})
-
-add_library(libcan::rp2040 ALIAS ${PROJECT})
-
-target_sources(${PROJECT}
-    PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}/src/mcp2515/provider.cpp
-)
-
-
-target_include_directories(${PROJECT}
-     PRIVATE
-          # internal headers
-          ${CMAKE_CURRENT_SOURCE_DIR}/src
-     PUBLIC
-          # exported headers
-          ${CMAKE_CURRENT_SOURCE_DIR}/include
-)
-
-target_link_libraries(${PROJECT} PRIVATE libcan::core)
+add_subdirectory(core)
+add_subdirectory(mcp2515)
+add_subdirectory(standalone_test)
