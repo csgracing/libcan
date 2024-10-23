@@ -17,7 +17,6 @@
             "name": "pico-host",
             "inherits": "pico",
             "cacheVariables": {
-                "CAN_SUBTARGET": "pico.host",
                 "PICO_PLATFORM": "host"
             },
             "architecture": {
