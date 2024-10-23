@@ -1,4 +1,4 @@
-set(PROJECT can_rp2040_standalone)
+set(PROJECT can_rp2040_mcp2515_impl)
 
 project(
     ${PROJECT}
@@ -6,13 +6,13 @@ project(
     LANGUAGES C CXX ASM # pico projects must include all 3
 )
 
-add_executable(${PROJECT})
+add_library(${PROJECT})
 
-add_executable(libcan::rp2040::standalone ALIAS ${PROJECT})
+add_library(libcan::rp2040::mcp2515 ALIAS ${PROJECT})
 
 target_sources(${PROJECT}
     PRIVATE
-        ${CMAKE_CURRENT_LIST_DIR}/src/main.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/src/provider.cpp
 )
 
 
@@ -25,7 +25,6 @@ target_include_directories(${PROJECT}
           ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_link_libraries(${PROJECT} PRIVATE libcan::core libcan::rp2040::core libcan::rp2040::mcp2515)
+target_link_libraries(${PROJECT} PRIVATE libcan::core libcan::rp2040::mcp2515::lib::mcp2515)
 
-# Create extra files, such as .uf2
-pico_add_extra_outputs(${PROJECT})
+include(pico-mcp2515.cmake)

@@ -1,5 +1,9 @@
 set(namespace "can::rp2040")
 
-add_subdirectory(core)
-add_subdirectory(mcp2515)
-add_subdirectory(standalone_test)
+include(subdir_exclude_plat.cmake)
+
+if (TARGET hardware_spi)
+    add_subdirectory_exclude_platforms(mcp2515)
+else()
+    message("Skipping rp2040::mcp2515 provider as hardware_spi is unavailable on this platform")
+endif()

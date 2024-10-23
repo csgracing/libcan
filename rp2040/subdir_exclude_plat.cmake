@@ -1,0 +1,18 @@
+# Source: https://github.com/raspberrypi/pico-examples/blob/7e77a0c381863be0c49086567e7f1934d78ac591/CMakeLists.txt#L28C1-L43C14
+
+function(add_subdirectory_exclude_platforms NAME)
+    if (ARGN)
+        if (PICO_PLATFORM IN_LIST ARGN)
+            message("Skipping ${NAME} example which is unsupported on this platform")
+            return()
+        endif()
+        foreach(PATTERN IN LISTS ARGN)
+            string(REGEX MATCH "${PATTERN}" MATCHED "${PICO_PLATFORM}")
+            if (MATCHED)
+                message("Skipping ${NAME} example which is unsupported on this platform")
+                return()
+            endif()
+        endforeach()
+    endif()
+    add_subdirectory(${NAME})
+endfunction()

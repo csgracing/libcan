@@ -12,6 +12,18 @@
                 "value": "arm",
                 "strategy": "external"
             }
+        },
+        {
+            "name": "pico-host",
+            "inherits": "pico",
+            "cacheVariables": {
+                "CAN_SUBTARGET": "pico.host",
+                "PICO_PLATFORM": "host"
+            },
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            }
         }
     ]
 }
