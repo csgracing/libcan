@@ -26,3 +26,6 @@ target_include_directories(${PROJECT}
 )
 
 target_link_libraries(${PROJECT} PRIVATE libcan::core libcan::rp2040::core libcan::rp2040::mcp2515)
+
+# Create extra files, such as .uf2
+pico_add_extra_outputs(${PROJECT})
