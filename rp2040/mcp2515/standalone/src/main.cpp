@@ -2,18 +2,20 @@
 #include <stdio.h>
 
 #include <rp2040/mcp2515/provider.h>
-#include <rp2040/mcp2515/bitrate.h>
 #include <core/providers/base.h>
 
 using namespace can::providers::rp2040::mcp2515;
+using namespace can::providers;
 
 int main()
 {
     printf("main()\n");
-    Options o;
-    o.clock = Clock::MCP_16MHZ;
+    rp2040::mcp2515::Options o;
+    o.clock = rp2040::mcp2515::Clock::CLOCK_16_MHZ;
 
-    CANBus cb = CANBus(Bitrate::BITRATE_1000_KBPS, o);
+    CANBus cb = CANBus(
+        (base::bitrate_enum_t)Bitrate::BITRATE_1000000,
+        (base::options_t)o);
 
     return 0;
 }

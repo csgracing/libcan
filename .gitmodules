@@ -7,3 +7,6 @@
 [submodule "rp2040/lib/pico-sdk"]
 	path = rp2040/lib/pico-sdk
 	url = https://github.com/raspberrypi/pico-sdk
+[submodule "lib/boost/preprocessor"]
+	path = lib/boost/preprocessor
+	url = https://github.com/boostorg/preprocessor

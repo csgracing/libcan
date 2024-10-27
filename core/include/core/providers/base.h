@@ -14,14 +14,22 @@ namespace can::providers::base
 
     typedef std::underlying_type<Bitrate>::type bitrate_enum_t;
 
+    enum class Clock
+    {
+    };
+
+    typedef std::underlying_type<Clock>::type clock_enum_t;
+
     struct Options
     {
     };
 
+    typedef std::underlying_type<Options> options_t;
+
     class CANBus
     {
     public:
-        CANBus(bitrate_enum_t b, Options o);
+        CANBus(bitrate_enum_t b, options_t o);
         virtual ~CANBus(); // desructor
     };
 };

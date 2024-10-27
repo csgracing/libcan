@@ -29,3 +29,5 @@ add_subdirectory(core)
 if (CAN_TARGET STREQUAL "pico")
     add_subdirectory(rp2040)
 endif()
+
+add_subdirectory(lib/boost/preprocessor)

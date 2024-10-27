@@ -25,6 +25,7 @@ target_include_directories(${PROJECT}
           ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_link_libraries(${PROJECT} PRIVATE libcan::core libcan::rp2040::mcp2515::lib::mcp2515)
+# pico_stdlib for "hardware/gpio.h"
+target_link_libraries(${PROJECT} PUBLIC Boost::preprocessor pico_stdlib libcan::core libcan::rp2040::mcp2515::lib::mcp2515)
 
 include(pico-mcp2515.cmake)
