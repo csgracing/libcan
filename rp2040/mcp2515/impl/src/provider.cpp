@@ -1,6 +1,7 @@
 #include "rp2040/mcp2515/provider.h"
 
 #include <stdio.h>
+#include <string.h> // memcpy
 
 #include "hardware/gpio.h"
 
@@ -18,11 +19,27 @@ namespace can::providers::rp2040::mcp2515
         this->chip.setNormalMode();
     }
 
+    can::frame_read_res CANBus::readMessage()
+    {
+        struct can_frame rx;
+        if (this->chip.readMessage(&rx) == MCP2515::ERROR_OK)
+        {
+            can::frame frame;
+            frame.id = rx.can_id;
+            frame.dlc = rx.can_dlc;
+            memcpy(&frame.data, &rx.data, 8);
+            return frame;
+        }
+        return std::nullopt;
+    }
+
     void CANBus::rawIrqHandler()
     {
         if (gpio_get_irq_event_mask(this->op.interrupt_pin) & true)
         {
             gpio_acknowledge_irq(this->op.interrupt_pin, GPIO_IRQ_EDGE_FALL);
+
+            // Read
         }
     }
 

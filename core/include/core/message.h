@@ -2,6 +2,7 @@
 #define SRC_MESSAGE_H_
 
 #include <stdint.h>
+#include <optional>
 
 namespace can
 {
@@ -19,6 +20,8 @@ namespace can
             uint32_t data32[2];
         };
     } frame;
+
+    typedef std::optional<frame> frame_read_res;
 };
 
 #endif /* SRC_MESSAGE_H_ */

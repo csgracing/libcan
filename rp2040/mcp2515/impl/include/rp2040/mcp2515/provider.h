@@ -76,6 +76,8 @@ namespace can::providers::rp2040::mcp2515
         CANBus(can::providers::base::bitrate_enum_t b, can::providers::base::options_t o);
         virtual ~CANBus(); // desructor
 
+        can::frame_read_res readMessage();
+
         static CANBus *rawIsrs[MCP2515_MAX_RAW_ISR];
         BOOST_PP_REPEAT(MCP2515_MAX_RAW_ISR, MCP2515_ISR_FUNC_HEADER, _)
 

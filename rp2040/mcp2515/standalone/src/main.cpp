@@ -17,5 +17,7 @@ int main()
         (base::bitrate_enum_t)Bitrate::BITRATE_1000000,
         (base::options_t)o);
 
+    can::frame_read_res msg = cb.readMessage();
+
     return 0;
 }
