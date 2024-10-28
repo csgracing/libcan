@@ -10,3 +10,6 @@
 [submodule "lib/boost/preprocessor"]
 	path = lib/boost/preprocessor
 	url = https://github.com/boostorg/preprocessor
+[submodule "lib/google/test"]
+	path = lib/google/test
+	url = https://github.com/google/googletest
