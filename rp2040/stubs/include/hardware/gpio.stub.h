@@ -4,14 +4,14 @@
 #include <stdint.h>
 #include "pico/types.h"
 
-#include <hardware/irq.h>
+#include <hardware/irq.stub.h>
 
 // include pico-sdk host hardware/gpio.h
 #include <hardware/gpio.h>
 
-static inline uint32_t gpio_get_irq_event_mask(uint gpio);
-static inline void gpio_add_raw_irq_handler(uint gpio, irq_handler_t handler);
-extern void gpio_acknowledge_irq(uint gpio, uint32_t event_mask);
+uint32_t gpio_get_irq_event_mask(uint gpio);
+void gpio_add_raw_irq_handler(uint gpio, irq_handler_t handler);
+void gpio_acknowledge_irq(uint gpio, uint32_t event_mask);
 
 // rp2_common/hardware_gpio
 enum gpio_irq_level

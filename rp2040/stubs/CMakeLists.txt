@@ -12,9 +12,4 @@ add_library(libcan::rp2040::stubs ALIAS ${PROJECT})
 
 target_include_directories(${PROJECT} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
-target_link_libraries(${PROJECT} PUBLIC
-    pico_stdlib
-    hardware_claim # common
-    hardware_irq # host
-    # stubbed | pico_platform # host, platform_defs.h
-)
+target_link_libraries(${PROJECT} PUBLIC pico_stdlib)
