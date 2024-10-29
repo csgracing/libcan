@@ -78,7 +78,10 @@ namespace can::providers::rp2040::mcp2515
 
         can::frame_read_res readMessage();
 
-        static CANBus *rawIsrs[MCP2515_MAX_RAW_ISR];
+        // inline to define not just declare
+        // https://stackoverflow.com/a/66569786
+        static inline CANBus *rawIsrs[MCP2515_MAX_RAW_ISR];
+
         BOOST_PP_REPEAT(MCP2515_MAX_RAW_ISR, MCP2515_ISR_FUNC_HEADER, _)
 
         // Can only set one GPIO IRQ handler, so for most purposes implement this yourself.
