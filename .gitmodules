@@ -13,3 +13,6 @@
 [submodule "lib/google/test"]
 	path = lib/google/test
 	url = https://github.com/google/googletest
+[submodule "lib/google/gmock-global"]
+	path = lib/google/gmock-global
+	url = https://github.com/apriorit/gmock-global
