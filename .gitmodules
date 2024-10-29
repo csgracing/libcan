@@ -1,6 +1,6 @@
 [submodule "rp2040/lib/mcp2515"]
 	path = rp2040/mcp2515/lib/pico-mcp2515
-	url = https://github.com/adamczykpiotr/pico-mcp2515
+	url = https://github.com/cityracingteam/pico-mcp2515
 [submodule "rp2040/lib/can2040"]
 	path = rp2040/lib/can2040
 	url = https://github.com/KevinOConnor/can2040

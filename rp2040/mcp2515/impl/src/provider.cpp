@@ -17,16 +17,16 @@ namespace can::providers::rp2040::mcp2515
 
         this->op = static_cast<Options &>(o);
         this->chip.reset();
-        CAN_SPEED speed = (CAN_SPEED)b;
-        CAN_CLOCK clock = (CAN_CLOCK)this->op.clock;
+        ::mcp2515::CAN_SPEED speed = (::mcp2515::CAN_SPEED)b;
+        ::mcp2515::CAN_CLOCK clock = (::mcp2515::CAN_CLOCK)this->op.clock;
         this->chip.setBitrate(speed, clock);
         this->chip.setNormalMode();
     }
 
     can::frame_read_res CANBus::readMessage()
     {
-        struct can_frame rx;
-        if (this->chip.readMessage(&rx) == MCP2515::ERROR_OK)
+        ::mcp2515::can_frame rx;
+        if (this->chip.readMessage(&rx) == ::mcp2515::MCP2515::ERROR_OK)
         {
             can::frame frame;
             frame.id = rx.can_id;

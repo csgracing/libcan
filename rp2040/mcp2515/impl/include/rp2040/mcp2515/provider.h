@@ -30,29 +30,29 @@ namespace can::providers::rp2040::mcp2515
     // implementation specific
     enum class Bitrate : can::providers::base::bitrate_enum_t
     {
-        BITRATE_5000 = CAN_SPEED::CAN_5KBPS,
-        BITRATE_10000 = CAN_SPEED::CAN_10KBPS,
-        BITRATE_20000 = CAN_SPEED::CAN_20KBPS,
-        BITRATE_31250 = CAN_SPEED::CAN_31K25BPS,
-        BITRATE_33000 = CAN_SPEED::CAN_33KBPS,
-        BITRATE_40000 = CAN_SPEED::CAN_40KBPS,
-        BITRATE_50000 = CAN_SPEED::CAN_50KBPS,
-        BITRATE_80000 = CAN_SPEED::CAN_80KBPS,
-        BITRATE_83300 = CAN_SPEED::CAN_83K3BPS,
-        BITRATE_95000 = CAN_SPEED::CAN_95KBPS,
-        BITRATE_100000 = CAN_SPEED::CAN_100KBPS,
-        BITRATE_125000 = CAN_SPEED::CAN_125KBPS,
-        BITRATE_200000 = CAN_SPEED::CAN_200KBPS,
-        BITRATE_250000 = CAN_SPEED::CAN_250KBPS,
-        BITRATE_500000 = CAN_SPEED::CAN_500KBPS,
-        BITRATE_1000000 = CAN_SPEED::CAN_1000KBPS
+        BITRATE_5000 = ::mcp2515::CAN_SPEED::CAN_5KBPS,
+        BITRATE_10000 = ::mcp2515::CAN_SPEED::CAN_10KBPS,
+        BITRATE_20000 = ::mcp2515::CAN_SPEED::CAN_20KBPS,
+        BITRATE_31250 = ::mcp2515::CAN_SPEED::CAN_31K25BPS,
+        BITRATE_33000 = ::mcp2515::CAN_SPEED::CAN_33KBPS,
+        BITRATE_40000 = ::mcp2515::CAN_SPEED::CAN_40KBPS,
+        BITRATE_50000 = ::mcp2515::CAN_SPEED::CAN_50KBPS,
+        BITRATE_80000 = ::mcp2515::CAN_SPEED::CAN_80KBPS,
+        BITRATE_83300 = ::mcp2515::CAN_SPEED::CAN_83K3BPS,
+        BITRATE_95000 = ::mcp2515::CAN_SPEED::CAN_95KBPS,
+        BITRATE_100000 = ::mcp2515::CAN_SPEED::CAN_100KBPS,
+        BITRATE_125000 = ::mcp2515::CAN_SPEED::CAN_125KBPS,
+        BITRATE_200000 = ::mcp2515::CAN_SPEED::CAN_200KBPS,
+        BITRATE_250000 = ::mcp2515::CAN_SPEED::CAN_250KBPS,
+        BITRATE_500000 = ::mcp2515::CAN_SPEED::CAN_500KBPS,
+        BITRATE_1000000 = ::mcp2515::CAN_SPEED::CAN_1000KBPS
     };
 
     enum class Clock : can::providers::base::clock_enum_t
     {
-        CLOCK_8_MHZ = CAN_CLOCK::MCP_8MHZ,
-        CLOCK_16_MHZ = CAN_CLOCK::MCP_16MHZ,
-        CLOCK_20_MHZ = CAN_CLOCK::MCP_20MHZ
+        CLOCK_8_MHZ = ::mcp2515::CAN_CLOCK::MCP_8MHZ,
+        CLOCK_16_MHZ = ::mcp2515::CAN_CLOCK::MCP_16MHZ,
+        CLOCK_20_MHZ = ::mcp2515::CAN_CLOCK::MCP_20MHZ
     };
 
     struct Options : can::providers::base::options_t
@@ -64,7 +64,7 @@ namespace can::providers::rp2040::mcp2515
     class CANBus : can::providers::base::CANBus
     {
     private:
-        MCP2515 chip;
+        ::mcp2515::MCP2515 chip;
         Options op;
 
         uint8_t bindToNextIsrId();
