@@ -26,6 +26,39 @@ target_include_directories(${PROJECT}
 )
 
 # pico_stdlib for "hardware/gpio.h"
-target_link_libraries(${PROJECT} PUBLIC Boost::preprocessor pico_stdlib libcan::core libcan::rp2040::mcp2515::lib::mcp2515)
+set(LINK_LIBS Boost::preprocessor pico_stdlib libcan::core libcan::rp2040::mcp2515::lib::mcp2515)
+
+if (IS_TEST_ENV STREQUAL "true")
+    message("${PROJECT}: Adding test-only dependencies...")
+    set(LINK_LIBS ${LINK_LIBS} libcan::rp2040::stubs)
+    message("${PROJECT}: Setting test env define...")
+    target_compile_definitions(${PROJECT} PRIVATE IS_TEST_ENV=1)
+else()
+    message("${PROJECT}: No production-only dependencies.")
+endif()
+
+target_link_libraries(${PROJECT} PUBLIC ${LINK_LIBS})
+
 
 include(pico-mcp2515.cmake)
+
+
+# GoogleTest section following
+if (IS_TEST_ENV STREQUAL "true")
+    enable_testing()
+
+    add_executable(mcp2515_test
+        ${CMAKE_CURRENT_SOURCE_DIR}/test/main.cpp
+    )
+
+    target_include_directories(mcp2515_test
+        PRIVATE
+            # internal headers
+            ${CMAKE_CURRENT_SOURCE_DIR}/test/
+    )
+
+    target_link_libraries(mcp2515_test libcan::rp2040::mcp2515 GTest::gtest_main GTest::gmock_main)
+
+    include(GoogleTest)
+    gtest_discover_tests(mcp2515_test)
+endif()

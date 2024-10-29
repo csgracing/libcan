@@ -31,3 +31,7 @@ if (CAN_TARGET STREQUAL "pico")
 endif()
 
 add_subdirectory(lib/boost/preprocessor)
+
+if (IS_TEST_ENV STREQUAL "true")
+    add_subdirectory(lib/google/test)
+endif()

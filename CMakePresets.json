@@ -23,6 +23,13 @@
                 "value": "x64",
                 "strategy": "external"
             }
+        },
+        {
+            "name": "pico-test",
+            "inherits": "pico-host",
+            "cacheVariables": {
+                "IS_TEST_ENV": "true"
+            }
         }
     ]
 }

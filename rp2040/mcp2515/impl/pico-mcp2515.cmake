@@ -21,4 +21,16 @@ target_include_directories(${PROJECT}
     ${MCP2515_LIB_DIR}/include
 )
 
-target_link_libraries(${PROJECT} pico_stdlib hardware_spi)
+
+
+set(LINK_LIBS pico_stdlib)
+
+if (IS_TEST_ENV STREQUAL "true")
+    message("${PROJECT}: Adding test-only dependencies...")
+    set(LINK_LIBS ${LINK_LIBS} libcan::rp2040::stubs)
+else()
+    message("${PROJECT}: Adding production-only dependencies...")
+    set(LINK_LIBS ${LINK_LIBS} hardware_spi)
+endif()
+
+target_link_libraries(${PROJECT} ${LINK_LIBS})

@@ -3,7 +3,11 @@
 #include <stdio.h>
 #include <string.h> // memcpy
 
+#ifdef IS_TEST_ENV
+#include "hardware/gpio.stub.h"
+#else
 #include "hardware/gpio.h"
+#endif
 
 namespace can::providers::rp2040::mcp2515
 {
@@ -63,7 +67,7 @@ namespace can::providers::rp2040::mcp2515
     {
         for (uint8_t i = 0; i < MCP2515_MAX_RAW_ISR; i++)
         {
-            if (CANBus::rawIsrs[i] == NULL)
+            if (CANBus::rawIsrs[i] == nullptr)
             {
                 CANBus::rawIsrs[i] = this;
                 return i;
