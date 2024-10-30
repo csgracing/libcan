@@ -61,7 +61,20 @@ namespace can::providers::rp2040::mcp2515
         uint interrupt_pin;
     };
 
-    class CANBus : can::providers::base::CANBus
+    /**
+     * An interface that defines internal functions for the provider so that these functions can be mocked.
+     */
+    class CANBusInterface : can::providers::base::CANBus
+    {
+    private:
+        virtual uint8_t bindToNextIsrId() = 0;
+
+    public:
+        CANBusInterface(can::providers::base::bitrate_enum_t b, can::providers::base::options_t o) : can::providers::base::CANBus(b, o) {};
+        virtual ~CANBusInterface() = default; // desructor
+    };
+
+    class CANBus : CANBusInterface
     {
     private:
         ::mcp2515::MCP2515 chip;

@@ -11,7 +11,7 @@
 
 namespace can::providers::rp2040::mcp2515
 {
-    CANBus::CANBus(can::providers::base::bitrate_enum_t b, can::providers::base::options_t o) : can::providers::base::CANBus(b, o)
+    CANBus::CANBus(can::providers::base::bitrate_enum_t b, can::providers::base::options_t o) : CANBusInterface(b, o)
     {
         printf("MCP2515 CANBus init\n");
 
@@ -43,7 +43,7 @@ namespace can::providers::rp2040::mcp2515
         {
             gpio_acknowledge_irq(this->op.interrupt_pin, GPIO_IRQ_EDGE_FALL);
 
-            // Read
+            // Ready
         }
     }
 
