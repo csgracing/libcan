@@ -23,8 +23,8 @@ protected:
     // before the destructor).
     virtual void TearDown();
 
-    static void SetUpTestSuite();
-    static void TearDownTestSuite();
+    // static void SetUpTestSuite();
+    // static void TearDownTestSuite();
 
-    static inline MockProvider *m_provider = nullptr;
+    static std::shared_ptr<MockProvider> m_provider;
 };

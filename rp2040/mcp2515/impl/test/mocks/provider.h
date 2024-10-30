@@ -17,6 +17,8 @@ public:
     MOCK_METHOD(uint8_t, bindToNextIsrId, ());
     MOCK_METHOD(void, rawIrqHandler, ());
 
+    MOCK_METHOD(void, registerRawIrqHandlerOnCurrentCore, ());
+
     MOCK_METHOD(can::frame_read_res, readMessage, ());
 
     MOCK_METHOD(void, global_isr_0, ());
