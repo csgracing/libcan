@@ -37,3 +37,7 @@ add_subdirectory(core)
 if (CAN_TARGET STREQUAL "pico")
     add_subdirectory(rp2040)
 endif()
+
+if (CAN_TARGET STREQUAL "linux")
+    add_subdirectory(linux/socketcan)
+endif()
