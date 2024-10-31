@@ -28,6 +28,8 @@ add_subdirectory(lib/boost/preprocessor)
 if (IS_TEST_ENV STREQUAL "true")
     add_subdirectory(lib/google/test)
     add_subdirectory(lib/google/gmock-global)
+    # add_subdirectory(lib/google/gtest-tap-listener) [tries to download own ver of gtest]
+    include(gtest-tap-listener.cmake)
 endif()
 
 # Subprojects

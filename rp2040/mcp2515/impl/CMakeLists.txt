@@ -58,7 +58,7 @@ if (IS_TEST_ENV STREQUAL "true")
             ${CMAKE_CURRENT_SOURCE_DIR}/test/
     )
 
-    target_link_libraries(mcp2515_test libcan::rp2040::mcp2515 gmock-global::gmock-global GTest::gtest_main GTest::gmock_main)
+    target_link_libraries(mcp2515_test libcan::rp2040::mcp2515 gtest-tap-listener gmock-global::gmock-global GTest::gtest_main GTest::gmock_main)
 
     include(GoogleTest)
     gtest_discover_tests(mcp2515_test)
