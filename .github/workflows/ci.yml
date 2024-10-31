@@ -2,9 +2,7 @@ name: ci
 
 on:
   push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
@@ -13,30 +11,38 @@ jobs:
     strategy:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
       fail-fast: false
-    
-    matrix:
-      preset: [pico]
+      matrix:
+        preset: [pico]
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+    - name: Install toolchain
+      run: sudo apt update && sudo apt install -y cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs
     - name: Configure
       run: cmake -B build . --preset ${{ matrix.preset }}
     - name: Build
-      run: cmake -B build --build ${{ matrix.preset }}
+      run: cmake --build build --parallel $(nproc) -t ${{ matrix.preset }}
   
   test:
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-    
-    matrix:
-      include:
-        - preset: "pico-test"
-          target: "can_rp2040_mcp2515_test"
+      matrix:
+        include:
+          - preset: "pico-test"
+            target: "can_rp2040_mcp2515_test"
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+    - name: Install toolchain
+      run: sudo apt update && sudo apt install -y cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs
     - name: Configure
       run: cmake -B build . --preset ${{ matrix.preset }}
     - name: Build
