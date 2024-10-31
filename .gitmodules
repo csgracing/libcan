@@ -16,6 +16,3 @@
 [submodule "lib/google/gmock-global"]
 	path = lib/google/gmock-global
 	url = https://github.com/apriorit/gmock-global
-[submodule "lib/google/gtest-tap-listener"]
-	path = lib/google/gtest-tap-listener
-	url = https://github.com/kinow/gtest-tap-listener
