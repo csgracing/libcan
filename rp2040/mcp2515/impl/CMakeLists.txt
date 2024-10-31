@@ -41,26 +41,3 @@ target_link_libraries(${PROJECT} PUBLIC ${LINK_LIBS})
 
 
 include(pico-mcp2515.cmake)
-
-
-# GoogleTest section following
-if (IS_TEST_ENV STREQUAL "true")
-    enable_testing()
-
-    add_executable(mcp2515_test
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/main.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/test/provider_test.cpp
-    )
-
-    target_include_directories(mcp2515_test
-        PRIVATE
-            # internal headers
-            ${CMAKE_CURRENT_SOURCE_DIR}/test/
-    )
-
-    target_link_libraries(mcp2515_test libcan::rp2040::mcp2515 gtest-tap-listener gmock-global::gmock-global GTest::gtest_main GTest::gmock_main)
-
-    set_target_properties(mcp2515_test PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/test-bin)
-    include(GoogleTest)
-    gtest_discover_tests(mcp2515_test)
-endif()

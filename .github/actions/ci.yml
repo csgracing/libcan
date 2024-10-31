@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
     
     matrix:
-      preset: [pico, pico-host]
+      preset: [pico]
 
     steps:
     - uses: actions/checkout@v4
@@ -33,7 +33,7 @@ jobs:
     matrix:
       include:
         - preset: "pico-test"
-        - target: "mcp2515_test"
+          target: "can_rp2040_mcp2515_test"
 
     steps:
     - uses: actions/checkout@v4
