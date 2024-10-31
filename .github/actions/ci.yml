@@ -1,0 +1,52 @@
+name: ci
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
+      fail-fast: false
+    
+    matrix:
+      preset: [pico, pico-host]
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Configure
+      run: cmake -B build . --preset ${{ matrix.preset }}
+    - name: Build
+      run: cmake -B build --build ${{ matrix.preset }}
+  
+  test:
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    
+    matrix:
+      include:
+        - preset: "pico-test"
+        - target: "mcp2515_test"
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Configure
+      run: cmake -B build . --preset ${{ matrix.preset }}
+    - name: Build
+      run: cmake --build build --parallel $(nproc) -t ${{ matrix.target }}
+    - name: Test
+      run: ./build/test-bin/${{ matrix.target }}
+    - name: Report test summary
+      uses: test-summary/action@v2
+      with:
+        paths: |
+          "*.tap"
+      if: always()
+
