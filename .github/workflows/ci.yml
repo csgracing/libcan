@@ -53,6 +53,6 @@ jobs:
       uses: test-summary/action@v2
       with:
         paths: |
-          "*.tap"
+          *.tap
       if: always()
 
