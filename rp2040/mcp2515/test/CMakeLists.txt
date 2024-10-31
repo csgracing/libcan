@@ -22,7 +22,7 @@ if (IS_TEST_ENV STREQUAL "true")
             ${CMAKE_CURRENT_SOURCE_DIR}/src/
     )
 
-    target_link_libraries(${PROJECT} libcan::rp2040::mcp2515 gtest-tap-listener gmock-global::gmock-global GTest::gtest_main GTest::gmock_main)
+    target_link_libraries(${PROJECT} libcan::rp2040::mcp2515 gmock-global::gmock-global GTest::gtest_main GTest::gmock_main)
 
     set_target_properties(${PROJECT} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/test-bin)
     include(GoogleTest)
