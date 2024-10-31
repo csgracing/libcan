@@ -48,10 +48,10 @@ jobs:
     - name: Build
       run: cmake --build build --parallel $(nproc) -t ${{ matrix.target }}
     - name: Test
-      run: ./build/test-bin/${{ matrix.target }}
+      run: ./build/test-bin/${{ matrix.target }} --gtest_output=xml
     - name: Report test summary
       uses: test-summary/action@v2
       with:
-        paths: "**/*.tap"
+        paths: "test_detail.xml"
       if: always()
 
