@@ -25,4 +25,4 @@ target_include_directories(${PROJECT}
           ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_link_libraries(${PROJECT} PUBLIC libcan::core)
+target_link_libraries(${PROJECT} PUBLIC Boost::conversion sockcanpp libcan::core)

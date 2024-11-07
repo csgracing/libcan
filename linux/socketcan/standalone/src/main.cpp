@@ -6,6 +6,10 @@ using namespace can::providers;
 
 int main()
 {
-    base::options_t a;
-    CANBus cb = CANBus(a);
+    Options *o = new Options();
+    o->canInterface = "vcan0";
+    o->canProtocol = CAN_RAW;
+    CANBus cb = CANBus(NULL, o);
+
+    return 0;
 }
