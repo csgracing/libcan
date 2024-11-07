@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <string.h> // memcpy
 
+#include <boost/polymorphic_cast.hpp> // boost::conversion
+
 #ifdef IS_TEST_ENV
 #include "hardware/gpio.stub.h"
 #else
@@ -11,11 +13,11 @@
 
 namespace can::providers::rp2040::mcp2515
 {
-    CANBus::CANBus(std::optional<can::providers::base::bitrate_enum_t> b, can::providers::base::options_t o) : CANBusInterface(b, o)
+    CANBus::CANBus(std::optional<can::providers::base::bitrate_enum_t> b, can::providers::base::Options *o) : CANBusInterface(b, o)
     {
         printf("MCP2515 CANBus init\n");
 
-        this->op = static_cast<Options &>(o);
+        this->op = boost::polymorphic_downcast<Options *>(o);
         this->chip.reset();
 
         ::mcp2515::CAN_SPEED speed;
@@ -30,7 +32,7 @@ namespace can::providers::rp2040::mcp2515
             speed = ::mcp2515::CAN_1000KBPS;
         }
 
-        ::mcp2515::CAN_CLOCK clock = (::mcp2515::CAN_CLOCK)this->op.clock;
+        ::mcp2515::CAN_CLOCK clock = (::mcp2515::CAN_CLOCK)this->op->clock;
         this->chip.setBitrate(speed, clock);
         this->chip.setNormalMode();
     }
@@ -51,9 +53,9 @@ namespace can::providers::rp2040::mcp2515
 
     void CANBus::rawIrqHandler()
     {
-        if (gpio_get_irq_event_mask(this->op.interrupt_pin) & true)
+        if (gpio_get_irq_event_mask(this->op->interrupt_pin) & true)
         {
-            gpio_acknowledge_irq(this->op.interrupt_pin, GPIO_IRQ_EDGE_FALL);
+            gpio_acknowledge_irq(this->op->interrupt_pin, GPIO_IRQ_EDGE_FALL);
 
             // Ready
         }
@@ -72,7 +74,7 @@ namespace can::providers::rp2040::mcp2515
             return;
         }
 
-        gpio_add_raw_irq_handler(this->op.interrupt_pin, func);
+        gpio_add_raw_irq_handler(this->op->interrupt_pin, func);
     }
 
     uint8_t CANBus::bindToNextIsrId()

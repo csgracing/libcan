@@ -26,7 +26,7 @@ target_include_directories(${PROJECT}
 )
 
 # pico_stdlib for "hardware/gpio.h"
-set(LINK_LIBS Boost::preprocessor pico_stdlib libcan::core libcan::rp2040::mcp2515::lib::mcp2515)
+set(LINK_LIBS Boost::preprocessor Boost::conversion pico_stdlib libcan::core libcan::rp2040::mcp2515::lib::mcp2515)
 
 if (IS_TEST_ENV STREQUAL "true")
     message("${PROJECT}: Adding test-only dependencies...")
