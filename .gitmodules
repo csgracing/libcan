@@ -22,3 +22,21 @@
 [submodule "lib/boost/conversion"]
 	path = lib/boost/conversion
 	url = https://github.com/boostorg/conversion
+[submodule "lib/boost/assert"]
+	path = lib/boost/assert
+	url = https://github.com/boostorg/assert
+[submodule "lib/boost/config"]
+	path = lib/boost/config
+	url = https://github.com/boostorg/config
+[submodule "lib/boost/smart_ptr"]
+	path = lib/boost/smart_ptr
+	url = https://github.com/boostorg/smart_ptr
+[submodule "lib/boost/throw_exception"]
+	path = lib/boost/throw_exception
+	url = https://github.com/boostorg/throw_exception
+[submodule "lib/boost/core"]
+	path = lib/boost/core
+	url = https://github.com/boostorg/core
+[submodule "lib/boost/static_assert"]
+	path = lib/boost/static_assert
+	url = https://github.com/boostorg/static_assert
