@@ -2,6 +2,8 @@
 #define PROVIDERS_BASE_H_
 
 #include <type_traits>
+#include <optional> // std::optional
+
 #include "core/message.h"
 
 #define BITS_IN_KB 1000
@@ -30,7 +32,7 @@ namespace can::providers::base
     class CANBus
     {
     public:
-        CANBus(bitrate_enum_t b, options_t o);
+        CANBus(std::optional<bitrate_enum_t> b, options_t o);
         virtual ~CANBus(); // desructor
 
         // derived classes must provide an implementation (=0)

@@ -11,13 +11,25 @@
 
 namespace can::providers::rp2040::mcp2515
 {
-    CANBus::CANBus(can::providers::base::bitrate_enum_t b, can::providers::base::options_t o) : CANBusInterface(b, o)
+    CANBus::CANBus(std::optional<can::providers::base::bitrate_enum_t> b, can::providers::base::options_t o) : CANBusInterface(b, o)
     {
         printf("MCP2515 CANBus init\n");
 
         this->op = static_cast<Options &>(o);
         this->chip.reset();
-        ::mcp2515::CAN_SPEED speed = (::mcp2515::CAN_SPEED)b;
+
+        ::mcp2515::CAN_SPEED speed;
+
+        if (b.has_value())
+        {
+            speed = (::mcp2515::CAN_SPEED)b.value();
+        }
+        else
+        {
+            printf("Required param speed not set, defaulting to 1Mbit/s");
+            speed = ::mcp2515::CAN_1000KBPS;
+        }
+
         ::mcp2515::CAN_CLOCK clock = (::mcp2515::CAN_CLOCK)this->op.clock;
         this->chip.setBitrate(speed, clock);
         this->chip.setNormalMode();

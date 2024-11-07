@@ -4,7 +4,7 @@
 
 namespace can::providers::base
 {
-    CANBus::CANBus(bitrate_enum_t b, options_t o)
+    CANBus::CANBus(std::optional<bitrate_enum_t> b, options_t o)
     {
         printf("CANBus Base init\n");
     }
