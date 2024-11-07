@@ -12,6 +12,7 @@
 // stdlib
 #include <stdint.h> // int32_t
 #include <string>   // std::string
+#include <chrono>   // std::chrono::milliseconds
 
 using sockcanpp::CanDriver;
 using sockcanpp::CanId;
@@ -29,6 +30,7 @@ namespace can::providers::os::socketcan
         int32_t canProtocol;
         std::optional<CanId> defaultSenderId;
         std::optional<int32_t> filterMask;
+        std::optional<std::chrono::milliseconds> readTimeout; // defaults to 3 seconds (3000ms)
     };
 
     class CANBus : base::CANBus
