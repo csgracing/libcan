@@ -19,3 +19,6 @@
 [submodule "linux/socketcan/lib/libsockcanpp"]
 	path = linux/socketcan/lib/libsockcanpp
 	url = https://github.com/SimonCahill/libsockcanpp
+[submodule "lib/boost/conversion"]
+	path = lib/boost/conversion
+	url = https://github.com/boostorg/conversion
