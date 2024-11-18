@@ -28,8 +28,6 @@ namespace can::providers::os::socketcan
             this->op->filterMask.value_or(0), // filterMask (default 0 - match all (src: CanDriver.cpp#L81))
             id                                // default sender id (optional) (default 0 - CanDriver.hpp#L69)
         );
-
-        printf("Hello, world!\r\n");
     };
 
     can::frame_read_res CANBus::readMessage()

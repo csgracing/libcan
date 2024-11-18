@@ -15,12 +15,12 @@ int main()
 
     for (;;)
     {
-        printf("hello\r\n");
+        printf("attempting to read mesasage...\r\n");
         can::frame_read_res res = cb.readMessage();
         if (res.has_value())
         {
             can::frame frame = res.value();
-            std::wcout << "data: ";
+            std::wcout << "received data: ";
             for (int i = 0; i < 8; i++)
             {
                 std::wcout << std::hex << frame.data[i];
