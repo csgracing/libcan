@@ -2,6 +2,8 @@
 #define PROVIDERS_BASE_H_
 
 #include <type_traits>
+#include <optional> // std::optional
+
 #include "core/message.h"
 
 #define BITS_IN_KB 1000
@@ -23,14 +25,17 @@ namespace can::providers::base
 
     struct Options
     {
+        // We need this or any other virtual member to make Base polymorphic
+        // (so we can use dynamic_cast or boost casting)
+        // https://stackoverflow.com/a/36739219 (polymorphism)
+        // https://www.boost.org/doc/libs/1_47_0/libs/conversion/cast.htm#Polymorphic_cast
+        virtual ~Options() {}
     };
-
-    typedef std::underlying_type<Options> options_t;
 
     class CANBus
     {
     public:
-        CANBus(bitrate_enum_t b, options_t o);
+        CANBus(std::optional<bitrate_enum_t> b, Options *o);
         virtual ~CANBus(); // desructor
 
         // derived classes must provide an implementation (=0)

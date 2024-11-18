@@ -30,6 +30,16 @@
             "cacheVariables": {
                 "IS_TEST_ENV": "true"
             }
+        },
+        {
+            "name": "linux",
+            "cacheVariables": {
+                "CAN_TARGET": "linux"
+            },
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            }
         }
     ]
 }

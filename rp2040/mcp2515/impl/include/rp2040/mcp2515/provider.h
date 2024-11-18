@@ -3,6 +3,8 @@
 
 #include <boost/preprocessor/repetition/repeat_from_to.hpp>
 
+#include <optional> // std::optional
+
 // core
 #include "core/message.h"
 #include "core/providers/base.h"
@@ -55,7 +57,7 @@ namespace can::providers::rp2040::mcp2515
         CLOCK_20_MHZ = ::mcp2515::CAN_CLOCK::MCP_20MHZ
     };
 
-    struct Options : can::providers::base::options_t
+    struct Options : can::providers::base::Options
     {
         Clock clock;
         uint interrupt_pin;
@@ -70,7 +72,7 @@ namespace can::providers::rp2040::mcp2515
         virtual uint8_t bindToNextIsrId() = 0;
 
     public:
-        CANBusInterface(can::providers::base::bitrate_enum_t b, can::providers::base::options_t o) : can::providers::base::CANBus(b, o) {};
+        CANBusInterface(std::optional<can::providers::base::bitrate_enum_t> b, can::providers::base::Options *o) : can::providers::base::CANBus(b, o) {};
         virtual ~CANBusInterface() = default; // desructor
     };
 
@@ -78,7 +80,7 @@ namespace can::providers::rp2040::mcp2515
     {
     private:
         ::mcp2515::MCP2515 chip;
-        Options op;
+        Options *op;
 
         uint8_t bindToNextIsrId();
         void rawIrqHandler();
@@ -86,7 +88,7 @@ namespace can::providers::rp2040::mcp2515
         // gpio_irq_level level;
 
     public:
-        CANBus(can::providers::base::bitrate_enum_t b, can::providers::base::options_t o);
+        CANBus(std::optional<can::providers::base::bitrate_enum_t> b, can::providers::base::Options *o);
         virtual ~CANBus(); // desructor
 
         can::frame_read_res readMessage();

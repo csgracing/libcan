@@ -5,14 +5,14 @@
 
 using namespace can::providers::rp2040::mcp2515;
 
+extern Options *o;
+
 class MockProvider : public CANBus
 {
 public:
-    can::providers::rp2040::mcp2515::Options o;
-
     MockProvider() : CANBus(
                          (can::providers::base::bitrate_enum_t)Bitrate::BITRATE_1000000,
-                         (can::providers::base::options_t)o) {};
+                         o) {};
 
     MOCK_METHOD(uint8_t, bindToNextIsrId, ());
     MOCK_METHOD(void, rawIrqHandler, ());
