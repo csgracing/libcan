@@ -3,6 +3,8 @@
 #include <core/providers/base.h>
 #include <linux/socketcan/provider.h>
 
+#include <core/isotp/tl/parse.h>
+
 using namespace can::providers::os::socketcan;
 using namespace can::providers;
 
@@ -15,7 +17,7 @@ int main()
 
     for (;;)
     {
-        printf("attempting to read mesasage...\r\n");
+        printf("attempting to read message...\r\n");
         can::frame_read_res res = cb.readMessage();
         if (res.has_value())
         {
@@ -26,6 +28,7 @@ int main()
                 std::wcout << std::hex << frame.data[i];
             }
             std::wcout << "\r\n";
+            can::isotp::tl::HandleIncomingFrame(&frame);
         };
     };
 
