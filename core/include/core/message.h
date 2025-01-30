@@ -19,9 +19,22 @@ namespace can
             uint8_t data[8];
             uint32_t data32[2];
         };
-    } frame;
+    } frame_t;
 
-    typedef std::optional<frame> frame_read_res;
+    class Message
+    {
+    private:
+        frame_t *frame;
+
+    public:
+        Message(uint32_t id, uint32_t dlc, void *__restrict__ data);
+        Message(frame_t *frame);
+        virtual ~Message(); // destructor
+
+        frame_t *getFrame();
+    };
+
+    typedef std::optional<Message> frame_read_res;
 };
 
 #endif /* SRC_MESSAGE_H_ */

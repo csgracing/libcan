@@ -21,14 +21,14 @@ int main()
         can::frame_read_res res = cb.readMessage();
         if (res.has_value())
         {
-            can::frame frame = res.value();
+            can::frame_t *frame = msg.getFrame();
             std::wcout << "received data: ";
             for (int i = 0; i < 8; i++)
             {
-                std::wcout << std::hex << frame.data[i];
+                std::wcout << std::hex << frame->data[i];
             }
             std::wcout << "\r\n";
-            can::isotp::tl::HandleIncomingFrame(&frame);
+            can::isotp::tl::HandleIncomingFrame(frame);
         };
     };
 

@@ -42,7 +42,7 @@ namespace can::providers::rp2040::mcp2515
         ::mcp2515::can_frame rx;
         if (this->chip.readMessage(&rx) == ::mcp2515::MCP2515::ERROR_OK)
         {
-            can::frame frame;
+            can::frame_t frame;
             frame.id = rx.can_id;
             frame.dlc = rx.can_dlc;
             memcpy(&frame.data, &rx.data, 8);

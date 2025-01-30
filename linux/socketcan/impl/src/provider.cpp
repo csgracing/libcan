@@ -44,12 +44,7 @@ namespace can::providers::os::socketcan
             can_frame linuxFrame = recvMessage.getRawFrame();
 
             // Convert to can::frame
-            can::frame frame;
-            frame.id = linuxFrame.can_id;
-            frame.dlc = linuxFrame.len8_dlc; // can_dlc deprecated, use this instead
-            memcpy(&frame.data, &linuxFrame.data, 8);
-
-            return frame;
+            return can::Message(linuxFrame.can_id, linuxFrame.len8_dlc, &linuxFrame.data);
         }
 
         return std::nullopt;
