@@ -2,7 +2,6 @@
 #define LINUX_SOCKETCAN_H_
 
 // core
-#include "core/message.h"
 #include "core/providers/base.h"
 
 // libsockcanpp
@@ -43,7 +42,7 @@ namespace can::providers::os::socketcan
         CANBus(std::optional<base::bitrate_enum_t> b, base::Options *o);
         virtual ~CANBus(); // desructor
 
-        can::frame_read_res readMessage();
+        can::protocol::frame::frame_res readMessage();
     };
 }
 

@@ -1,8 +1,8 @@
 #ifndef TP_PARSE_H_
 #define TP_PARSE_H_
 
-#include "core/message.h"
 #include "core/isotp/tl/pci/frame_type.h"
+#include "core/protocol/frame/frame.h"
 
 namespace can::isotp
 {
@@ -41,9 +41,9 @@ namespace can::isotp
 
         };
 
-        void HandleIncomingFrame(can::frame_t *frame);
-        pci::FrameType GetFrameType(can::frame_t *frame);
-        void ProcessFirstFrame(can::frame_t *frame);
+        void HandleIncomingFrame(can::protocol::frame::frame_t *frame);
+        pci::FrameType GetFrameType(can::protocol::frame::frame_t *frame);
+        void ProcessFirstFrame(can::protocol::frame::frame_t *frame);
     };
 }
 

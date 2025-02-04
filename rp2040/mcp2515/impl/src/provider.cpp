@@ -37,16 +37,19 @@ namespace can::providers::rp2040::mcp2515
         this->chip.setNormalMode();
     }
 
-    can::frame_read_res CANBus::readMessage()
+    can::protocol::frame::frame_res CANBus::readMessage()
     {
         ::mcp2515::can_frame rx;
         if (this->chip.readMessage(&rx) == ::mcp2515::MCP2515::ERROR_OK)
         {
-            can::frame_t frame;
-            frame.id = rx.can_id;
-            frame.dlc = rx.can_dlc;
-            memcpy(&frame.data, &rx.data, 8);
-            return frame;
+            return can::protocol::frame::create(
+                rx.can_id >> 3,                            // id: bits 0-28 (shift out 29,30,31)
+                rx.can_id & CAN_RTR_FLAG,                  // rtr: bit 30
+                rx.can_id & CAN_EFF_FLAG,                  // ide: bit 31
+                can::protocol::frame::data::EDL::CC_FRAME, // edl: we only support CC frames
+                rx.can_dlc,                                // dlc
+                &rx.data                                   // data
+            );
         }
         return std::nullopt;
     }

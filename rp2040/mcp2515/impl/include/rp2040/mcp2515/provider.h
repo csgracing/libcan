@@ -6,7 +6,6 @@
 #include <optional> // std::optional
 
 // core
-#include "core/message.h"
 #include "core/providers/base.h"
 
 #include "mcp2515/mcp2515.h"
@@ -91,7 +90,7 @@ namespace can::providers::rp2040::mcp2515
         CANBus(std::optional<can::providers::base::bitrate_enum_t> b, can::providers::base::Options *o);
         virtual ~CANBus(); // desructor
 
-        can::frame_read_res readMessage();
+        can::protocol::frame::frame_res readMessage();
 
         // inline to define not just declare
         // https://stackoverflow.com/a/66569786

@@ -30,7 +30,7 @@ namespace can::providers::os::socketcan
         );
     };
 
-    can::frame_read_res CANBus::readMessage()
+    can::protocol::frame::frame_res CANBus::readMessage()
     {
         // Set timeout to whatever was passed in options, otherwise defaulting to 3 seconds.
         milliseconds timeout = this->op->readTimeout.value_or(milliseconds(3000));
@@ -43,8 +43,15 @@ namespace can::providers::os::socketcan
             // Get linux internal can_frame
             can_frame linuxFrame = recvMessage.getRawFrame();
 
-            // Convert to can::frame
-            return can::Message(linuxFrame.can_id, linuxFrame.len8_dlc, &linuxFrame.data);
+            return can::protocol::frame::create(
+                linuxFrame.can_id >> 3,                    // id: bits 0-28 (shift out 29,30,31)
+                linuxFrame.can_id & CAN_RTR_FLAG,          // rtr: bit 30 only
+                linuxFrame.can_id & CAN_EFF_FLAG,          // ide: bit 31 only,
+                can::protocol::frame::data::EDL::CC_FRAME, // edl: libsockcanpp only supports CC frame
+                linuxFrame.len,                            // dlc
+                &linuxFrame.data,                          // data
+                8                                          // data size
+            );
         }
 
         return std::nullopt;

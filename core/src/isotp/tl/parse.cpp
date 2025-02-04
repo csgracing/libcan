@@ -7,16 +7,17 @@ namespace can::isotp::tl
 {
 
     // byte 1, bits 7 to 4. (p23 iso15765)
-    pci::FrameType GetFrameType(can::frame_t *frame)
+    pci::FrameType GetFrameType(can::protocol::frame::frame_t *frame)
     {
         // first bite, bits 7-4
         return (pci::FrameType)(frame->data[0] >> 4);
     };
 
-    void HandleIncomingFrame(can::frame_t *frame)
+    void HandleIncomingFrame(can::protocol::frame::frame_t *frame)
     {
         std::wcout << "Parsing frame with id: ";
-        std::wcout << frame->id;
+        std::wcout << frame->id.base;
+        std::wcout << frame->id.extended;
         std::wcout << "\r\n";
 
         // Check bits 7 to 4 for FrameType
@@ -28,10 +29,10 @@ namespace can::isotp::tl
         }
     };
 
-    void ProcessFirstFrame(can::frame_t *frame)
+    void ProcessFirstFrame(can::protocol::frame::frame_t *frame)
     {
         // determine SF_DL (SingleFrame DataLength)
-        if (frame->dlc > 8)
+        if (frame->dlc.dlc > 8)
         {
             // CAN FD
         }

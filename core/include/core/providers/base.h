@@ -4,7 +4,7 @@
 #include <type_traits>
 #include <optional> // std::optional
 
-#include "core/message.h"
+#include "core/protocol/frame/frame.h"
 
 #define BITS_IN_KB 1000
 
@@ -40,7 +40,7 @@ namespace can::providers::base
 
         // derived classes must provide an implementation (=0)
         // <https://stackoverflow.com/a/2089238>
-        virtual can::frame_read_res readMessage() = 0;
+        virtual can::protocol::frame::frame_res readMessage() = 0;
     };
 };
 

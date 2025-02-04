@@ -18,17 +18,17 @@ int main()
     for (;;)
     {
         printf("attempting to read message...\r\n");
-        can::frame_read_res res = cb.readMessage();
+        can::protocol::frame::frame_res res = cb.readMessage();
         if (res.has_value())
         {
-            can::frame_t *frame = msg.getFrame();
+            can::protocol::frame::frame_t frame = res.value();
             std::wcout << "received data: ";
             for (int i = 0; i < 8; i++)
             {
-                std::wcout << std::hex << frame->data[i];
+                std::wcout << std::hex << frame.data[i];
             }
             std::wcout << "\r\n";
-            can::isotp::tl::HandleIncomingFrame(frame);
+            can::isotp::tl::HandleIncomingFrame(&frame);
         };
     };
 
