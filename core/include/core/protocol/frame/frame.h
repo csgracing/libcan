@@ -65,7 +65,7 @@ namespace can::protocol::frame
     } frame_t;
 
     typedef std::optional<frame_t> frame_res;
-    frame_res create(uint32_t id, bool rtr, bool ide, bool edl, uint8_t dlc, void *__restrict__ data, uint8_t data_size);
+    frame_res create(uint32_t id, bool rtr, bool ide, bool edl, uint8_t dlc, void *data, uint8_t data_size);
 }
 
 #endif /* FRAME_FRAME_H_ */

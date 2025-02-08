@@ -7,7 +7,7 @@ using namespace can::protocol::frame::data;
 
 namespace can::protocol::frame
 {
-    frame_res create(uint32_t id, bool rtr, bool ide, bool edl, uint8_t dlc, void *__restrict__ data, uint8_t data_size)
+    frame_res create(uint32_t id, bool rtr, bool ide, bool edl, uint8_t dlc, void *data, uint8_t data_size)
     {
         // Create a new frame struct.
         frame_t *frame = new frame_t();
