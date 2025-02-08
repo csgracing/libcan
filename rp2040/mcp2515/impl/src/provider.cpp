@@ -48,7 +48,8 @@ namespace can::providers::rp2040::mcp2515
                 rx.can_id & CAN_EFF_FLAG,                  // ide: bit 31
                 can::protocol::frame::data::EDL::CC_FRAME, // edl: we only support CC frames
                 rx.can_dlc,                                // dlc
-                &rx.data                                   // data
+                &rx.data,                                  // data
+                8                                          // (max) data size
             );
         }
         return std::nullopt;
