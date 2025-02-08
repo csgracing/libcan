@@ -40,6 +40,13 @@
                 "value": "x64",
                 "strategy": "external"
             }
+        },
+        {
+            "name": "linux-test",
+            "inherits": "linux",
+            "cacheVariables": {
+                "IS_TEST_ENV": "true"
+            }
         }
     ]
 }
