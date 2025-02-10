@@ -40,3 +40,6 @@
 [submodule "lib/boost/static_assert"]
 	path = lib/boost/static_assert
 	url = https://github.com/boostorg/static_assert
+[submodule "lib/cmake/modules"]
+	path = lib/cmake/modules
+	url = https://github.com/csgracing/cmake-modules
