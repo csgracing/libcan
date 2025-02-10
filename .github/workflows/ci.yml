@@ -20,7 +20,7 @@ jobs:
       with:
         submodules: 'recursive'
     - name: Install toolchain
-      run: sudo apt update && sudo apt install -y cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs
+      run: sudo apt update && sudo apt install -y cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs gcovr
     - name: Configure
       run: cmake -B build . --preset ${{ matrix.preset }}
     - name: Build
@@ -44,7 +44,7 @@ jobs:
       with:
         submodules: 'recursive'
     - name: Install toolchain
-      run: sudo apt update && sudo apt install -y cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs
+      run: sudo apt update && sudo apt install -y cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs gcovr
     - name: Configure
       run: cmake -B build . --preset ${{ matrix.preset }}
     - name: Build
