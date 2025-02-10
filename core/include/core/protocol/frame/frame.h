@@ -7,6 +7,7 @@
 #include "core/protocol/frame/type.h"
 
 #include <optional>
+#include <tuple> // std::tie
 
 namespace can::protocol::frame
 {
@@ -66,7 +67,7 @@ namespace can::protocol::frame
 
     typedef std::optional<frame_t> frame_res;
 
-    typedef struct
+    typedef struct frame_raw
     {
         uint32_t id;
         bool rtr;
@@ -75,6 +76,18 @@ namespace can::protocol::frame
         uint8_t dlc;
         void *data;
         uint8_t data_size;
+
+        auto tie() const
+        {
+            return std::tie(id, rtr, ide, edl, dlc, data, data_size);
+        };
+
+        // see also: https://stackoverflow.com/a/5740505
+        friend bool operator==(const frame_raw &lhs, const frame_raw &rhs)
+        {
+            return lhs.tie() == rhs.tie();
+        };
+
     } frame_raw_t;
 
     frame_res create(frame_raw_t raw_frame);
