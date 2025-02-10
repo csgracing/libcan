@@ -57,3 +57,12 @@ jobs:
         paths: "test_detail.xml"
       if: always()
 
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: csgracing/libcan
+        files: ./test_detail.xml
+        name: ${{ matrix.preset }}.${{ matrix.target }}
+      if: always()
+
