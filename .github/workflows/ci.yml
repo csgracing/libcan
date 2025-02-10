@@ -50,7 +50,7 @@ jobs:
     - name: Build
       run: cmake --build build --parallel $(nproc) -t ${{ matrix.target }}
     - name: Test
-      run: ./build/test-bin/${{ matrix.target }} --gtest_output=xml
+      run: GTEST_OUTPUT="xml:$(pwd)/test_detail.xml" cmake --build build -t ${{ matrix.target }}_coverage
     - name: Report test summary
       uses: test-summary/action@v2
       with:
@@ -62,7 +62,15 @@ jobs:
       with:
         token: ${{ secrets.CODECOV_TOKEN }}
         slug: csgracing/libcan
-        files: ./test_detail.xml
         name: ${{ matrix.preset }}.${{ matrix.target }}
-      if: always()
+        directory: build # search in build/ dir
+      if: ${{ !cancelled() }}
 
+    - name: Upload test results to Codecov
+      uses: codecov/test-results-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        slug: csgracing/libcan
+        name: ${{ matrix.preset }}.${{ matrix.target }}
+        files: ./test_detail.xml
+      if: ${{ !cancelled() }}

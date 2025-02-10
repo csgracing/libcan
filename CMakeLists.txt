@@ -34,6 +34,12 @@ add_subdirectory(lib/boost/static_assert) # dependency of boost/core
 add_subdirectory(lib/boost/throw_exception) # dependency of boost/conversion
 
 if (IS_TEST_ENV STREQUAL "true")
+
+    # coverage setup
+    set(CMAKE_BUILD_TYPE "Debug")
+    include(lib/cmake/modules/CodeCoverage.cmake)
+    append_coverage_compiler_flags()
+
     add_subdirectory(lib/google/test)
     add_subdirectory(lib/google/gmock-global)
 endif()
