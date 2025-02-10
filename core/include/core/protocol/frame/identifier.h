@@ -17,6 +17,11 @@ namespace can::protocol::frame
          * combine with base to create CAN 2.0B extended identifier (29 bits)
          */
         uint32_t extended : 18;
+
+        inline uint32_t combined()
+        {
+            return base | (extended << 11);
+        }
     };
 }
 
