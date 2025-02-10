@@ -9,33 +9,73 @@
 
 std::list<create_input> inputs;
 
-int main(int argc, char **argv)
+void addInput(std::string testcase_display_name, std::string str, uint32_t id, bool rtr, bool ide, bool edl, uint8_t dlc, uint8_t max_data_size, uint8_t create_called_times, bool should_have_value, bool should_raw_match_response, bool should_dlc_match_actual_data_size)
 {
 
-    char *data = (char *)calloc(8, sizeof(uint8_t));
+    char *data = (char *)str.c_str();
 
-    strcpy(data, "Test");
-
-    // init inputs
     inputs.push_back({
+        testcase_display_name,
         {
-            0x1,   // id
-            false, // rtr
-            false, // ide
-            false, // edl
-            8,     // dlc
-            data,  // data
-            8,     // data size
+            id,
+            rtr,
+            ide,
+            edl,
+            dlc,
+            data,
+            max_data_size,
         },
-        1,    // create_called_times
-        true, // should_have_value
-        true, // should_raw_match_response
-        true  // should_dlc_match_actual_data_size;
+        create_called_times,
+        should_have_value,
+        should_raw_match_response,
+        should_dlc_match_actual_data_size,
     });
+}
+
+int main(int argc, char **argv)
+{
+    // Valid CAN CC frame
+    addInput(
+        "valid_cc",
+        "Test",
+        0x1,
+        false,
+        false,
+        false,
+        8,
+        8,
+        1,
+        true,
+        true,
+        true);
+
+    // Valid CAN CC (extended ID) frame
+    addInput(
+        "valid_cc_ext",
+        "Test",
+        0x12345678,
+        false,
+        true,
+        false,
+        8,
+        8,
+        1,
+        true,
+        true,
+        true);
 
     testing::InitGoogleTest(&argc, argv);
     int result = RUN_ALL_TESTS();
     return result;
 }
 
-INSTANTIATE_TEST_SUITE_P(Example, ProtocolFrameTest, testing::ValuesIn(inputs));
+INSTANTIATE_TEST_SUITE_P(
+    Suite, // prefix
+    ProtocolFrameTest,
+    testing::ValuesIn(inputs),
+    // set name based on value in param
+    // https://github.com/google/googletest/blob/main/docs/advanced.md#specifying-names-for-value-parameterized-test-parameters
+    [](const testing::TestParamInfo<ProtocolFrameTest::ParamType> &info)
+    {
+        return info.param.test_case_display_name;
+    });

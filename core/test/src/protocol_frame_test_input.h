@@ -19,6 +19,7 @@ typedef struct
 
 typedef struct
 {
+    std::string test_case_display_name;
     can::protocol::frame::frame_raw_t frame_raw;
     uint8_t create_called_times;
     bool should_have_value;
