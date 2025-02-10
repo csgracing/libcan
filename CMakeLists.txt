@@ -42,6 +42,19 @@ if (IS_TEST_ENV STREQUAL "true")
 
     add_subdirectory(lib/google/test)
     add_subdirectory(lib/google/gmock-global)
+
+    list(APPEND COVERAGE_EXCLUDES
+        ${CMAKE_SOURCE_DIR}/lib
+        ${CMAKE_SOURCE_DIR}/out 
+        ${CMAKE_SOURCE_DIR}/build
+
+        
+        ${CMAKE_SOURCE_DIR}/core/test
+        
+        ${CMAKE_SOURCE_DIR}/rp2040/lib
+        ${CMAKE_SOURCE_DIR}/rp2040/mcp2515/lib
+        ${CMAKE_SOURCE_DIR}/rp2040/mcp2515/test
+    )
 endif()
 
 # Subprojects

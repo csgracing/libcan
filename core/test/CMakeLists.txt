@@ -31,7 +31,6 @@ if (IS_TEST_ENV STREQUAL "true")
     setup_target_for_coverage_gcovr_xml(
         NAME ${PROJECT}_coverage
         EXECUTABLE ${PROJECT}
-        BASE_DIRECTORY "${PROJECT_SOURCE_DIR}/src"
-        EXCLUDE "lib/*"
+        BASE_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
 endif()
