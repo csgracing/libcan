@@ -12,7 +12,7 @@ jobs:
       # Set fail-fast to false to ensure that feedback is delivered for all matrix combinations. Consider changing this to true when your workflow is stable.
       fail-fast: false
       matrix:
-        preset: [pico, linux]
+        preset: [core, pico, linux]
 
     steps:
     - name: Checkout repository and submodules
@@ -35,7 +35,7 @@ jobs:
         include:
           - preset: "pico-test"
             target: "can_rp2040_mcp2515_test"
-          - preset: "linux-test"
+          - preset: "core-test"
             target: "can_core_test"
 
     steps:

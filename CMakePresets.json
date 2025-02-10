@@ -47,6 +47,23 @@
             "cacheVariables": {
                 "IS_TEST_ENV": "true"
             }
+        },
+        {
+            "name": "core",
+            "cacheVariables": {
+                "CAN_TARGET": "core"
+            },
+            "architecture": {
+                "value": "x64",
+                "strategy": "external"
+            }
+        },
+        {
+            "name": "core-test",
+            "inherits": "core",
+            "cacheVariables": {
+                "IS_TEST_ENV": "true"
+            }
         }
     ]
 }
