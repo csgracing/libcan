@@ -1,9 +1,12 @@
+#ifndef SRC_PROTOCOL_FRAME_TEST_H_
+#define SRC_PROTOCOL_FRAME_TEST_H_
+
 #include "gtest/gtest.h"
 
-#include "core/protocol/frame/frame.h"
+#include "protocol_frame_test_input.h"
 
 // The fixture for testing class Foo.
-class ProtocolFrameTest : public ::testing::Test
+class ProtocolFrameTest : public ::testing::TestWithParam<create_input>
 {
 
 protected:
@@ -26,6 +29,6 @@ protected:
 
     // static void SetUpTestSuite();
     // static void TearDownTestSuite();
-
-    can::protocol::frame::frame_res callAndExpectCreate(uint32_t id, bool rtr, bool ide, bool edl, uint8_t dlc, void *__restrict__ data, uint8_t data_size);
 };
+
+#endif /* SRC_PROTOCOL_FRAME_TEST_H_ */
