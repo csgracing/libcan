@@ -43,15 +43,17 @@ namespace can::providers::os::socketcan
             // Get linux internal can_frame
             can_frame linuxFrame = recvMessage.getRawFrame();
 
-            return can::protocol::frame::create(
+            can::protocol::frame::frame_raw_t raw_frame = {
                 linuxFrame.can_id >> 3,                    // id: bits 0-28 (shift out 29,30,31)
-                linuxFrame.can_id & CAN_RTR_FLAG,          // rtr: bit 30 only
-                linuxFrame.can_id & CAN_EFF_FLAG,          // ide: bit 31 only,
+                (bool)(linuxFrame.can_id & CAN_RTR_FLAG),  // rtr: bit 30 only
+                (bool)(linuxFrame.can_id & CAN_EFF_FLAG),  // ide: bit 31 only,
                 can::protocol::frame::data::EDL::CC_FRAME, // edl: libsockcanpp only supports CC frame
                 linuxFrame.len,                            // dlc
                 &linuxFrame.data,                          // data
                 8                                          // data size
-            );
+            };
+
+            return can::protocol::frame::create(raw_frame);
         }
 
         return std::nullopt;

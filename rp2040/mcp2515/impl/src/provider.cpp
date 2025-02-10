@@ -42,15 +42,17 @@ namespace can::providers::rp2040::mcp2515
         ::mcp2515::can_frame rx;
         if (this->chip.readMessage(&rx) == ::mcp2515::MCP2515::ERROR_OK)
         {
-            return can::protocol::frame::create(
+            can::protocol::frame::frame_raw_t raw_frame = {
                 rx.can_id >> 3,                            // id: bits 0-28 (shift out 29,30,31)
-                rx.can_id & CAN_RTR_FLAG,                  // rtr: bit 30
-                rx.can_id & CAN_EFF_FLAG,                  // ide: bit 31
+                (bool)(rx.can_id & CAN_RTR_FLAG),          // rtr: bit 30
+                (bool)(rx.can_id & CAN_EFF_FLAG),          // ide: bit 31
                 can::protocol::frame::data::EDL::CC_FRAME, // edl: we only support CC frames
                 rx.can_dlc,                                // dlc
                 &rx.data,                                  // data
                 8                                          // (max) data size
-            );
+            };
+
+            return can::protocol::frame::create(raw_frame);
         }
         return std::nullopt;
     }

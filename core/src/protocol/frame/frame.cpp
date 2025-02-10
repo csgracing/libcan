@@ -7,23 +7,23 @@ using namespace can::protocol::frame::data;
 
 namespace can::protocol::frame
 {
-    frame_res create(uint32_t id, bool rtr, bool ide, bool edl, uint8_t dlc, void *data, uint8_t data_size)
+    frame_res create(frame_raw_t raw_frame)
     {
         // Create a new frame struct.
         frame_t *frame = new frame_t();
 
         // Set variables excluding data
-        frame->id.base = id & 0b11111111111;
-        frame->id.extended = id >> 11;
+        frame->id.base = raw_frame.id & 0b11111111111;
+        frame->id.extended = raw_frame.id >> 11;
 
-        frame->rtr = rtr ? RTR::REMOTE_REQUEST_FRAME : RTR::DATA_FRAME;
-        frame->ide = ide ? IDE::EXTENDED_FORMAT : IDE::BASE_FORMAT;
-        frame->edl = edl ? EDL::FD_FRAME : EDL::CC_FRAME;
+        frame->rtr = raw_frame.rtr ? RTR::REMOTE_REQUEST_FRAME : RTR::DATA_FRAME;
+        frame->ide = raw_frame.ide ? IDE::EXTENDED_FORMAT : IDE::BASE_FORMAT;
+        frame->edl = raw_frame.edl ? EDL::FD_FRAME : EDL::CC_FRAME;
 
-        frame->dlc.dlc = dlc;
+        frame->dlc.dlc = raw_frame.dlc;
 
         // Validation done in determineType
-        frame->_maxDataSize = data_size;
+        frame->_maxDataSize = raw_frame.data_size;
         FrameType type = FrameTypeUtil::determineType(frame);
         frame->_type = type;
 
@@ -34,7 +34,7 @@ namespace can::protocol::frame
             frame->_actualdataSize = FrameTypeUtil::determineDataSize(frame);
 
             uint8_t *fd_data_ptr = new uint8_t[frame->_actualdataSize];
-            memcpy(fd_data_ptr, data, frame->_actualdataSize);
+            memcpy(fd_data_ptr, raw_frame.data, frame->_actualdataSize);
 
             frame->fd_data = fd_data_ptr;
 
@@ -46,7 +46,7 @@ namespace can::protocol::frame
 
             frame->_actualdataSize = frame->dlc.dlc;
 
-            memcpy(&(frame->data), data, frame->_actualdataSize);
+            memcpy(&(frame->data), raw_frame.data, frame->_actualdataSize);
 
             return *frame;
         }
