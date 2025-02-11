@@ -85,7 +85,7 @@ TEST_P(ProtocolFrameTest, data_expected_cc)
         {
 
             char *res_data_ptr = (char *)&(frame.data[0]);
-            EXPECT_STREQ(input.expected_str.c_str(), res_data_ptr);
+            EXPECT_STREQ(input.expected_str.data(), res_data_ptr);
         }
         else
         {

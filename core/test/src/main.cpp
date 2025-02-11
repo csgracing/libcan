@@ -11,9 +11,6 @@ std::list<create_input> inputs;
 
 void addInput(std::string testcase_display_name, std::string str, std::string expected_str, uint32_t id, bool rtr, bool ide, bool edl, uint8_t max_data_size, uint8_t create_called_times, bool should_have_value, bool should_raw_match_response, bool should_dlc_match_actual_data_size)
 {
-
-    char *data = (char *)str.c_str();
-
     inputs.push_back({
         testcase_display_name,
         {
@@ -22,7 +19,7 @@ void addInput(std::string testcase_display_name, std::string str, std::string ex
             ide,
             edl,
             (uint8_t)(str.size() + 1), // str.size() // str.length() does not include string termination
-            data,
+            str.data(),
             max_data_size,
         },
         create_called_times,
