@@ -50,7 +50,17 @@ namespace can::protocol::frame
         {
             // CC or CC extended
 
-            frame->_actualdataSize = frame->dlc.dlc;
+            if (frame->dlc.dlc > 8)
+            {
+                // edge case: can cc frames with dlc >=8 will have their dlc capped at 8
+                // then will be processed as usual
+                frame->_actualdataSize = 8;
+            }
+            else
+            {
+
+                frame->_actualdataSize = frame->dlc.dlc;
+            }
 
             memcpy(&(frame->data), raw_frame.data, frame->_actualdataSize);
 
