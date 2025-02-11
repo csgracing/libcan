@@ -21,7 +21,7 @@ void addInput(std::string testcase_display_name, std::string str, std::string ex
             rtr,
             ide,
             edl,
-            (uint8_t)str.size(),
+            (uint8_t)(str.size() + 1), // str.size() // str.length() does not include string termination
             data,
             max_data_size,
         },
