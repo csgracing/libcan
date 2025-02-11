@@ -30,6 +30,12 @@ namespace can::protocol::frame
         // If CAN FD or CAN FD Extended
         if ((frame->_type & FrameType::FD) == FrameType::FD)
         {
+            // check if reports as remote frame (not valid for FD frames)
+            if (frame->rtr == RTR::REMOTE_REQUEST_FRAME)
+            {
+                return std::nullopt;
+            }
+
             // Copy dlc worth
             frame->_actualdataSize = FrameTypeUtil::determineDataSize(frame);
 

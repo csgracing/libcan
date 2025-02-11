@@ -64,6 +64,21 @@ int main(int argc, char **argv)
         true,
         true);
 
+    // Invalid CAN FD frame (FD frames cannot be remote frames)
+    addInput(
+        "invalid_fd_remote_frame",
+        "Test",
+        0x1,
+        true,
+        false,
+        true,
+        8,
+        8,
+        1,
+        false,
+        false,
+        false);
+
     testing::InitGoogleTest(&argc, argv);
     int result = RUN_ALL_TESTS();
     return result;
