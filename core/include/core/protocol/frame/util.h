@@ -10,7 +10,7 @@ namespace can::protocol::frame
     class FrameTypeUtil
     {
     public:
-        static uint8_t determineDataSize(frame_t *frame);
+        static bsize_t determineDataSize(frame_t *frame);
         static FrameType determineIfExtendedFormat(frame_t *frame, FrameType type);
         static FrameType determineType(frame_t *frame);
     };

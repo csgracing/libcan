@@ -9,7 +9,22 @@
 
 std::list<create_input> inputs;
 
-void addInput(std::string testcase_display_name, char *data, uint8_t data_size, char *expected_data, uint8_t expected_data_size, uint32_t id, bool rtr, bool ide, bool edl, uint8_t max_data_size, uint8_t create_called_times, bool should_have_value, bool should_raw_match_response, bool should_dlc_match_actual_data_size)
+void addInput(
+    std::string testcase_display_name,
+    char *data,
+    uint8_t dlc,
+    uint8_t size_bytes,
+    char *expected_data,
+    uint8_t expected_data_size,
+    uint32_t id,
+    bool rtr,
+    bool ide,
+    bool edl,
+    uint8_t size_dlc_max,
+    uint8_t create_called_times,
+    bool should_have_value,
+    bool should_raw_match_response,
+    bool should_dlc_match_actual_data_size)
 {
 
     inputs.push_back({
@@ -19,9 +34,10 @@ void addInput(std::string testcase_display_name, char *data, uint8_t data_size, 
             rtr,
             ide,
             edl,
-            data_size,
+            dlc,
             data,
-            max_data_size,
+            size_dlc_max,
+            size_bytes,
         },
         create_called_times,
         should_have_value,
@@ -43,104 +59,119 @@ int main(int argc, char **argv)
     memset(data15, 0xf1, 15);
     memset(data15, 0xf0, 8);
 
-    // Valid CAN CC frame
-    addInput(
-        "valid_cc",
-        data8, 8,
-        data8, 8,
-        0x1,
-        false,
-        false,
-        false,
-        8,
-        1,
-        true,
-        true,
-        true);
+    addInput("valid_cc",
+             data8, // input data
+             8,     // input dlc
+             8,     // input byte size
+             data8, // expected data
+             8,     // expected data byte size
+             0x1,   // can id
+             false, // rtr
+             false, // ide
+             false, // edl
+             15,    // max dlc size for proto (15 for can FD)
+             1,     // create should be called x times
+             true,  // should have value
+             true,  // should raw match response
+             true); // should dlc match actual data size
 
-    // Valid CAN CC (extended ID) frame
-    addInput(
-        "valid_cc_ext",
-        data8, 8,
-        data8, 8,
-        0x12345678,
-        false,
-        true,
-        false,
-        8,
-        1,
-        true,
-        true,
-        true);
+    addInput("valid_cc_ext",
+             data8,      // input data
+             8,          // input dlc
+             8,          // input byte size
+             data8,      // expected data
+             8,          // expected data byte size
+             0x12345678, // can id
+             false,      // rtr
+             true,       // ide
+             false,      // edl
+             8,          // max dlc size for proto (15 for can FD)
+             1,          // create should be called x times
+             true,       // should have value
+             true,       // should raw match response
+             true);      // should dlc match actual data size
 
     // Valid CAN CC frame (edge-case, dlc > 8 so will be truncated as per spec)
-    addInput(
-        "valid_cc_edgecase_dlc_above_8",
-        data15, 15,
-        data8, 8,
-        0x1,
-        false,
-        false,
-        false,
-        8,
-        1,
-        true,
-        false,
-        false);
+    addInput("valid_cc_edgecase_dlc_above_8",
+             data15, // input data
+             15,     // input dlc
+             8,      // input byte size
+             data8,  // expected data
+             8,      // expected data byte size
+             0x1,    // can id
+             false,  // rtr
+             false,  // ide
+             false,  // edl
+             8,      // max dlc size for proto (15 for can FD)
+             1,      // create should be called x times
+             true,   // should have value
+             true,   // should raw match response
+             true);  // should dlc match actual data size
 
     // Invalid CAN FD frame (FD frames cannot be remote frames)
-    addInput(
-        "invalid_fd_remote_frame",
-        data8, 8,
-        data8, 8,
-        0x1,
-        true,
-        false,
-        true,
-        8,
-        1,
-        false,
-        false,
-        false);
+    addInput("invalid_fd_remote_frame",
+             data8,  // input data
+             8,      // input dlc
+             8,      // input byte size
+             data8,  // expected data
+             8,      // expected data byte size
+             0x1,    // can id
+             true,   // rtr
+             false,  // ide
+             true,   // edl
+             8,      // max dlc size for proto (15 for can FD)
+             1,      // create should be called x times
+             false,  // should have value
+             false,  // should raw match response
+             false); // should dlc match actual data size
 
     addInput("invalid_cc_dlc_overflowed",
-             data8, 0b10000,
-             data8, 8,
-             0x1,
-             false,
-             false,
-             false,
-             8,
-             1,
-             false,
-             false,
-             false);
+             data8,   // input data
+             0b10000, // input dlc
+             128,     // input byte size
+             data8,   // expected data
+             8,       // expected data byte size
+             0x1,     // can id
+             false,   // rtr
+             false,   // ide
+             false,   // edl
+             15,      // max dlc size for proto (15 for can FD)
+             1,       // create should be called x times
+             false,   // should have value
+             false,   // should raw match response
+             false);  // should dlc match actual data size
 
     addInput("invalid_cc_ext_id_no_ide_bit_set",
-             data8, 8,
-             data8, 8,
-             0x12345678,
-             false,
-             false,
-             false,
-             8,
-             1,
-             false,
-             false,
-             false);
+             data8,      // input data
+             8,          // input dlc
+             8,          // input byte size
+             data8,      // expected data
+             8,          // expected data byte size
+             0x12345678, // can id
+             false,      // rtr
+             false,      // ide
+             false,      // edl
+             15,         // max dlc size for proto (15 for can FD)
+             1,          // create should be called x times
+             false,      // should have value
+             false,      // should raw match response
+             false);     // should dlc match actual data size
 
     addInput("valid_fd",
-             data32, 13, // 32b
-             data32, 13, // 32b
-             0x1,
-             false,
-             false,
-             true,
-             64,
-             1,
-             true,
-             true,
-             true);
+             data32, // input data
+             13,     // input dlc
+             32,     // input byte size
+             data32, // expected data
+             32,     // expected data byte size
+             0x1,    // can id
+             false,  // rtr
+             false,  // ide
+             true,   // edl
+             15,     // max dlc size for proto (15 for can FD)
+             1,      // create should be called x times
+             true,   // should have value
+             true,   // should raw match response
+             true);  // should dlc match actual data size
 
     testing::InitGoogleTest(&argc, argv);
     int result = RUN_ALL_TESTS();

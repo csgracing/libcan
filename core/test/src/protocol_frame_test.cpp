@@ -64,8 +64,7 @@ TEST_P(ProtocolFrameTest, raw_matches_response)
         ASSERT_EQ(input.frame_raw.ide, frame.ide);
         ASSERT_EQ(input.frame_raw.edl, frame.edl);
 
-        ASSERT_EQ(input.frame_raw.dlc, frame.dlc.dlc);
-        ASSERT_EQ(input.frame_raw.data_size, frame._maxDataSize);
+        ASSERT_EQ(input.frame_raw.dlc, frame.dlc.to_ulong());
     }
 };
 
@@ -86,7 +85,7 @@ TEST_P(ProtocolFrameTest, data_expected_cc)
 
             char *res_data_ptr = (char *)&(frame.data[0]);
             EXPECT_STREQ(input.expected_data, res_data_ptr);
-            EXPECT_EQ(input.expected_data_size, frame._actualdataSize);
+            EXPECT_EQ(input.expected_data_size, frame._bsize.to_ulong());
         }
         else
         {
@@ -95,7 +94,7 @@ TEST_P(ProtocolFrameTest, data_expected_cc)
     };
 };
 
-TEST_P(ProtocolFrameTest, dlc_matches_actual_data_size)
+TEST_P(ProtocolFrameTest, size_matches_actual_data_size)
 {
     create_input input = GetParam();
     if (!input.should_dlc_match_actual_data_size || !input.should_have_value)
@@ -107,6 +106,6 @@ TEST_P(ProtocolFrameTest, dlc_matches_actual_data_size)
         frame_res *res = m_res.get();
         frame_t frame = res->value();
 
-        ASSERT_EQ(input.frame_raw.dlc, frame._actualdataSize);
+        ASSERT_EQ(input.frame_raw.size_bytes, frame._bsize.to_ulong());
     }
 };

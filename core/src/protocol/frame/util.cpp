@@ -5,15 +5,23 @@
 
 namespace can::protocol::frame
 {
-    uint8_t FrameTypeUtil::determineDataSize(frame_t *frame)
+    bsize_t FrameTypeUtil::determineDataSize(frame_t *frame)
     {
-        if (frame->_type & FrameType::CC)
+        bsize_t dlcCasted = frame->dlc.to_ulong();
+        if ((frame->_type & FrameType::CC) == FrameType::CC)
         {
-            return frame->dlc.dlc;
+            return dlcCasted;
         }
-        else if (frame->_type & FrameType::FD)
+        else if ((frame->_type & FrameType::FD) == FrameType::FD)
         {
-            return dlc_mapping.at(frame->dlc.dlc);
+            if (frame->dlc.to_ulong() > 8)
+            {
+                return dlc_mapping.at(dlcCasted);
+            }
+            else
+            {
+                return dlcCasted;
+            }
         }
         else
         {
@@ -52,11 +60,13 @@ namespace can::protocol::frame
 
     FrameType FrameTypeUtil::determineType(frame_t *frame)
     {
+        long dlc_l = frame->dlc.to_ulong();
+        long bsize_l = frame->_bsize.to_ulong();
         // DLC 0 through 8 inclusive
-        if (0 <= frame->dlc.dlc && frame->dlc.dlc <= 8)
+        if (0 <= dlc_l && dlc_l <= 8)
         {
             // Check if frame reports as a CC frame with max size != 8
-            if (frame->_maxDataSize != 8 && frame->edl == data::EDL::CC_FRAME)
+            if (bsize_l != 8 && frame->edl == data::EDL::CC_FRAME)
             {
                 // Invalid, CC frame incorrect max data size.
                 return INVALID;
@@ -72,10 +82,10 @@ namespace can::protocol::frame
         }
 
         // DLC 9 through 15 inclusive
-        if (9 <= frame->dlc.dlc && frame->dlc.dlc <= 15)
+        if (9 <= dlc_l && dlc_l <= 15)
         {
             // payload 8 bytes
-            if (frame->_maxDataSize == 8)
+            if (bsize_l == 8)
             {
                 // CAN CC frame with >8 DLC (edge case where DLC will be capped at 8)
                 // call func to determine if extended format
@@ -83,7 +93,7 @@ namespace can::protocol::frame
             }
 
             // payload 12 through 64 bytes inclusive
-            if (12 <= frame->_maxDataSize && frame->_maxDataSize <= 64)
+            if (12 <= bsize_l && bsize_l <= 64)
             {
                 // cannot be CC frame
                 if (frame->rtr == data::RTR::DATA_FRAME)

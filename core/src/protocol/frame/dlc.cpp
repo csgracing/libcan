@@ -2,7 +2,7 @@
 
 namespace can::protocol::frame
 {
-    std::unordered_map<uint8_t, uint8_t> dlc_mapping = {
+    std::unordered_map<bsize_t, bsize_t> dlc_mapping = {
         {9, 12},
         {10, 16},
         {11, 20},

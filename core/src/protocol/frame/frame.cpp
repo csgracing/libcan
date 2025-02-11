@@ -26,10 +26,10 @@ namespace can::protocol::frame
             return std::nullopt;
         }
 
-        frame->dlc.dlc = raw_frame.dlc;
+        frame->dlc = std::bitset<4>(raw_frame.dlc);
 
         // Validation done in determineType
-        frame->_maxDataSize = raw_frame.data_size;
+        frame->_bsize = raw_frame.size_bytes;
         FrameType type = FrameTypeUtil::determineType(frame);
         frame->_type = type;
 
@@ -43,10 +43,10 @@ namespace can::protocol::frame
             }
 
             // Copy dlc worth
-            frame->_actualdataSize = FrameTypeUtil::determineDataSize(frame);
+            frame->_bsize = FrameTypeUtil::determineDataSize(frame);
 
-            uint8_t *fd_data_ptr = new uint8_t[frame->_actualdataSize];
-            memcpy(fd_data_ptr, raw_frame.data, frame->_actualdataSize);
+            uint8_t *fd_data_ptr = new uint8_t[frame->_bsize.to_ulong()];
+            memcpy(fd_data_ptr, raw_frame.data, frame->_bsize.to_ulong());
 
             frame->fd_data = fd_data_ptr;
 
@@ -56,19 +56,18 @@ namespace can::protocol::frame
         {
             // CC or CC extended
 
-            if (frame->dlc.dlc > 8)
+            if (frame->dlc.to_ulong() > 8)
             {
                 // edge case: can cc frames with dlc >=8 will have their dlc capped at 8
                 // then will be processed as usual
-                frame->_actualdataSize = 8;
+                frame->_bsize = std::bitset<7>(8);
             }
             else
             {
-
-                frame->_actualdataSize = frame->dlc.dlc;
+                frame->_bsize = std::bitset<7>(frame->dlc.to_ulong());
             }
 
-            memcpy(&(frame->data), raw_frame.data, frame->_actualdataSize);
+            memcpy(&(frame->data), raw_frame.data, frame->_bsize.to_ulong());
 
             return *frame;
         }

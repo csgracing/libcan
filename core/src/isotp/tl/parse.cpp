@@ -32,7 +32,7 @@ namespace can::isotp::tl
     void ProcessFirstFrame(can::protocol::frame::frame_t *frame)
     {
         // determine SF_DL (SingleFrame DataLength)
-        if (frame->dlc.dlc > 8)
+        if (frame->dlc.to_ulong() > 8)
         {
             // CAN FD
         }

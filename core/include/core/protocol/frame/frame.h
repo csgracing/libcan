@@ -15,7 +15,17 @@ namespace can::protocol::frame
     // https://github.com/KevinOConnor/can2040/blob/9e761ae353ea473e24c8bba226e10afad8a919ff/src/can2040.h#L6
     typedef struct
     {
-        uint8_t _maxDataSize, _actualdataSize;
+        /**
+         * The max data length supported by the protocol.
+         */
+        dlc_t _max_dlc;
+
+        /** The size of the data in bytes */
+        bsize_t _bsize;
+
+        /**
+         * The detected type of the frame.
+         */
         FrameType _type;
 
         /**
@@ -45,7 +55,7 @@ namespace can::protocol::frame
         /**
          * Data length code
          */
-        dlc_s dlc;
+        dlc_t dlc;
 
         /**
          * CAN CC frame data.
@@ -75,11 +85,12 @@ namespace can::protocol::frame
         bool edl;
         uint8_t dlc;
         void *data;
-        uint8_t data_size;
+        dlc_t size_dlc_max;
+        uint8_t size_bytes;
 
         auto tie() const
         {
-            return std::tie(id, rtr, ide, edl, dlc, data, data_size);
+            return std::tie(id, rtr, ide, edl, dlc, data, size_dlc_max, size_bytes);
         };
 
         // see also: https://stackoverflow.com/a/5740505
