@@ -69,7 +69,7 @@ TEST_P(ProtocolFrameTest, raw_matches_response)
     }
 };
 
-TEST_P(ProtocolFrameTest, data_preserved_cc)
+TEST_P(ProtocolFrameTest, data_expected_cc)
 {
     create_input input = GetParam();
     if (!input.should_have_value)
@@ -85,7 +85,7 @@ TEST_P(ProtocolFrameTest, data_preserved_cc)
         {
 
             char *res_data_ptr = (char *)&(frame.data[0]);
-            EXPECT_STREQ((char *)input.frame_raw.data, res_data_ptr);
+            EXPECT_STREQ(input.expected_str.c_str(), res_data_ptr);
         }
         else
         {

@@ -9,7 +9,7 @@
 
 std::list<create_input> inputs;
 
-void addInput(std::string testcase_display_name, std::string str, uint32_t id, bool rtr, bool ide, bool edl, uint8_t max_data_size, uint8_t create_called_times, bool should_have_value, bool should_raw_match_response, bool should_dlc_match_actual_data_size)
+void addInput(std::string testcase_display_name, std::string str, std::string expected_str, uint32_t id, bool rtr, bool ide, bool edl, uint8_t max_data_size, uint8_t create_called_times, bool should_have_value, bool should_raw_match_response, bool should_dlc_match_actual_data_size)
 {
 
     char *data = (char *)str.c_str();
@@ -29,6 +29,7 @@ void addInput(std::string testcase_display_name, std::string str, uint32_t id, b
         should_have_value,
         should_raw_match_response,
         should_dlc_match_actual_data_size,
+        expected_str,
     });
 }
 
@@ -37,6 +38,7 @@ int main(int argc, char **argv)
     // Valid CAN CC frame
     addInput(
         "valid_cc",
+        "Test",
         "Test",
         0x1,
         false,
@@ -52,6 +54,7 @@ int main(int argc, char **argv)
     addInput(
         "valid_cc_ext",
         "Test",
+        "Test",
         0x12345678,
         false,
         true,
@@ -62,9 +65,25 @@ int main(int argc, char **argv)
         true,
         true);
 
+    // Valid CAN CC frame (edge-case, dlc > 8 so will be truncated as per spec)
+    addInput(
+        "valid_cc_edgecase_dlc_above_8",
+        "TestTestTest",
+        "TestTest",
+        0x1,
+        false,
+        false,
+        false,
+        8,
+        1,
+        true,
+        false,
+        false);
+
     // Invalid CAN FD frame (FD frames cannot be remote frames)
     addInput(
         "invalid_fd_remote_frame",
+        "Test",
         "Test",
         0x1,
         true,
