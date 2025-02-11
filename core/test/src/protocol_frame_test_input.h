@@ -25,7 +25,8 @@ typedef struct
     bool should_have_value;
     bool should_raw_match_response;
     bool should_dlc_match_actual_data_size;
-    std::string expected_str;
+    char *expected_data;
+    uint8_t expected_data_size;
 
     std::optional<create_input_expected> expected;
 } create_input;

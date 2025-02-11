@@ -9,10 +9,8 @@
 
 std::list<create_input> inputs;
 
-void addInput(std::string testcase_display_name, std::string str, std::string expected_str, uint32_t id, bool rtr, bool ide, bool edl, uint8_t max_data_size, uint8_t create_called_times, bool should_have_value, bool should_raw_match_response, bool should_dlc_match_actual_data_size)
+void addInput(std::string testcase_display_name, char *data, uint8_t data_size, char *expected_data, uint8_t expected_data_size, uint32_t id, bool rtr, bool ide, bool edl, uint8_t max_data_size, uint8_t create_called_times, bool should_have_value, bool should_raw_match_response, bool should_dlc_match_actual_data_size)
 {
-
-    char *data = (char *)str.c_str();
 
     inputs.push_back({
         testcase_display_name,
@@ -21,7 +19,7 @@ void addInput(std::string testcase_display_name, std::string str, std::string ex
             rtr,
             ide,
             edl,
-            (uint8_t)str.size(),
+            data_size,
             data,
             max_data_size,
         },
@@ -29,17 +27,26 @@ void addInput(std::string testcase_display_name, std::string str, std::string ex
         should_have_value,
         should_raw_match_response,
         should_dlc_match_actual_data_size,
-        expected_str,
+        expected_data,
+        expected_data_size,
     });
 }
 
 int main(int argc, char **argv)
 {
+    // TODO: dlc >15 will overflow, need to check for this!
+    char *data8 = (char *)calloc(8, sizeof(uint8_t));
+    char *data15 = (char *)calloc(15, sizeof(uint8_t));
+
+    memset(data8, 0xf0, 8);
+    memset(data15, 0xf1, 15);
+    memset(data15, 0xf0, 8);
+
     // Valid CAN CC frame
     addInput(
         "valid_cc",
-        "Test",
-        "Test",
+        data8, 8,
+        data8, 8,
         0x1,
         false,
         false,
@@ -53,8 +60,8 @@ int main(int argc, char **argv)
     // Valid CAN CC (extended ID) frame
     addInput(
         "valid_cc_ext",
-        "Test",
-        "Test",
+        data8, 8,
+        data8, 8,
         0x12345678,
         false,
         true,
@@ -68,8 +75,8 @@ int main(int argc, char **argv)
     // Valid CAN CC frame (edge-case, dlc > 8 so will be truncated as per spec)
     addInput(
         "valid_cc_edgecase_dlc_above_8",
-        "TestTestTest",
-        "TestTest",
+        data15, 15,
+        data8, 8,
         0x1,
         false,
         false,
@@ -83,8 +90,8 @@ int main(int argc, char **argv)
     // Invalid CAN FD frame (FD frames cannot be remote frames)
     addInput(
         "invalid_fd_remote_frame",
-        "Test",
-        "Test",
+        data8, 8,
+        data8, 8,
         0x1,
         true,
         false,
