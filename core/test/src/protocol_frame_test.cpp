@@ -86,6 +86,7 @@ TEST_P(ProtocolFrameTest, data_expected_cc)
 
             char *res_data_ptr = (char *)&(frame.data[0]);
             EXPECT_STREQ(input.expected_data, res_data_ptr);
+            EXPECT_EQ(input.expected_data_size, frame._actualdataSize);
         }
         else
         {

@@ -37,6 +37,7 @@ int main(int argc, char **argv)
     // TODO: dlc >15 will overflow, need to check for this!
     char *data8 = (char *)calloc(8, sizeof(uint8_t));
     char *data15 = (char *)calloc(15, sizeof(uint8_t));
+    char *data32 = (char *)calloc(32, sizeof(uint8_t));
 
     memset(data8, 0xf0, 8);
     memset(data15, 0xf1, 15);
@@ -114,6 +115,32 @@ int main(int argc, char **argv)
              false,
              false,
              false);
+
+    addInput("invalid_cc_ext_id_no_ide_bit_set",
+             data8, 8,
+             data8, 8,
+             0x12345678,
+             false,
+             false,
+             false,
+             8,
+             1,
+             false,
+             false,
+             false);
+
+    addInput("valid_fd",
+             data32, 13, // 32b
+             data32, 13, // 32b
+             0x1,
+             false,
+             false,
+             true,
+             64,
+             1,
+             true,
+             true,
+             true);
 
     testing::InitGoogleTest(&argc, argv);
     int result = RUN_ALL_TESTS();
