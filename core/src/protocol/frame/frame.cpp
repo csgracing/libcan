@@ -20,6 +20,12 @@ namespace can::protocol::frame
         frame->ide = raw_frame.ide ? IDE::EXTENDED_FORMAT : IDE::BASE_FORMAT;
         frame->edl = raw_frame.edl ? EDL::FD_FRAME : EDL::CC_FRAME;
 
+        if (raw_frame.dlc >> 4 != 0)
+        {
+            // larger than 15 (0b0000), therefore we have an overflowed dlc bit
+            return std::nullopt;
+        }
+
         frame->dlc.dlc = raw_frame.dlc;
 
         // Validation done in determineType

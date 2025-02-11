@@ -102,6 +102,19 @@ int main(int argc, char **argv)
         false,
         false);
 
+    addInput("invalid_cc_dlc_overflowed",
+             data8, 0b10000,
+             data8, 8,
+             0x1,
+             false,
+             false,
+             false,
+             8,
+             1,
+             false,
+             false,
+             false);
+
     testing::InitGoogleTest(&argc, argv);
     int result = RUN_ALL_TESTS();
     return result;
