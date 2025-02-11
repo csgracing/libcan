@@ -55,10 +55,10 @@ namespace can::protocol::frame
         // DLC 0 through 8 inclusive
         if (0 <= frame->dlc.dlc && frame->dlc.dlc <= 8)
         {
-            // Check if datasize matches dlc
-            if (frame->_maxDataSize != frame->dlc.dlc)
+            // Check if frame reports as a CC frame with max size != 8
+            if (frame->_maxDataSize != 8 && frame->edl == data::EDL::CC_FRAME)
             {
-                // Invalid, CC frame with mismatched data size
+                // Invalid, CC frame incorrect max data size.
                 return INVALID;
             }
             else
