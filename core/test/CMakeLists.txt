@@ -34,3 +34,5 @@ if (IS_TEST_ENV STREQUAL "true")
         BASE_DIRECTORY ${CMAKE_SOURCE_DIR}
     )
 endif()
+
+add_subdirectory(fuzz)

@@ -64,6 +64,13 @@
             "cacheVariables": {
                 "IS_TEST_ENV": "true"
             }
+        },
+        {
+            "name": "core-fuzz-test",
+            "inherits": "core",
+            "cacheVariables": {
+                "IS_TEST_FUZZ_ENV": "true"
+            }
         }
     ]
 }

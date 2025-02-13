@@ -6,6 +6,12 @@ if (CAN_TARGET STREQUAL "pico")
     include(rp2040/pico-sdk.cmake)
 endif()
 
+
+if (IS_TEST_FUZZ_ENV STREQUAL "true")
+    set(CMAKE_C_COMPILER "clang")
+    set(CMAKE_CXX_COMPILER "clang++")
+endif()
+
 project(
     libcan
     VERSION 0.0.1
@@ -33,28 +39,34 @@ add_subdirectory(lib/boost/smart_ptr) # dependency of boost/conversion
 add_subdirectory(lib/boost/static_assert) # dependency of boost/core
 add_subdirectory(lib/boost/throw_exception) # dependency of boost/conversion
 
-if (IS_TEST_ENV STREQUAL "true")
+if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
 
     # coverage setup
     set(CMAKE_BUILD_TYPE "Debug")
+    
     include(lib/cmake/modules/CodeCoverage.cmake)
-    append_coverage_compiler_flags()
 
-    add_subdirectory(lib/google/test)
+    if (IS_TEST_FUZZ_ENV STREQUAL "true")
+        add_subdirectory(lib/google/fuzztest)
+    else()
+        add_subdirectory(lib/google/test)
+        append_coverage_compiler_flags()
+
+        list(APPEND COVERAGE_EXCLUDES
+            ${CMAKE_SOURCE_DIR}/lib
+            ${CMAKE_SOURCE_DIR}/out 
+            ${CMAKE_SOURCE_DIR}/build
+        
+            ${CMAKE_SOURCE_DIR}/core/test
+        
+            ${CMAKE_SOURCE_DIR}/rp2040/lib
+            ${CMAKE_SOURCE_DIR}/rp2040/mcp2515/lib
+            ${CMAKE_SOURCE_DIR}/rp2040/mcp2515/test
+        )
+    endif()
+    
     add_subdirectory(lib/google/gmock-global)
 
-    list(APPEND COVERAGE_EXCLUDES
-        ${CMAKE_SOURCE_DIR}/lib
-        ${CMAKE_SOURCE_DIR}/out 
-        ${CMAKE_SOURCE_DIR}/build
-
-        
-        ${CMAKE_SOURCE_DIR}/core/test
-        
-        ${CMAKE_SOURCE_DIR}/rp2040/lib
-        ${CMAKE_SOURCE_DIR}/rp2040/mcp2515/lib
-        ${CMAKE_SOURCE_DIR}/rp2040/mcp2515/test
-    )
 endif()
 
 # Subprojects
