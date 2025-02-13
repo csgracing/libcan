@@ -103,7 +103,7 @@ jobs:
     - name: Build
       run: cmake --build build --parallel $(nproc) -t ${{ matrix.target }}
     - name: Test
-      run: GTEST_OUTPUT="xml:$(pwd)/test_detail.xml" cmake --build build -t ${{ matrix.target }}
+      run: ./build/test-bin/${{ matrix.target }} --gtest_output=xml
     - name: Report test summary
       uses: test-summary/action@v2
       with:
