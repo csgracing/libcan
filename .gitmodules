@@ -43,3 +43,6 @@
 [submodule "lib/cmake/modules"]
 	path = lib/cmake/modules
 	url = https://github.com/csgracing/cmake-modules
+[submodule "lib/google/fuzztest"]
+	path = lib/google/fuzztest
+	url = https://github.com/google/fuzztest.git

@@ -78,3 +78,45 @@ jobs:
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       if: ${{ !cancelled() }}
+
+
+  # no code coverage
+  test-fuzz:
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - preset: "core-fuzz-test"
+            target: "can_core_test_fuzz"
+
+    steps:
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+    - name: Install toolchain
+      run: sudo apt update && sudo apt install -y cmake build-essential python3 git nodejs gcovr clang
+    - name: Configure
+      run: cmake -B build . --preset ${{ matrix.preset }}
+    - name: Build
+      run: cmake --build build --parallel $(nproc) -t ${{ matrix.target }}
+    - name: Test
+      run: ./build/test-bin/${{ matrix.target }} --gtest_output=xml
+    - name: Report test summary
+      uses: test-summary/action@v2
+      with:
+        paths: "test_detail.xml"
+      if: always()
+
+    - name: Upload test results to Codecov
+      uses: codecov/test-results-action@v1
+      with:
+        slug: csgracing/libcan
+        name: test-fuzz-${{ github.run_id }}
+        flags: ${{ matrix.preset }}.${{ matrix.target }}
+        files: ./test_detail.xml
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      if: ${{ !cancelled() }}
