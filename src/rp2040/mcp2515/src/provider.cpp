@@ -57,6 +57,11 @@ namespace can::providers::rp2040::mcp2515
         return std::nullopt;
     }
 
+    bool CANBus::hasMessage()
+    {
+        return this->chip.checkReceive();
+    }
+
     void CANBus::rawIrqHandler()
     {
         if (gpio_get_irq_event_mask(this->op->interrupt_pin) & true)

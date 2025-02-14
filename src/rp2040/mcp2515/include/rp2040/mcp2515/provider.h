@@ -91,6 +91,7 @@ namespace can::providers::rp2040::mcp2515
         virtual ~CANBus(); // desructor
 
         can::protocol::frame::frame_res readMessage();
+        bool hasMessage();
 
         // inline to define not just declare
         // https://stackoverflow.com/a/66569786

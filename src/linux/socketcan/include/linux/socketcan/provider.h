@@ -43,6 +43,7 @@ namespace can::providers::os::socketcan
         virtual ~CANBus(); // desructor
 
         can::protocol::frame::frame_res readMessage();
+        bool hasMessage();
     };
 }
 

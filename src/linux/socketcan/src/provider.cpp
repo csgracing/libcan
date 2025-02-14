@@ -32,10 +32,7 @@ namespace can::providers::os::socketcan
 
     can::protocol::frame::frame_res CANBus::readMessage()
     {
-        // Set timeout to whatever was passed in options, otherwise defaulting to 3 seconds.
-        milliseconds timeout = this->op->readTimeout.value_or(milliseconds(3000));
-
-        if (this->driver->waitForMessages(timeout))
+        if (this->hasMessage())
         {
             // There is a message available
             CanMessage recvMessage = this->driver->readMessage();
@@ -57,6 +54,12 @@ namespace can::providers::os::socketcan
         }
 
         return std::nullopt;
+    }
+
+    bool CANBus::hasMessage()
+    {
+        // call waitForMessages to update fdsAvailable (has packet) but don't block (0ms timeout)
+        return this->driver->waitForMessages(milliseconds(0));
     }
 
     CANBus::~CANBus() = default;

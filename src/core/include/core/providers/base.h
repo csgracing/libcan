@@ -41,6 +41,7 @@ namespace can::providers::base
         // derived classes must provide an implementation (=0)
         // <https://stackoverflow.com/a/2089238>
         virtual can::protocol::frame::frame_res readMessage() = 0;
+        virtual bool hasMessage() = 0;
     };
 };
 
