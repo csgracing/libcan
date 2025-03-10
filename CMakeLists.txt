@@ -30,6 +30,8 @@ endif()
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 # Tools
 
 
@@ -78,6 +80,7 @@ endif()
 if (CAN_TARGET STREQUAL "linux")
     add_subdirectory(lib/linux/socketcan/libsockcanpp)
     add_subdirectory(src/linux/socketcan)
+    add_subdirectory(standalone/linux/socketcan)
 endif()
 
 include(docs/docs.cmake)
