@@ -46,3 +46,6 @@
 [submodule "lib/google/fuzztest"]
 	path = lib/google/fuzztest
 	url = https://github.com/google/fuzztest.git
+[submodule "lib/docs/doxygen-awesome"]
+	path = lib/docs/doxygen-awesome
+	url = https://github.com/jothepro/doxygen-awesome-css.git
