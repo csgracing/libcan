@@ -15,7 +15,7 @@ endif()
 project(
     libcan
     VERSION 0.0.1
-    DESCRIPTION "can library"
+    DESCRIPTION "Provider-agnostic CAN library"
     LANGUAGES CXX
 )
 
@@ -80,3 +80,5 @@ endif()
 if (CAN_TARGET STREQUAL "linux")
     add_subdirectory(linux/socketcan)
 endif()
+
+include(docs/docs.cmake)
