@@ -40,9 +40,9 @@ if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
     include(lib/cmake/modules/CodeCoverage.cmake)
 
     if (IS_TEST_FUZZ_ENV STREQUAL "true")
-        add_subdirectory(lib/google/fuzztest)
+        add_subdirectory(lib/test/google/fuzztest)
     else()
-        add_subdirectory(lib/google/test)
+        add_subdirectory(lib/test/google/test)
         append_coverage_compiler_flags()
 
         list(APPEND COVERAGE_EXCLUDES
@@ -58,7 +58,7 @@ if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
         )
     endif()
     
-    add_subdirectory(lib/google/gmock-global)
+    add_subdirectory(lib/test/google/gmock-global)
 
 endif()
 
