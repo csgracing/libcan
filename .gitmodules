@@ -1,50 +1,50 @@
 [submodule "rp2040/lib/mcp2515"]
-	path = rp2040/mcp2515/lib/pico-mcp2515
+	path = lib/rp2040/pico-mcp2515
 	url = https://github.com/cityracingteam/pico-mcp2515
 [submodule "rp2040/lib/can2040"]
-	path = rp2040/lib/can2040
+	path = lib/rp2040/can2040
 	url = https://github.com/KevinOConnor/can2040
 [submodule "rp2040/lib/pico-sdk"]
-	path = rp2040/lib/pico-sdk
+	path = lib/rp2040/pico-sdk
 	url = https://github.com/raspberrypi/pico-sdk
 [submodule "lib/boost/preprocessor"]
-	path = lib/boost/preprocessor
+	path = lib/common/boost/preprocessor
 	url = https://github.com/boostorg/preprocessor
 [submodule "lib/google/test"]
-	path = lib/google/test
+	path = lib/test/google/test
 	url = https://github.com/google/googletest
 [submodule "lib/google/gmock-global"]
-	path = lib/google/gmock-global
+	path = lib/test/google/gmock-global
 	url = https://github.com/apriorit/gmock-global
 [submodule "linux/socketcan/lib/libsockcanpp"]
-	path = linux/socketcan/lib/libsockcanpp
+	path = lib/linux/socketcan/libsockcanpp
 	url = https://github.com/SimonCahill/libsockcanpp
 [submodule "lib/boost/conversion"]
-	path = lib/boost/conversion
+	path = lib/common/boost/conversion
 	url = https://github.com/boostorg/conversion
 [submodule "lib/boost/assert"]
-	path = lib/boost/assert
+	path = lib/common/boost/assert
 	url = https://github.com/boostorg/assert
 [submodule "lib/boost/config"]
-	path = lib/boost/config
+	path = lib/common/boost/config
 	url = https://github.com/boostorg/config
 [submodule "lib/boost/smart_ptr"]
-	path = lib/boost/smart_ptr
+	path = lib/common/boost/smart_ptr
 	url = https://github.com/boostorg/smart_ptr
 [submodule "lib/boost/throw_exception"]
-	path = lib/boost/throw_exception
+	path = lib/common/boost/throw_exception
 	url = https://github.com/boostorg/throw_exception
 [submodule "lib/boost/core"]
-	path = lib/boost/core
+	path = lib/common/boost/core
 	url = https://github.com/boostorg/core
 [submodule "lib/boost/static_assert"]
-	path = lib/boost/static_assert
+	path = lib/common/boost/static_assert
 	url = https://github.com/boostorg/static_assert
 [submodule "lib/cmake/modules"]
 	path = lib/cmake/modules
 	url = https://github.com/csgracing/cmake-modules
 [submodule "lib/google/fuzztest"]
-	path = lib/google/fuzztest
+	path = lib/test/google/fuzztest
 	url = https://github.com/google/fuzztest.git
 [submodule "lib/docs/doxygen-awesome"]
 	path = lib/docs/doxygen-awesome
