@@ -11,8 +11,8 @@ jobs:
     - name: Install and cache toolchain
       uses: awalsh128/cache-apt-pkgs-action@v1.4.3
       with:
-        packages: cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs gcovr clang doxygen
-        version: 1.0
+        packages: cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs gcovr doxygen
+        version: 1.1
 
   build:
     needs: [cache-toolchain]
@@ -117,6 +117,8 @@ jobs:
       with:
         packages: cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs gcovr clang doxygen
         version: 1.0
+    - name: Install clang
+      uses: sudo apt install -y clang
     - name: Configure
       run: cmake -B build . --preset ${{ matrix.preset }}
     - name: Build
