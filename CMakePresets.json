@@ -2,6 +2,12 @@
     "version": 3,
     "configurePresets": [
         {
+            "name": "docs",
+            "cacheVariables": {
+                "BUILD_DOC": "true"
+            }
+        },
+        {
             "name": "pico",
             "binaryDir": "build/${presetName}",
             "installDir": "build/${presetName}",

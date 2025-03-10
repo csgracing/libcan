@@ -3,19 +3,22 @@ cmake_minimum_required(VERSION 3.19)
 
 if (CAN_TARGET STREQUAL "pico")
     # Pull in pico sdk (must be before project() call)
-    include(rp2040/pico-sdk.cmake)
+    include(src/rp2040/pico-sdk.cmake)
 endif()
 
 
 if (IS_TEST_FUZZ_ENV STREQUAL "true")
     set(CMAKE_C_COMPILER "clang")
     set(CMAKE_CXX_COMPILER "clang++")
+else()
+    set(CMAKE_C_COMPILER "gcc")
+    set(CMAKE_CXX_COMPILER "g++")
 endif()
 
 project(
     libcan
     VERSION 0.0.1
-    DESCRIPTION "can library"
+    DESCRIPTION "Provider-agnostic CAN library"
     LANGUAGES CXX
 )
 
@@ -27,17 +30,12 @@ endif()
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 17)
 
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+
 # Tools
 
 
-add_subdirectory(lib/boost/assert) # dependency of boost/conversion
-add_subdirectory(lib/boost/config) # dependency of boost/conversion
-add_subdirectory(lib/boost/conversion)
-add_subdirectory(lib/boost/core) # dependency of boost/smart_ptr
-add_subdirectory(lib/boost/preprocessor)
-add_subdirectory(lib/boost/smart_ptr) # dependency of boost/conversion
-add_subdirectory(lib/boost/static_assert) # dependency of boost/core
-add_subdirectory(lib/boost/throw_exception) # dependency of boost/conversion
+add_subdirectory(lib/common/boost)
 
 if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
 
@@ -47,9 +45,9 @@ if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
     include(lib/cmake/modules/CodeCoverage.cmake)
 
     if (IS_TEST_FUZZ_ENV STREQUAL "true")
-        add_subdirectory(lib/google/fuzztest)
+        add_subdirectory(lib/test/google/fuzztest)
     else()
-        add_subdirectory(lib/google/test)
+        add_subdirectory(lib/test/google/test)
         append_coverage_compiler_flags()
 
         list(APPEND COVERAGE_EXCLUDES
@@ -65,18 +63,25 @@ if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
         )
     endif()
     
-    add_subdirectory(lib/google/gmock-global)
+    add_subdirectory(lib/test/google/gmock-global)
 
 endif()
 
 # Subprojects
 
-add_subdirectory(core)
+add_subdirectory(src/core)
+add_subdirectory(test/core)
 
 if (CAN_TARGET STREQUAL "pico")
-    add_subdirectory(rp2040)
+    add_subdirectory(src/rp2040)
+    add_subdirectory(test/rp2040)
+    
 endif()
 
 if (CAN_TARGET STREQUAL "linux")
-    add_subdirectory(linux/socketcan)
+    add_subdirectory(lib/linux/socketcan/libsockcanpp)
+    add_subdirectory(src/linux/socketcan)
+    add_subdirectory(standalone/linux/socketcan)
 endif()
+
+include(docs/docs.cmake)
