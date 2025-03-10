@@ -70,6 +70,7 @@ endif()
 # Subprojects
 
 add_subdirectory(src/core)
+add_subdirectory(test/core)
 
 if (CAN_TARGET STREQUAL "pico")
     add_subdirectory(src/rp2040)
