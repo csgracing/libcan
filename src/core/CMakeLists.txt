@@ -33,5 +33,3 @@ target_include_directories(${PROJECT}
 target_include_directories(${PROJECT} PUBLIC
      ${CMAKE_CURRENT_LIST_DIR}/include/
 )
-
-add_subdirectory(test)

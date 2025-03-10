@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.19)
 
 if (CAN_TARGET STREQUAL "pico")
     # Pull in pico sdk (must be before project() call)
-    include(rp2040/pico-sdk.cmake)
+    include(src/rp2040/pico-sdk.cmake)
 endif()
 
 
@@ -64,15 +64,17 @@ endif()
 
 # Subprojects
 
-add_subdirectory(core)
+add_subdirectory(src/core)
 
 if (CAN_TARGET STREQUAL "pico")
-    add_subdirectory(rp2040)
+    add_subdirectory(src/rp2040)
+    add_subdirectory(test/rp2040)
+    
 endif()
 
 if (CAN_TARGET STREQUAL "linux")
     add_subdirectory(lib/linux/socketcan/libsockcanpp)
-    add_subdirectory(linux/socketcan)
+    add_subdirectory(src/linux/socketcan)
 endif()
 
 include(docs/docs.cmake)
