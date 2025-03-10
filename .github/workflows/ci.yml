@@ -13,7 +13,6 @@ jobs:
       with:
         packages: cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs gcovr clang doxygen
         version: 1.0
-        execute_install_scripts: true
 
   build:
     needs: [cache-toolchain]
@@ -35,7 +34,6 @@ jobs:
       with:
         packages: cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs gcovr clang doxygen
         version: 1.0
-        execute_install_scripts: true
     - name: Configure
       run: cmake -B build . --preset ${{ matrix.preset }}
     - name: Build
@@ -63,7 +61,6 @@ jobs:
       with:
         packages: cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs gcovr clang doxygen
         version: 1.0
-        execute_install_scripts: true
     - name: Configure
       run: cmake -B build . --preset ${{ matrix.preset }}
     - name: Build
@@ -120,7 +117,6 @@ jobs:
       with:
         packages: cmake gcc-arm-none-eabi libnewlib-arm-none-eabi build-essential libstdc++-arm-none-eabi-newlib python3 git nodejs gcovr clang doxygen
         version: 1.0
-        execute_install_scripts: true
     - name: Configure
       run: cmake -B build . --preset ${{ matrix.preset }}
     - name: Build
