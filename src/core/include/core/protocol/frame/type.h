@@ -15,6 +15,11 @@ namespace can::protocol::frame
         FD = 0b1001,
         FD_EXTENDED = 0b1101,
     };
+
+    inline bool isType(FrameType expected, FrameType includes)
+    {
+        return ((expected & includes) == includes);
+    };
 }
 
 #endif /* FRAME_TYPE_H_ */
