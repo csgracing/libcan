@@ -19,12 +19,8 @@ namespace can::isotp::tl
 
     void HandleIncomingFrame(can::protocol::frame::frame_t *frame)
     {
-        std::wcout << "Parsing frame with id: ";
-        std::wcout << frame->id.base;
-        std::wcout << frame->id.extended;
-        std::wcout << "\r\n";
-        std::wcout << GetFrameType(frame);
-        std::wcout << "\r\n";
+        std::wcout << "Parsing frame with id: " << std::hex << frame->id.combined() << "\n";
+        std::wcout << "Parsing frame with type: " << GetFrameType(frame) << "\n";
 
         // Check bits 7 to 4 for FrameType
         switch (GetFrameType(frame))
