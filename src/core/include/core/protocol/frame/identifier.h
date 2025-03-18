@@ -3,6 +3,9 @@
 
 #include <stdint.h> // uint[x]_t
 
+#include <cstddef>    // std::size_t
+#include <functional> // std::hash
+
 namespace can::protocol::frame
 {
     /**
@@ -18,10 +21,31 @@ namespace can::protocol::frame
          */
         uint32_t extended : 18;
 
-        inline uint32_t combined()
+        uint32_t combined() const
         {
             return base | (extended << 11);
+        };
+
+        friend bool operator==(const identifier &lhs, const identifier &rhs)
+        {
+            return lhs.combined() == rhs.combined();
+        };
+
+        identifier(uint32_t id)
+        {
+            base = id & 0b11111111111;
+            extended = id >> 11;
         }
+
+        identifier() = default;
+    };
+
+    struct identifier_hasher
+    {
+        std::size_t operator()(const identifier &i) const
+        {
+            return std::hash<uint32_t>{}(i.combined());
+        };
     };
 }
 
