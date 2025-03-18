@@ -41,7 +41,7 @@ namespace can::providers::os::socketcan
             can_frame linuxFrame = recvMessage.getRawFrame();
 
             can::protocol::frame::frame_raw_t raw_frame = {
-                linuxFrame.can_id >> 3,                    // id: bits 0-28 (shift out 29,30,31)
+                linuxFrame.can_id & CAN_ERR_MASK,          // id: bits 0-28 (shift out 29,30,31)
                 (bool)(linuxFrame.can_id & CAN_RTR_FLAG),  // rtr: bit 30 only
                 (bool)(linuxFrame.can_id & CAN_EFF_FLAG),  // ide: bit 31 only,
                 can::protocol::frame::data::EDL::CC_FRAME, // edl: libsockcanpp only supports CC frame
