@@ -44,6 +44,7 @@ namespace can::isotp
         void HandleIncomingFrame(can::protocol::frame::frame_t *frame);
         pci::FrameType GetFrameType(can::protocol::frame::frame_t *frame);
         void ProcessSingleFrame(can::protocol::frame::frame_t *frame);
+        void ProcessFirstFrame(can::protocol::frame::frame_t *frame);
     };
 }
 
