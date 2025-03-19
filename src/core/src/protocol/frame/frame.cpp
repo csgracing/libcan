@@ -42,6 +42,9 @@ namespace can::protocol::frame
                 return std::nullopt;
             }
 
+            // set _max_dlc
+            frame->_max_dlc = MaxDLC::MAX_DLC_FD;
+
             // Copy dlc worth
             frame->_bsize = FrameTypeUtil::determineDataSize(frame);
 
@@ -66,6 +69,10 @@ namespace can::protocol::frame
             {
                 frame->_bsize = std::bitset<7>(frame->dlc.to_ulong());
             }
+
+            // set _max_dlc
+            // TODO: make this a getter based on type?
+            frame->_max_dlc = MaxDLC::MAX_DLC_CC;
 
             memcpy(&(frame->data), raw_frame.data, frame->_bsize.to_ulong());
 

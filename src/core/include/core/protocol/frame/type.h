@@ -8,7 +8,7 @@ namespace can::protocol::frame
     enum FrameType
     {
         INVALID = 0b0000,
-        UNKNOWN_EXTENDED = 0b0100,
+        UNKNOWN_EXTENDED = 0b0100, // extended, but valid frame (TODO rename this!)
         // [one if valid][extended][cc][fd]
         CC = 0b1010,
         CC_EXTENDED = 0b1110,

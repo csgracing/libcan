@@ -19,6 +19,12 @@ namespace can::protocol::frame
     typedef std::bitset<7> bsize_t; // 0-127
 
     extern std::unordered_map<bsize_t, bsize_t> dlc_mapping;
+
+    enum MaxDLC
+    {
+        MAX_DLC_CC = 8,
+        MAX_DLC_FD = 15,
+    };
 }
 
 #endif /* FRAME_DLC_H_ */
