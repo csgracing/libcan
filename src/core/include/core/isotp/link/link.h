@@ -3,6 +3,7 @@
 
 #include "core/isotp/link/registration.h"
 #include "core/protocol/frame/identifier.h"
+#include "core/providers/base.h"
 
 namespace can::isotp::link
 {
@@ -10,12 +11,13 @@ namespace can::isotp::link
     class ISOTPLink
     {
     private:
+        can::providers::base::CANBus *bus;
         directional_entry_t *send, *receive;
 
         directional_entry_t *createDirectionalEntry(can::protocol::frame::identifier id, uint32_t buf_size);
 
     public:
-        ISOTPLink(can::protocol::frame::identifier id_tx, can::protocol::frame::identifier id_rx, uint32_t buf_size_tx, uint32_t buf_size_rx);
+        ISOTPLink(can::providers::base::CANBus *bus, can::protocol::frame::identifier id_tx, can::protocol::frame::identifier id_rx, uint32_t buf_size_tx, uint32_t buf_size_rx);
         // virtual ~ISOTPLink(); // destructor
 
         // "getters"
@@ -23,6 +25,8 @@ namespace can::isotp::link
         // directional_entry_t *getReceive() { return receive; }
 
         can::protocol::frame::identifier getKey() { return receive->id; };
+
+        can::providers::base::CANBus *getBus() { return bus; };
     };
 }
 
