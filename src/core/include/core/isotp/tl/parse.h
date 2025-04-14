@@ -2,6 +2,7 @@
 #define TP_PARSE_H_
 
 #include "core/isotp/tl/pci/frame_type.h"
+#include "core/isotp/link/link.h"
 #include "core/protocol/frame/frame.h"
 
 namespace can::isotp
@@ -41,10 +42,10 @@ namespace can::isotp
 
         };
 
-        void HandleIncomingFrame(can::protocol::frame::frame_t *frame);
+        void HandleIncomingFrame(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link);
         pci::FrameType GetFrameType(can::protocol::frame::frame_t *frame);
-        void ProcessSingleFrame(can::protocol::frame::frame_t *frame);
-        void ProcessFirstFrame(can::protocol::frame::frame_t *frame);
+        void ProcessSingleFrame(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link);
+        void ProcessFirstFrame(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link);
     };
 }
 

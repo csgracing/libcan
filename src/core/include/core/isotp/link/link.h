@@ -21,8 +21,8 @@ namespace can::isotp::link
         // virtual ~ISOTPLink(); // destructor
 
         // "getters"
-        // directional_entry_t *getSend() { return send; }
-        // directional_entry_t *getReceive() { return receive; }
+        directional_entry_t *getSend() { return send; }
+        directional_entry_t *getReceive() { return receive; }
 
         can::protocol::frame::identifier getKey() { return receive->id; };
 

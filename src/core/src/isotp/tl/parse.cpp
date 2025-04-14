@@ -19,7 +19,7 @@ namespace can::isotp::tl
         return (pci::FrameType)(frame->data[0] >> 4);
     };
 
-    void HandleIncomingFrame(can::protocol::frame::frame_t *frame)
+    void HandleIncomingFrame(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
     {
         std::wcout << "Parsing frame with id: " << std::hex << frame->id.combined() << "\n";
         std::wcout << "Parsing frame with type: " << GetFrameType(frame) << "\n";
@@ -28,15 +28,15 @@ namespace can::isotp::tl
         switch (GetFrameType(frame))
         {
         case pci::FrameType::SINGLE_FRAME:
-            ProcessSingleFrame(frame);
+            ProcessSingleFrame(frame, link);
             break;
         case pci::FrameType::FIRST_FRAME:
-            ProcessFirstFrame(frame);
+            ProcessFirstFrame(frame, link);
             break;
         }
     };
 
-    void ProcessSingleFrame(can::protocol::frame::frame_t *frame)
+    void ProcessSingleFrame(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
     {
         uint8_t sf_dl;
 
@@ -137,7 +137,7 @@ namespace can::isotp::tl
         }
     };
 
-    void ProcessFirstFrame(can::protocol::frame::frame_t *frame)
+    void ProcessFirstFrame(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
     {
         std::wcout << "FF_PARSE\n";
         /**
@@ -177,6 +177,7 @@ namespace can::isotp::tl
         uint8_t ff_dl_low = frame->data[1];       // byte 2
 
         // bytes 3+ (starting from 1 as per spec) are data IF FF_DL != 0
+        // why uint32_t?
         uint32_t message_start_offset = 2;
 
         // first pass (assume CC)
@@ -217,6 +218,27 @@ namespace can::isotp::tl
         // TODO: check if greater than max buf size when passed to this func
 
         // valid
-        // copy into buf
+        // TODO: copy into buf
+
+        std::wcout << "MSG_OFFSET: " << std::dec << message_start_offset << "\n";
+
+        uint32_t length = frame->_bsize.to_ulong() - message_start_offset;
+
+        std::wcout << "Copying data of size: " << std::dec << length << "\n";
+
+        can::isotp::link::directional_entry_t *entry = link->getReceive();
+
+        memcpy(entry->buffer + entry->buffer_offset, frame->data + message_start_offset, length);
+
+        entry->buffer_offset += length;
+
+        // if here, send frame
+
+        std::wcout << "BUFFER:";
+        for (int i = 0; i < entry->buffer_offset; i++)
+        {
+            std::wcout << std::hex << entry->buffer[i];
+        }
+        std::wcout << "\r\n";
     };
 }
