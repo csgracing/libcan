@@ -4,6 +4,7 @@
 #include "core/isotp/tl/parse.h"
 
 #include "core/isotp/tl/pci/single_frame.h"
+#include "core/isotp/tl/pdu/flow_control.h"
 
 #include "core/protocol/frame/frame.h"
 
@@ -16,7 +17,7 @@ namespace can::isotp::tl
     pci::FrameType GetFrameType(can::protocol::frame::frame_t *frame)
     {
         // first bite, bits 7-4
-        return (pci::FrameType)(frame->data[0] >> 4);
+        return pci::FrameType(frame->data[0] >> 4);
     };
 
     void HandleIncomingFrame(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
@@ -252,5 +253,31 @@ namespace can::isotp::tl
         std::wcout << "\r\n";
 
         // next up, send next pkt..
+
+        // FC TL_PDU(CTS)
+
+        can::isotp::tl::pci::fc::FlowStatus status = can::isotp::tl::pci::fc::FlowStatus::CONTINUE_TO_SEND;
+        can::isotp::tl::pdu::FlowControl *fc = new can::isotp::tl::pdu::FlowControl(status, 0x0, 0x0);
+
+        uint8_t *payload = fc->createPayload();
+        uint8_t payload_size = fc->getPayloadSize();
+        can::protocol::frame::frame_res res = link->getBus()->createFrame(link->getSend()->getId(), payload, payload_size);
+
+        if (res.has_value())
+        {
+            can::protocol::frame::frame_t frame = res.value();
+
+            std::wcout << "HAS_VALUE" << std::endl;
+
+            for (int i = 0; i < frame._bsize.to_ulong(); i++)
+            {
+                std::wcout << std::hex << frame.data[i];
+            }
+            std::wcout << "\r\n";
+        }
+        else
+        {
+            std::wcout << "NO_VALUE" << std::endl;
+        }
     };
 }

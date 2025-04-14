@@ -17,6 +17,8 @@ target_sources(${PROJECT}
           ${CMAKE_CURRENT_LIST_DIR}/src/isotp/link/directional_link.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/isotp/link/link.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/isotp/link/manager.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/src/isotp/tl/pdu/base.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/src/isotp/tl/pdu/flow_control.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/isotp/tl/parse.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/protocol/frame/dlc.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/protocol/frame/frame.cpp

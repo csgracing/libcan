@@ -47,6 +47,8 @@ namespace can::providers::base
         // <https://stackoverflow.com/a/2089238>
         virtual can::protocol::frame::frame_res readMessage() = 0;
         virtual bool hasMessage() = 0;
+
+        can::protocol::frame::frame_res createFrame(can::protocol::frame::identifier id, uint8_t *data, uint8_t data_length);
     };
 };
 
