@@ -1,7 +1,8 @@
 #ifndef LINK_LINK_H_
 #define LINK_LINK_H_
 
-#include "core/isotp/link/registration.h"
+#include "core/isotp/link/directional_link.h"
+
 #include "core/protocol/frame/identifier.h"
 #include "core/providers/base.h"
 
@@ -12,21 +13,25 @@ namespace can::isotp::link
     {
     private:
         can::providers::base::CANBus *bus;
-        directional_entry_t *send, *receive;
-
-        directional_entry_t *createDirectionalEntry(can::protocol::frame::identifier id, uint32_t buf_size);
+        DirectionalLink *send, *receive;
 
     public:
-        ISOTPLink(can::providers::base::CANBus *bus, can::protocol::frame::identifier id_tx, can::protocol::frame::identifier id_rx, uint32_t buf_size_tx, uint32_t buf_size_rx);
+        ISOTPLink(can::providers::base::CANBus *bus, can::protocol::frame::identifier id_tx, can::protocol::frame::identifier id_rx);
         // virtual ~ISOTPLink(); // destructor
 
         // "getters"
-        directional_entry_t *getSend() { return send; }
-        directional_entry_t *getReceive() { return receive; }
+        DirectionalLink *getSend() { return send; }
+        DirectionalLink *getReceive() { return receive; }
 
-        can::protocol::frame::identifier getKey() { return receive->id; };
+        inline void setSend(DirectionalLink *entry) { this->send = entry; };
+        inline void setReceive(DirectionalLink *entry) { this->receive = entry; };
+
+        can::protocol::frame::identifier getKey() { return receive->getId(); };
 
         can::providers::base::CANBus *getBus() { return bus; };
+
+        // "setters"
+        // void setSend(directional_entry_t *send)
     };
 }
 

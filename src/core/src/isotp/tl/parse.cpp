@@ -218,27 +218,39 @@ namespace can::isotp::tl
         // TODO: check if greater than max buf size when passed to this func
 
         // valid
-        // TODO: copy into buf
+        // TODO: refactor into more than one method!
 
+        // -- validation has passed.
+
+        // -- Directional Entry Creation
+
+        // allocate link buffer of size ff_dl
+        can::isotp::link::DirectionalLink *recvLink = link->getReceive();
+        recvLink->allocateBuffer(ff_dl);
+
+        // determine how much to copy this frame & start byte
         std::wcout << "MSG_OFFSET: " << std::dec << message_start_offset << "\n";
 
         uint32_t length = frame->_bsize.to_ulong() - message_start_offset;
 
         std::wcout << "Copying data of size: " << std::dec << length << "\n";
+        // copy into buffer
+        recvLink->copyIntoBuffer(frame->data + message_start_offset, length);
 
-        can::isotp::link::directional_entry_t *entry = link->getReceive();
+        // -- Response sending (TODO)
 
-        memcpy(entry->buffer + entry->buffer_offset, frame->data + message_start_offset, length);
+        // for now we just print.
+        can::isotp::link::directional_link_buf_t *buf = recvLink->getBuffer();
 
-        entry->buffer_offset += length;
+        // print current and  max len/size
+        std::wcout << "Buffer (" << std::dec << buf->offset << " of " << std::dec << buf->size << " bytes received)\r\n";
 
-        // if here, send frame
-
-        std::wcout << "BUFFER:";
-        for (int i = 0; i < entry->buffer_offset; i++)
+        for (int i = 0; i < buf->offset; i++)
         {
-            std::wcout << std::hex << entry->buffer[i];
+            std::wcout << std::hex << buf->buffer[i];
         }
         std::wcout << "\r\n";
+
+        // next up, send next pkt..
     };
 }

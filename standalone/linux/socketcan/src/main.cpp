@@ -25,9 +25,9 @@ int main()
 
     identifier *link1_tx = new identifier(0x123);
     identifier *link1_rx = new identifier(0x124);
-    uint32_t max_size = 8192;
+    // uint32_t max_size = 8192;
 
-    ISOTPLink *link1 = new ISOTPLink(&cb, *link1_tx, *link1_rx, max_size, max_size);
+    ISOTPLink *link1 = new ISOTPLink(&cb, *link1_tx, *link1_rx);
 
     lm->add(link1);
 

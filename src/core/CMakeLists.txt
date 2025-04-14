@@ -14,6 +14,7 @@ add_library(libcan::core ALIAS ${PROJECT})
 
 target_sources(${PROJECT}
      PRIVATE
+          ${CMAKE_CURRENT_LIST_DIR}/src/isotp/link/directional_link.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/isotp/link/link.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/isotp/link/manager.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/isotp/tl/parse.cpp
