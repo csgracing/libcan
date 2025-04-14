@@ -23,6 +23,8 @@ namespace can::isotp::link
         entry->id = id;
         entry->buffer_size = buf_size;
 
+        entry->buffer_offset = 0;
+
         // try not tu use malloc/calloc here, we are in CPP after all.
         entry->buffer = new uint8_t[buf_size];
 

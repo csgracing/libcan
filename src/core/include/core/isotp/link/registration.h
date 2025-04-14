@@ -2,7 +2,6 @@
 #define LINK_REGISTRATION_H_
 
 #include "core/protocol/frame/identifier.h"
-#include "core/isotp/tl/parse.h"
 
 namespace can::isotp::link
 {
@@ -20,6 +19,7 @@ namespace can::isotp::link
 
         uint8_t *buffer;
         uint32_t buffer_size; // uint32_t (-1?) max isotp message size (theoretical)
+        uint32_t buffer_offset;
         LinkState state;
     };
 }
