@@ -36,6 +36,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 
 add_subdirectory(lib/common/boost)
+add_subdirectory(lib/common/moodycamel/concurrentqueue)
 
 if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
 

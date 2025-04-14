@@ -35,3 +35,5 @@ target_include_directories(${PROJECT}
 target_include_directories(${PROJECT} PUBLIC
      ${CMAKE_CURRENT_LIST_DIR}/include/
 )
+
+target_link_libraries(${PROJECT} PUBLIC concurrentqueue)
