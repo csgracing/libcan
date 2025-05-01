@@ -274,6 +274,8 @@ namespace can::isotp::tl
                 std::wcout << std::hex << frame.data[i];
             }
             std::wcout << "\r\n";
+
+            link->getBus()->enqueue(frame);
         }
         else
         {
