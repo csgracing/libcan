@@ -8,6 +8,8 @@
 #include "core/protocol/frame/identifier.h"
 #include "core/providers/base.h"
 
+#include "core/isotp/tl/pci/consecutive_frame.h"
+
 namespace can::isotp::link
 {
 
@@ -17,6 +19,7 @@ namespace can::isotp::link
         uint8_t *buffer;
         uint32_t size; // uint32_t (-1?) max isotp message size (theoretical)
         uint32_t offset;
+        can::isotp::tl::pci::cf::SequenceNumber *sequence_number;
     };
 
     class DirectionalLink
@@ -40,6 +43,9 @@ namespace can::isotp::link
         inline can::protocol::frame::identifier getId() { return this->id; };
 
         inline directional_link_buf_t *getBuffer() { return this->buffer; };
+
+        inline void setState(LinkState state) { this->state = state; };
+        inline LinkState getState() { return this->state; };
 
         bool copyIntoBuffer(uint8_t *data, uint32_t length);
     };

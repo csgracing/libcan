@@ -8,7 +8,8 @@ namespace can::isotp::link
     {
         IDLE, // DEFAULT
         IN_PROGRESS,
-        ERROR, // todo expand
+        FULL,  // only RX
+        ERROR, // only TX: todo expand
     };
 }
 

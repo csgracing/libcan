@@ -12,6 +12,8 @@ namespace can::isotp::link
     {
         directional_link_buf_t *buf = new directional_link_buf_t();
 
+        buf->sequence_number = new can::isotp::tl::pci::cf::SequenceNumber();
+
         buf->size = buf_size;
 
         buf->offset = 0;
