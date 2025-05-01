@@ -29,7 +29,7 @@ namespace can::isotp::tl::pdu
 
         // bits 7..4 flow_status, bits 3..0 pci_type
         // TODO mismatched endianness error potential?
-        data[0] = pci_type | (flow_status << 4);
+        data[0] = flow_status | (pci_type << 4);
         data[1] = block_size;
         data[2] = separation_time;
 
