@@ -52,6 +52,9 @@ int main()
                 lm->handle_receive(&frame);
             };
         }
+
+        // send messages
+        cb.handleQueue();
     };
 
     return 0;

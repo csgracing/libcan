@@ -49,6 +49,11 @@ namespace can::providers::base
         virtual bool hasMessage() = 0;
 
         can::protocol::frame::frame_res createFrame(can::protocol::frame::identifier id, uint8_t *data, uint8_t data_length);
+
+        void handleQueue();
+        bool enqueue(can::protocol::frame::frame_t frame);
+
+        virtual bool sendMessage(can::protocol::frame::frame_t frame) = 0;
     };
 };
 

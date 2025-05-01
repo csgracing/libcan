@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <iostream> // std::wcout
 
 #include "linux/socketcan/provider.h"
 
@@ -60,6 +61,30 @@ namespace can::providers::os::socketcan
     {
         // call waitForMessages to update fdsAvailable (has packet) but don't block (0ms timeout)
         return this->driver->waitForMessages(milliseconds(0));
+    }
+
+    bool CANBus::sendMessage(can::protocol::frame::frame_t frame)
+    {
+        // todo ID should contain flags...
+        CanId id(frame.id.combined());
+
+        can_frame rawFrame;
+        rawFrame.can_id = frame.id.combined();
+        rawFrame.can_dlc = frame.dlc.to_ulong();
+        memcpy(rawFrame.data, &frame.data, frame._bsize.to_ulong());
+        CanMessage msg(rawFrame);
+
+        for (int i = 0; i < frame._bsize.to_ulong(); i++)
+        {
+            std::wcout << std::hex << rawFrame.data[i];
+        }
+        std::wcout << "\r\n";
+
+        auto sentByteCount = driver->sendMessage(msg);
+
+        std::wcout << "Sent bytes: " << sentByteCount << std::endl;
+
+        return sentByteCount != 0;
     }
 
     CANBus::~CANBus() = default;

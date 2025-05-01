@@ -44,6 +44,7 @@ namespace can::providers::os::socketcan
 
         can::protocol::frame::frame_res readMessage();
         bool hasMessage();
+        bool sendMessage(can::protocol::frame::frame_t frame);
     };
 }
 

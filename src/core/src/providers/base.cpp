@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <iostream> // std::wcout
 
 #include "core/providers/base.h"
 
@@ -28,4 +29,21 @@ namespace can::providers::base
         return can::protocol::frame::create(raw_frame);
     }
 
+    void CANBus::handleQueue()
+    {
+        can::protocol::frame::frame_t frame;
+
+        bool found = queue.try_dequeue(frame);
+
+        if (found)
+        {
+            std::wcout << "Found message." << std::endl;
+            sendMessage(frame);
+        }
+    }
+
+    bool CANBus::enqueue(can::protocol::frame::frame_t frame)
+    {
+        return queue.enqueue(frame);
+    }
 }
