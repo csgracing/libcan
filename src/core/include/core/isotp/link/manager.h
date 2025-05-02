@@ -7,12 +7,15 @@
 
 #include "core/isotp/link/link.h"
 
+#include "core/isotp/tl/handler/manager.h"
+
 namespace can::isotp::link
 {
     class LinkManager
     {
     private:
         std::unordered_map<can::protocol::frame::identifier, ISOTPLink *, can::protocol::frame::identifier_hasher> *active_links;
+        can::isotp::tl::handler::HandlerManager *handlers;
 
     public:
         LinkManager();

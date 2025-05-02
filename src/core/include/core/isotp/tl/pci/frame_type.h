@@ -3,6 +3,8 @@
 
 #include <cstdint> // uint8_t
 
+#include "core/protocol/frame/frame.h"
+
 namespace can::isotp::tl
 {
     /**
@@ -41,6 +43,20 @@ namespace can::isotp::tl
 
             // Prevent usage: if(fruit)
             explicit operator bool() const = delete;
+
+            struct frame_type_hasher
+            {
+                std::size_t operator()(const FrameType &i) const
+                {
+                    return std::hash<uint32_t>{}(i.type);
+                };
+            };
+
+            static const inline pci::FrameType GetFrameType(can::protocol::frame::frame_t *frame)
+            {
+                // first bite, bits 7-4
+                return pci::FrameType(frame->data[0] >> 4);
+            };
 
         private:
             Value type;

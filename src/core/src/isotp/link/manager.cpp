@@ -1,8 +1,12 @@
 #include "core/isotp/link/manager.h"
 
-#include "core/isotp/tl/parse.h"
-
 #include <iostream> // std::wcout
+
+#include "core/isotp/tl/handler/single_frame.h"
+#include "core/isotp/tl/handler/first_frame.h"
+#include "core/isotp/tl/handler/consecutive_frame.h"
+
+using namespace can::isotp::tl;
 
 namespace can::isotp::link
 {
@@ -11,6 +15,12 @@ namespace can::isotp::link
         std::wcout << "Created new link manager\n";
         // init unordered map
         active_links = new std::unordered_map<can::protocol::frame::identifier, ISOTPLink *, can::protocol::frame::identifier_hasher>();
+
+        // register handlers
+        handlers = new handler::HandlerManager();
+        handlers->add(new handler::SingleFrameHandler());
+        handlers->add(new handler::FirstFrameHandler());
+        handlers->add(new handler::ConsecutiveFrameHandler());
     };
 
     bool LinkManager::contains(can::protocol::frame::identifier id)
@@ -50,7 +60,7 @@ namespace can::isotp::link
 
             ISOTPLink *link = active_links->at(frame->id);
 
-            can::isotp::tl::HandleIncomingFrame(frame, link);
+            handlers->handle(frame, link);
         }
         else
         {
