@@ -52,3 +52,6 @@
 [submodule "lib/common/moodycamel/concurrentqueue"]
 	path = lib/common/moodycamel/concurrentqueue
 	url = https://github.com/cameron314/concurrentqueue
+[submodule "lib/common/boost/system"]
+	path = lib/common/boost/system
+	url = https://github.com/boostorg/system
