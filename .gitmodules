@@ -67,3 +67,6 @@
 [submodule "lib/common/boost/predef"]
 	path = lib/common/boost/predef
 	url = https://github.com/boostorg/predef
+[submodule "lib/common/fmt"]
+	path = lib/common/fmt
+	url = https://github.com/fmtlib/fmt
