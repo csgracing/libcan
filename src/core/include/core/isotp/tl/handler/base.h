@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include <boost/system/error_code.hpp>
+
 #include <iostream>
 #include "core/isotp/link/link.h"
 #include "core/isotp/tl/pci/frame_type.h"
@@ -20,7 +22,7 @@ namespace can::isotp::tl::handler
 
         // virtual ~BaseHandler();
 
-        virtual void handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link) = 0;
+        virtual boost::system::error_code handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link) = 0;
 
         inline can::isotp::tl::pci::FrameType getType() { return this->type; };
     };

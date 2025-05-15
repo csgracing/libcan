@@ -1,6 +1,10 @@
 #include "core/isotp/tl/handler/manager.h"
 
+#include "core/isotp/error/frame.h"
+
 #include <iostream>
+
+using can::isotp::error::FrameHandleError;
 
 namespace can::isotp::tl::handler
 {
@@ -34,7 +38,7 @@ namespace can::isotp::tl::handler
         return false;
     };
 
-    void HandlerManager::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
+    boost::system::error_code HandlerManager::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
     {
         can::isotp::tl::pci::FrameType key = can::isotp::tl::pci::FrameType::GetFrameType(frame);
         // check if frame rx id is in map
@@ -46,7 +50,11 @@ namespace can::isotp::tl::handler
             BaseHandler *handler = active_handlers->at(key);
 
             std::wcout << "HANDLE" << std::endl;
-            handler->handle(frame, link);
+            return handler->handle(frame, link);
+        }
+        else
+        {
+            return FrameHandleError::NO_HANDLER_FOR_TYPE;
         }
     };
 }

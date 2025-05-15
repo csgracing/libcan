@@ -11,7 +11,7 @@ namespace can::isotp::tl::handler
     public:
         ConsecutiveFrameHandler() : BaseHandler(can::isotp::tl::pci::FrameType::CONSECUTIVE_FRAME) {};
 
-        void handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link);
+        boost::system::error_code handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link);
     };
 };
 

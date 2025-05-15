@@ -6,6 +6,10 @@
 #include "core/isotp/tl/handler/first_frame.h"
 #include "core/isotp/tl/handler/consecutive_frame.h"
 
+#include "core/isotp/error/link_manager.h"
+
+using can::isotp::error::LinkManagerError;
+
 using namespace can::isotp::tl;
 
 namespace can::isotp::link
@@ -50,7 +54,7 @@ namespace can::isotp::link
         return false;
     };
 
-    void LinkManager::handle_receive(can::protocol::frame::frame_t *frame)
+    boost::system::error_code LinkManager::handle_receive(can::protocol::frame::frame_t *frame)
     {
         // check if frame rx id is in map
         if (contains(frame->id))
@@ -60,11 +64,12 @@ namespace can::isotp::link
 
             ISOTPLink *link = active_links->at(frame->id);
 
-            handlers->handle(frame, link);
+            return handlers->handle(frame, link);
         }
         else
         {
             std::wcout << "no match for id: " << std::hex << frame->id.combined() << "\n";
+            return LinkManagerError::IGNORED_ID_NOT_REGISTERED;
         }
     };
 }

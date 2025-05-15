@@ -1,6 +1,8 @@
 #ifndef HANDLERS_MANAGER_H_
 #define HANDLERS_MANAGER_H_
 
+#include <boost/system/error_code.hpp>
+
 #include "core/isotp/tl/handler/base.h"
 #include "core/isotp/tl/pci/frame_type.h"
 
@@ -16,7 +18,7 @@ namespace can::isotp::tl::handler
 
         bool contains(can::isotp::tl::pci::FrameType type);
         bool add(BaseHandler *handler);
-        void handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link);
+        boost::system::error_code handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link);
     };
 };
 

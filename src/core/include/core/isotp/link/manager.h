@@ -3,6 +3,8 @@
 
 #include <unordered_map>
 
+#include <boost/system/error_code.hpp>
+
 #include "core/protocol/frame/identifier.h"
 
 #include "core/isotp/link/link.h"
@@ -25,7 +27,7 @@ namespace can::isotp::link
 
         bool add(ISOTPLink *link);
 
-        void handle_receive(can::protocol::frame::frame_t *frame);
+        boost::system::error_code handle_receive(can::protocol::frame::frame_t *frame);
     };
 }
 

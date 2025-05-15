@@ -1,12 +1,16 @@
 #include "core/isotp/tl/handler/single_frame.h"
 
+#include "core/isotp/error/single_frame.h"
+
 #include "core/isotp/tl/pci/single_frame.h"
 
 #include <iostream> // std::wcout | debugging
 
+using can::isotp::error::SingleFrameError;
+
 namespace can::isotp::tl::handler
 {
-    void SingleFrameHandler::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
+    boost::system::error_code SingleFrameHandler::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
     {
 
         uint8_t sf_dl;
@@ -30,7 +34,7 @@ namespace can::isotp::tl::handler
             if (sf_dl == pci::sf::cc::DATA_LENGTH_RESERVED)
             {
                 // ignore the SF TL_PDU (this frame?)
-                return;
+                return SingleFrameError::PKT_CC_IGNORED_DL_RESERVED;
             }
             else if (sf_dl >= pci::sf::cc::DATA_LENGTH_1 && sf_dl <= pci::sf::cc::DATA_LEGNTH_6)
             {
@@ -43,7 +47,7 @@ namespace can::isotp::tl::handler
                 if (frame->ide == can::protocol::frame::data::IDE::EXTENDED_FORMAT)
                 {
                     // invalid as is using extended format, ignore
-                    return;
+                    return SingleFrameError::PKT_CC_INVALID_DL_WHILE_EXTENDED;
                 }
                 else
                 {
@@ -54,16 +58,17 @@ namespace can::isotp::tl::handler
             else
             {
                 // other values are invalid
-                return;
+                return SingleFrameError::PKT_CC_INVALID_DL;
             }
 
             // length is set (otherwise would have returned)
             // CC frame so read starting from byte 2 length bits
 
             // sanity check: is length+1 > 8
+            // TODO: is this needed?
             if (length + 1 > 8)
             {
-                return;
+                return SingleFrameError::PKT_CC_PAYLOAD_LEN_TOO_SMALL;
             }
 
             // read
@@ -87,7 +92,7 @@ namespace can::isotp::tl::handler
             if (frame->data[0] << 4 != 0)
             {
                 // ignore frame
-                return;
+                return SingleFrameError::PKT_FD_IGNORED_FL_LOWER_ZERO;
             }
             else
             {
@@ -100,11 +105,9 @@ namespace can::isotp::tl::handler
                 // TODO: handle
             }
         }
-        else
-        {
-            // Unknown
-            // TODO: count rx / parse errors.
-            return;
-        }
+
+        // Unknown
+        // TODO: count rx / parse errors.
+        return SingleFrameError::PKT_UNKNOWN;
     };
 }

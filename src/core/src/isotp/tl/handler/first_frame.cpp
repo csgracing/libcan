@@ -1,12 +1,16 @@
 #include "core/isotp/tl/handler/first_frame.h"
 
+#include "core/isotp/error/first_frame.h"
+
 #include "core/isotp/tl/pdu/flow_control.h"
 
 #include <iostream> // std::wcout | debugging
 
+using can::isotp::error::FirstFrameError;
+
 namespace can::isotp::tl::handler
 {
-    void FirstFrameHandler::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
+    boost::system::error_code FirstFrameHandler::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
     {
         std::wcout << "FF_PARSE\n";
         /**
@@ -81,7 +85,7 @@ namespace can::isotp::tl::handler
         {
             // ignore (no reason to use TP signalling) (9.6.3.2 paragraph 1)
             // TODO: stub
-            return;
+            return FirstFrameError::PKT_UNEXPECTED_SIGNALLING;
         }
 
         // TODO: check if greater than max buf size when passed to this func
@@ -148,7 +152,10 @@ namespace can::isotp::tl::handler
         }
         else
         {
+            // todo handle error parsing here...
             std::wcout << "NO_VALUE" << std::endl;
         }
+
+        return FirstFrameError::SUCCESS;
     };
 }

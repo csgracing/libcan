@@ -14,6 +14,8 @@ add_library(libcan::core ALIAS ${PROJECT})
 
 target_sources(${PROJECT}
      PRIVATE
+          ${CMAKE_CURRENT_LIST_DIR}/src/isotp/error/category/isotp.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/src/isotp/error/category/libcan.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/isotp/link/directional_link.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/isotp/link/link.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/isotp/link/manager.cpp
@@ -42,4 +44,4 @@ target_include_directories(${PROJECT} PUBLIC
      ${CMAKE_CURRENT_LIST_DIR}/include/
 )
 
-target_link_libraries(${PROJECT} PUBLIC concurrentqueue)
+target_link_libraries(${PROJECT} PUBLIC concurrentqueue Boost::system)

@@ -48,7 +48,12 @@ int main()
                 std::wcout << std::hex << frame.id.combined() << "\n";
                 // can::isotp::tl::HandleIncomingFrame(&frame);
 
-                lm->handle_receive(&frame);
+                boost::system::error_code code = lm->handle_receive(&frame);
+
+                if (code.failed())
+                {
+                    std::wcout << "LM error: " << code << " - " << code.message().c_str() << std::endl;
+                }
             };
         }
 

@@ -1,17 +1,21 @@
 #include "core/isotp/tl/handler/consecutive_frame.h"
 
+#include "core/isotp/error/consecutive_frame.h"
+
 #include <iostream> // std::wcout | debugging
+
+using can::isotp::error::ConsecutiveFrameError;
 
 namespace can::isotp::tl::handler
 {
-    void ConsecutiveFrameHandler::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
+    boost::system::error_code ConsecutiveFrameHandler::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
     {
         can::isotp::link::DirectionalLink *recvLink = link->getReceive();
 
         if (recvLink->getState() != can::isotp::link::LinkState::IN_PROGRESS)
         {
             // not in progress, ignore
-            return;
+            return ConsecutiveFrameError::LINK_STATE_MISMATCH;
         }
 
         can::isotp::link::directional_link_buf_t *buf = recvLink->getBuffer();
@@ -23,7 +27,7 @@ namespace can::isotp::tl::handler
         if (!last_sn->precedes(received_sn))
         {
             // wrong sn
-            return;
+            return ConsecutiveFrameError::PKT_SEQUENCE_NUMBER_MISMATCH;
         }
 
         // bytes 1+ are data
@@ -36,7 +40,7 @@ namespace can::isotp::tl::handler
         if (payload_size > link_remaining_bytes)
         {
             // too long payload, larger than remaining bytes
-            return;
+            return ConsecutiveFrameError::PKT_PAYLOAD_TOO_LONG;
         }
 
         // copy
@@ -71,5 +75,7 @@ namespace can::isotp::tl::handler
             // TODO: block size handling
             std::wcout << "STILL RECEIVING" << std::endl;
         }
+
+        return ConsecutiveFrameError::SUCCESS;
     };
 }
