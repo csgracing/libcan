@@ -32,13 +32,6 @@ set(CMAKE_CXX_STANDARD 20) # "using enum" in core
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# Tools
-
-
-add_subdirectory(lib/common/boost)
-add_subdirectory(lib/common/moodycamel/concurrentqueue)
-add_subdirectory(lib/common/fmt)
-
 if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
 
     # coverage setup
@@ -68,6 +61,14 @@ if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
     add_subdirectory(lib/test/google/gmock-global)
 
 endif()
+
+
+# Tools
+
+add_subdirectory(lib/common/boost)
+add_subdirectory(lib/common/moodycamel/concurrentqueue)
+add_subdirectory(lib/common/fmt)
+add_subdirectory(lib/common/spdlog)
 
 # Subprojects
 
