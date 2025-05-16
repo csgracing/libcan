@@ -4,19 +4,18 @@
 #include <boost/system/is_error_code_enum.hpp>
 #include <boost/system/error_code.hpp>
 
-#include "core/isotp/error/category/isotp.h"
+#include "core/isotp/error/code/category/isotp_code.h"
 
-namespace can::isotp::error
+namespace can::isotp::error::code
 {
-    enum class FirstFrameError
+    enum FirstFrameError
     {
-        SUCCESS = 0,
         PKT_UNEXPECTED_SIGNALLING,
     };
 
     inline boost::system::error_code make_error_code(FirstFrameError e)
     {
-        return boost::system::error_code(static_cast<int>(e), category::libcan_category());
+        return boost::system::error_code(static_cast<int>(e), category::isotp_code_category());
     }
 };
 
@@ -25,7 +24,7 @@ namespace boost
     namespace system
     {
         template <>
-        struct is_error_code_enum<::can::isotp::error::FirstFrameError> : std::true_type
+        struct is_error_code_enum<::can::isotp::error::code::FirstFrameError> : std::true_type
         {
         };
     };

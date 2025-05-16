@@ -1,12 +1,12 @@
 #include "core/isotp/tl/handler/single_frame.h"
 
-#include "core/isotp/error/single_frame.h"
+#include "core/isotp/error/code/single_frame.h"
 
 #include "core/isotp/tl/pci/single_frame.h"
 
 #include <iostream> // std::wcout | debugging
 
-using can::isotp::error::SingleFrameError;
+using can::isotp::error::code::SingleFrameError;
 
 namespace can::isotp::tl::handler
 {

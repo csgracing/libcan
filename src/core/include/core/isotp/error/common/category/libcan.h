@@ -5,7 +5,7 @@
 
 #include <boost/system/error_category.hpp>
 
-namespace can::isotp::error::category
+namespace can::isotp::error::common::category
 {
     namespace impl
     {

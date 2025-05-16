@@ -4,21 +4,20 @@
 #include <boost/system/is_error_code_enum.hpp>
 #include <boost/system/error_code.hpp>
 
-#include "core/isotp/error/category/isotp.h"
+#include "core/isotp/error/code/category/isotp_code.h"
 
-namespace can::isotp::error
+namespace can::isotp::error::code
 {
-    enum class ConsecutiveFrameError
+    enum ConsecutiveFrameError
     {
-        SUCCESS = 0,
-        LINK_STATE_MISMATCH,
+        LINK_STATE_MISMATCH = 1,
         PKT_SEQUENCE_NUMBER_MISMATCH,
         PKT_PAYLOAD_TOO_LONG,
     };
 
     inline boost::system::error_code make_error_code(ConsecutiveFrameError e)
     {
-        return boost::system::error_code(static_cast<int>(e), category::libcan_category());
+        return boost::system::error_code(static_cast<int>(e), category::isotp_code_category());
     }
 };
 
@@ -27,7 +26,7 @@ namespace boost
     namespace system
     {
         template <>
-        struct is_error_code_enum<::can::isotp::error::ConsecutiveFrameError> : std::true_type
+        struct is_error_code_enum<::can::isotp::error::code::ConsecutiveFrameError> : std::true_type
         {
         };
     };

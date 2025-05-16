@@ -1,10 +1,12 @@
 #include "core/isotp/tl/handler/consecutive_frame.h"
 
-#include "core/isotp/error/consecutive_frame.h"
+#include "core/isotp/error/code/consecutive_frame.h"
+#include "core/isotp/error/code/success.h"
 
 #include <iostream> // std::wcout | debugging
 
-using can::isotp::error::ConsecutiveFrameError;
+using can::isotp::error::code::ConsecutiveFrameError;
+using can::isotp::error::code::Success;
 
 namespace can::isotp::tl::handler
 {
@@ -76,6 +78,6 @@ namespace can::isotp::tl::handler
             std::wcout << "STILL RECEIVING" << std::endl;
         }
 
-        return ConsecutiveFrameError::SUCCESS;
+        return Success::SUCCESS;
     };
 }

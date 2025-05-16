@@ -6,9 +6,9 @@
 #include "core/isotp/tl/handler/first_frame.h"
 #include "core/isotp/tl/handler/consecutive_frame.h"
 
-#include "core/isotp/error/link_manager.h"
+#include "core/isotp/error/code/link_manager.h"
 
-using can::isotp::error::LinkManagerError;
+using can::isotp::error::code::LinkManagerError;
 
 using namespace can::isotp::tl;
 

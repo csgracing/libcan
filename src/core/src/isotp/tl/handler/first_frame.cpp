@@ -1,12 +1,14 @@
 #include "core/isotp/tl/handler/first_frame.h"
 
-#include "core/isotp/error/first_frame.h"
+#include "core/isotp/error/code/first_frame.h"
+#include "core/isotp/error/code/success.h"
 
 #include "core/isotp/tl/pdu/flow_control.h"
 
 #include <iostream> // std::wcout | debugging
 
-using can::isotp::error::FirstFrameError;
+using can::isotp::error::code::FirstFrameError;
+using can::isotp::error::code::Success;
 
 namespace can::isotp::tl::handler
 {
@@ -156,6 +158,6 @@ namespace can::isotp::tl::handler
             std::wcout << "NO_VALUE" << std::endl;
         }
 
-        return FirstFrameError::SUCCESS;
+        return Success::SUCCESS;
     };
 }

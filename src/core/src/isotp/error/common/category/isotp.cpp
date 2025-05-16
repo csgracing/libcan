@@ -1,8 +1,8 @@
-#include "core/isotp/error/category/isotp.h"
+#include "core/isotp/error/common/category/isotp.h"
 
 #include <iostream>
 
-namespace can::isotp::error::category
+namespace can::isotp::error::common::category
 {
     namespace impl
     {

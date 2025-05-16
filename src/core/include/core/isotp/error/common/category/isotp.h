@@ -1,9 +1,9 @@
 #ifndef CATEGORY_ISOTP_H_
 #define CATEGORY_ISOTP_H_
 
-#include "core/isotp/error/category/libcan.h"
+#include "core/isotp/error/common/category/libcan.h"
 
-namespace can::isotp::error::category
+namespace can::isotp::error::common::category
 {
     namespace impl
     {
@@ -11,6 +11,8 @@ namespace can::isotp::error::category
         {
         public:
             const char *name() const noexcept override;
+
+            // char const *message(int ev, char *buffer, std::size_t len) const noexcept override;
         };
     };
 

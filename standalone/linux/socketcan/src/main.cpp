@@ -52,7 +52,11 @@ int main()
 
                 if (code.failed())
                 {
-                    std::wcout << "LM error: " << code << " - " << code.message().c_str() << std::endl;
+                    std::wcout << "Err:\t" << code << " - " << code.message().c_str() << std::endl;
+
+                    boost::system::error_condition cond = code.default_error_condition();
+
+                    std::wcout << "Cat:\t" << cond.category().name() << " - " << cond.message().c_str() << std::endl;
                 }
             };
         }

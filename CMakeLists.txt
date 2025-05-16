@@ -28,7 +28,7 @@ if (CAN_TARGET STREQUAL "pico")
 endif()
 
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20) # "using enum" in core
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -37,6 +37,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 add_subdirectory(lib/common/boost)
 add_subdirectory(lib/common/moodycamel/concurrentqueue)
+add_subdirectory(lib/common/fmt)
 
 if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
 
