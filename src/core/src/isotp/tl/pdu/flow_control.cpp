@@ -1,10 +1,10 @@
 #include "core/isotp/tl/pdu/flow_control.h"
 
-#include <iostream> // std::wcout (temp)
-
 #include "core/isotp/tl/pci/frame_type.h"
 
 #include "core/protocol/frame/frame.h"
+
+#include "core/logger.h"
 
 using can::isotp::tl::pci::FrameType;
 
@@ -16,7 +16,7 @@ namespace can::isotp::tl::pdu
         this->block_size = block_size;
         this->separation_time = separation_time;
 
-        std::wcout << "Creating FC frame..." << std::endl;
+        LIBCAN_LOG_TRACE("isotp.tl.pdu", "Creating FlowControl frame");
     };
 
     uint8_t *FlowControl::createPayload()
@@ -33,14 +33,7 @@ namespace can::isotp::tl::pdu
         data[1] = block_size;
         data[2] = separation_time;
 
-        std::wcout << "created FC frame data of size " << std::dec << getPayloadSize() << std::endl;
-
-        // temp: print data
-        for (int i = 0; i < 3; i++)
-        {
-            std::wcout << std::hex << data[i];
-        }
-        std::wcout << std::endl;
+        LIBCAN_LOG_DEBUG("isotp.tl.pdu", fmt::format("created FC frame data of size {0:d}", getPayloadSize()));
 
         return data;
     };

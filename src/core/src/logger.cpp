@@ -19,7 +19,7 @@ namespace can::logger
     void Logger::bootstrap()
     {
         sink = std::make_shared<spdlog::sinks::stdout_sink_mt>();
-        sink->set_level(spdlog::level::debug);
+        sink->set_level(spdlog::level::trace);
         loggers = std::make_shared<std::unordered_map<std::string, std::shared_ptr<spdlog::logger>>>();
     };
 

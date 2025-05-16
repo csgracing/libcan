@@ -5,7 +5,7 @@
 
 #include "core/isotp/tl/pdu/flow_control.h"
 
-#include <iostream> // std::wcout | debugging
+#include "core/logger.h"
 
 using can::isotp::error::code::FirstFrameError;
 using can::isotp::error::code::Success;
@@ -14,7 +14,8 @@ namespace can::isotp::tl::handler
 {
     boost::system::error_code FirstFrameHandler::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
     {
-        std::wcout << "FF_PARSE\n";
+
+        LIBCAN_LOG_TRACE("isotp.tl.handler", "Handling FirstFrame");
         /**
          * 1) Check RX_DL (done in frame parsing?)
          * 2) check FF_DL 12-bit (see if large msg)
@@ -59,8 +60,6 @@ namespace can::isotp::tl::handler
         // bytes 3+ (starting from 1 as per spec) are data
         uint32_t ff_dl = (ff_dl_high << 8) + (ff_dl_low);
 
-        // std::wcout << "HIGH: " << ff_dl_high << ", LOW: " << ff_dl_low << ", DL: " << ff_dl << "\n";
-
         // FD check
         if (ff_dl == 0)
         {
@@ -79,7 +78,7 @@ namespace can::isotp::tl::handler
         // ff_dl now set
         // check for valid FF_DL and process first frame
 
-        std::wcout << "FF: 0x" << std::hex << ff_dl << " (" << std::dec << ff_dl << ")\n";
+        LIBCAN_LOG_TRACE("isotp.tl.handler", "FirstFrame has FF_DL of {0:#x} ({0:d})", ff_dl, ff_dl);
 
         // 3. Validate FF_DL
 
@@ -105,11 +104,12 @@ namespace can::isotp::tl::handler
         recvLink->allocateBuffer(ff_dl);
 
         // determine how much to copy this frame & start byte
-        std::wcout << "MSG_OFFSET: " << std::dec << message_start_offset << "\n";
+        LIBCAN_LOG_TRACE("isotp.tl.handler", "FirstFrame has message offset of {0:d}", message_start_offset);
 
         uint32_t length = frame->_bsize.to_ulong() - message_start_offset;
 
-        std::wcout << "Copying data of size: " << std::dec << length << "\n";
+        LIBCAN_LOG_TRACE("isotp.tl.handler", "copying FirstFrame data of size {0:d}", length);
+
         // copy into buffer
         recvLink->copyIntoBuffer(frame->data + message_start_offset, length);
 
@@ -119,13 +119,9 @@ namespace can::isotp::tl::handler
         can::isotp::link::directional_link_buf_t *buf = recvLink->getBuffer();
 
         // print current and  max len/size
-        std::wcout << "Buffer (" << std::dec << buf->offset << " of " << std::dec << buf->size << " bytes received)\r\n";
+        LIBCAN_LOG_TRACE("isotp.tl.handler", "RX directional buffer has {0:d} of {0:d} bytes received", buf->offset, buf->size);
 
-        for (int i = 0; i < buf->offset; i++)
-        {
-            std::wcout << std::hex << buf->buffer[i];
-        }
-        std::wcout << "\r\n";
+        LIBCAN_LOG_TRACE_BUF("isotp.tl.handler", buf->buffer, buf->offset, "RX directional buffer contains data: {}");
 
         // next up, send next pkt..
 
@@ -142,20 +138,14 @@ namespace can::isotp::tl::handler
         {
             can::protocol::frame::frame_t frame = res.value();
 
-            std::wcout << "HAS_VALUE" << std::endl;
-
-            for (int i = 0; i < frame._bsize.to_ulong(); i++)
-            {
-                std::wcout << std::hex << frame.data[i];
-            }
-            std::wcout << "\r\n";
+            LIBCAN_LOG_TRACE_BUF("isotp.tl.handler", frame.data, frame._bsize.to_ulong(), "Response FlowControl frame contains data: {}");
 
             link->getBus()->enqueue(frame);
         }
         else
         {
             // todo handle error parsing here...
-            std::wcout << "NO_VALUE" << std::endl;
+            LIBCAN_LOG_ERROR("isotp.tl.handler", "FC frame was not created properly (no return value from createFrame)");
         }
 
         return Success::SUCCESS;

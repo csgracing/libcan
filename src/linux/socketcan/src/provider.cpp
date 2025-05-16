@@ -1,7 +1,8 @@
 #include <stdio.h>
-#include <iostream> // std::wcout
 
 #include "linux/socketcan/provider.h"
+
+#include "core/logger.h"
 
 #include <boost/polymorphic_cast.hpp> // boost::conversion
 
@@ -16,10 +17,10 @@ namespace can::providers::os::socketcan
         this->op = boost::polymorphic_downcast<Options *>(o);
 
         if (!this->op->filterMask.has_value())
-            printf("Using default param for filterMask\r\n");
+            LIBCAN_LOG_DEBUG("provider", "Using default param for filterMask");
 
         if (!this->op->defaultSenderId.has_value())
-            printf("Using default param for defaultSenderId\r\n");
+            LIBCAN_LOG_DEBUG("provider", "Using default param for defaultSenderId");
 
         CanId id(this->op->defaultSenderId.value_or(0));
 
@@ -74,15 +75,12 @@ namespace can::providers::os::socketcan
         memcpy(rawFrame.data, &frame.data, frame._bsize.to_ulong());
         CanMessage msg(rawFrame);
 
-        for (int i = 0; i < frame._bsize.to_ulong(); i++)
-        {
-            std::wcout << std::hex << rawFrame.data[i];
-        }
-        std::wcout << "\r\n";
+        // if trace logging enabled, log what we are sending
+        LIBCAN_LOG_TRACE_BUF("provider", frame.data, frame._bsize.to_ulong(), "Sending data: {}");
 
         auto sentByteCount = driver->sendMessage(msg);
 
-        std::wcout << "Sent bytes: " << sentByteCount << std::endl;
+        LIBCAN_LOG_DEBUG("provider", fmt::format("Sent bytes: {}", sentByteCount));
 
         return sentByteCount != 0;
     }

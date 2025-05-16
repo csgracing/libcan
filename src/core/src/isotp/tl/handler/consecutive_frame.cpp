@@ -3,7 +3,7 @@
 #include "core/isotp/error/code/consecutive_frame.h"
 #include "core/isotp/error/code/success.h"
 
-#include <iostream> // std::wcout | debugging
+#include "core/logger.h"
 
 using can::isotp::error::code::ConsecutiveFrameError;
 using can::isotp::error::code::Success;
@@ -61,13 +61,7 @@ namespace can::isotp::tl::handler
             // done
             recvLink->setState(can::isotp::link::LinkState::FULL);
 
-            std::wcout << "RX DONE, data:" << std::endl;
-
-            for (int i = 0; i < buf->size; i++)
-            {
-                std::wcout << std::hex << buf->buffer[i];
-            }
-            std::wcout << "\r\n";
+            LIBCAN_LOG_TRACE_BUF("isotp.tl.handler", buf->buffer, buf->size, "RX done, data: {}");
 
             // todo: do something here...
         }
@@ -75,7 +69,7 @@ namespace can::isotp::tl::handler
         {
             // we still have data to recieve
             // TODO: block size handling
-            std::wcout << "STILL RECEIVING" << std::endl;
+            LIBCAN_LOG_DEBUG("isotp.tl.handler", "Still receiving consecutive frame");
         }
 
         return Success::SUCCESS;

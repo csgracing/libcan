@@ -5,11 +5,8 @@
 #include "core/configure/config.h" // cmake created config header
 #include "core/logger_defines.h"   // defines for logging, based on config header
 
-#if SPDLOG_ACTIVE_LEVEL <= SPDLOG_LEVEL_CRITICAL
-#define LIBCAN_LOG_CRITICAL(loggerName, ...) \
-    SPDLOG_LOGGER_CRITICAL(logger::Logger::get(loggerName), __VA_ARGS__)
-#else
-#define LIBCAN_LOG_CRITICAL(loggerName, ...) (void)0
+#ifdef LIBCAN_LOG_TRACE_BUF
+#include <sstream> // std::ostringstream
 #endif
 
 // Create and return a shared_ptr to a multithreaded console logger.

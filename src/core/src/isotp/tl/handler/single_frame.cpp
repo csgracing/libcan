@@ -4,7 +4,7 @@
 
 #include "core/isotp/tl/pci/single_frame.h"
 
-#include <iostream> // std::wcout | debugging
+#include "core/logger.h"
 
 using can::isotp::error::code::SingleFrameError;
 
@@ -19,13 +19,13 @@ namespace can::isotp::tl::handler
         // check against frametype bitmask
         if (can::protocol::frame::isType(frame->_type, can::protocol::frame::FrameType::CC))
         {
-            std::wcout << "CAN_CC\r\nSF_DL: ";
+
             // CAN CC
 
             // SF_DL 4 byte value lower 4 bits (3-0) in byte #1
             sf_dl = frame->data[0] & 0b1111;
-            std::wcout << sf_dl;
-            std::wcout << "\r\n";
+
+            LIBCAN_LOG_TRACE("isotp.tl.handler", "CAN_CC SF_DL: {}", sf_dl);
 
             uint8_t length;
 
@@ -77,12 +77,7 @@ namespace can::isotp::tl::handler
             // offset by 1 for message data (CC frame)
             memcpy(message_ptr, data + 1, length);
 
-            std::wcout << "SINGLE FRAME:";
-            for (int i = 0; i < length; i++)
-            {
-                std::wcout << std::hex << message_ptr[i];
-            }
-            std::wcout << "\r\n";
+            LIBCAN_LOG_TRACE_BUF("isotp.tl.handler", message_ptr, length, "SingleFrame contains data: {}");
         }
         else if (can::protocol::frame::isType(frame->_type, can::protocol::frame::FrameType::FD))
         {

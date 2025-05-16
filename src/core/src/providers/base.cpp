@@ -1,13 +1,14 @@
 #include <stdio.h>
-#include <iostream> // std::wcout
 
 #include "core/providers/base.h"
+
+#include "core/logger.h"
 
 namespace can::providers::base
 {
     CANBus::CANBus(std::optional<bitrate_enum_t> b, Options *o)
     {
-        printf("CANBus Base init\n");
+        LIBCAN_LOG_DEBUG("provider", "CANBus Base init");
     }
 
     // https://stackoverflow.com/a/57504289
@@ -37,7 +38,7 @@ namespace can::providers::base
 
         if (found)
         {
-            std::wcout << "Found message." << std::endl;
+            LIBCAN_LOG_DEBUG("provider", "Found message");
             sendMessage(frame);
         }
     }

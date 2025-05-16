@@ -1,12 +1,12 @@
 #include "core/isotp/link/manager.h"
 
-#include <iostream> // std::wcout
-
 #include "core/isotp/tl/handler/single_frame.h"
 #include "core/isotp/tl/handler/first_frame.h"
 #include "core/isotp/tl/handler/consecutive_frame.h"
 
 #include "core/isotp/error/code/link_manager.h"
+
+#include "core/logger.h"
 
 using can::isotp::error::code::LinkManagerError;
 
@@ -16,7 +16,7 @@ namespace can::isotp::link
 {
     LinkManager::LinkManager()
     {
-        std::wcout << "Created new link manager\n";
+        LIBCAN_LOG_DEBUG("isotp.link", "Created new link manager");
         // init unordered map
         active_links = new std::unordered_map<can::protocol::frame::identifier, ISOTPLink *, can::protocol::frame::identifier_hasher>();
 
@@ -47,7 +47,8 @@ namespace can::isotp::link
 
             active_links->insert({key, link});
 
-            std::wcout << "Added message with rx id: 0x" << std::hex << key.combined() << "\n";
+            LIBCAN_LOG_INFO("isotp.link", fmt::format("Added message with rx id: {0:x}", key.combined()));
+
             return true;
         }
         // TODO: error handling after proof of concept phase
@@ -68,7 +69,7 @@ namespace can::isotp::link
         }
         else
         {
-            std::wcout << "no match for id: " << std::hex << frame->id.combined() << "\n";
+            LIBCAN_LOG_DEBUG("isotp.link", fmt::format("No match for id: {0:x}", frame->id.combined()));
             return LinkManagerError::IGNORED_ID_NOT_REGISTERED;
         }
     };

@@ -49,7 +49,6 @@ namespace can::isotp::tl::handler
 
             BaseHandler *handler = active_handlers->at(key);
 
-            std::wcout << "HANDLE" << std::endl;
             return handler->handle(frame, link);
         }
         else
