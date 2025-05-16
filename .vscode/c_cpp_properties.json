@@ -8,7 +8,9 @@
                 "${workspaceFolder}/**/**/include",
                 "${workspaceFolder}/rp2040/mcp2515/impl/src",
                 "${workspaceFolder}/rp2040/mcp2515/impl/include",
-                "${workspaceFolder}/lib/common/moodycamel/concurrentqueue"
+                "${workspaceFolder}/lib/common/moodycamel/concurrentqueue",
+                "${workspaceFolder}/lib/common/boost/**/include",
+                "${workspaceFolder}/lib/common/boost/**/**/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",
