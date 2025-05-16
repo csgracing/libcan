@@ -34,6 +34,9 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
 
+    # for config
+    set(LIBCAN_DEBUG TRUE)
+
     # coverage setup
     set(CMAKE_BUILD_TYPE "Debug")
     

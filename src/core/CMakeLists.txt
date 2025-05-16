@@ -11,6 +11,8 @@ add_library(${PROJECT})
 
 add_library(libcan::core ALIAS ${PROJECT})
 
+# <https://www.kdab.com/setting-defines-with-cmake/>
+configure_file(config.h.in include/core/configure/config.h)
 
 target_sources(${PROJECT}
      PRIVATE
@@ -32,6 +34,7 @@ target_sources(${PROJECT}
           ${CMAKE_CURRENT_LIST_DIR}/src/protocol/frame/frame.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/protocol/frame/util.cpp
           ${CMAKE_CURRENT_LIST_DIR}/src/providers/base.cpp
+          ${CMAKE_CURRENT_LIST_DIR}/src/logger.cpp
 )
 
 target_include_directories(${PROJECT}
@@ -41,6 +44,7 @@ target_include_directories(${PROJECT}
      PUBLIC
           # exported headers
           ${CMAKE_CURRENT_SOURCE_DIR}/include
+          ${CMAKE_CURRENT_BINARY_DIR}/include # config.h.in output location
 )
 
 target_include_directories(${PROJECT} PUBLIC
