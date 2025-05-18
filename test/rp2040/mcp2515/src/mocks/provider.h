@@ -20,6 +20,9 @@ public:
     MOCK_METHOD(void, registerRawIrqHandlerOnCurrentCore, ());
 
     MOCK_METHOD(can::protocol::frame::frame_res, readMessage, ());
+    MOCK_METHOD(bool, hasMessage, ());
+
+    MOCK_METHOD(bool, sendMessage, (can::protocol::frame::frame_t));
 
     MOCK_METHOD(void, global_isr_0, ());
     MOCK_METHOD(void, global_isr_1, ());

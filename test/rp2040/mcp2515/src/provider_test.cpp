@@ -38,8 +38,8 @@ TEST_F(ProviderTest, registerRawIrqHandlerOnCurrentCore_calls_add_raw_irq_handle
     EXPECT_CALL(*m_provider, bindToNextIsrId()).Times(1).WillOnce(Return(0));
 
     // expect to be called once and return real function
-    EXPECT_CALL(*m_provider, registerRawIrqHandlerOnCurrentCore()).Times(1).WillOnce([&m_provider]()
-                                                                                     { return (*m_provider).CANBus::registerRawIrqHandlerOnCurrentCore(); });
+    EXPECT_CALL(*m_provider, registerRawIrqHandlerOnCurrentCore()).Times(1).WillOnce([m_provider]()
+                                                                                     { return m_provider->CANBus::registerRawIrqHandlerOnCurrentCore(); });
 
     EXPECT_GLOBAL_CALL(gpio_add_raw_irq_handler, gpio_add_raw_irq_handler(_, _)).Times(1);
 
