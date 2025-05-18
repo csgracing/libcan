@@ -2,6 +2,8 @@
 
 #include "linux/socketcan/provider.h"
 
+#include "core/logger.h"
+
 #include <boost/polymorphic_cast.hpp> // boost::conversion
 
 using std::chrono::milliseconds;
@@ -15,10 +17,10 @@ namespace can::providers::os::socketcan
         this->op = boost::polymorphic_downcast<Options *>(o);
 
         if (!this->op->filterMask.has_value())
-            printf("Using default param for filterMask\r\n");
+            LIBCAN_LOG_DEBUG("provider", "Using default param for filterMask");
 
         if (!this->op->defaultSenderId.has_value())
-            printf("Using default param for defaultSenderId\r\n");
+            LIBCAN_LOG_DEBUG("provider", "Using default param for defaultSenderId");
 
         CanId id(this->op->defaultSenderId.value_or(0));
 
@@ -32,10 +34,7 @@ namespace can::providers::os::socketcan
 
     can::protocol::frame::frame_res CANBus::readMessage()
     {
-        // Set timeout to whatever was passed in options, otherwise defaulting to 3 seconds.
-        milliseconds timeout = this->op->readTimeout.value_or(milliseconds(3000));
-
-        if (this->driver->waitForMessages(timeout))
+        if (this->hasMessage())
         {
             // There is a message available
             CanMessage recvMessage = this->driver->readMessage();
@@ -44,7 +43,7 @@ namespace can::providers::os::socketcan
             can_frame linuxFrame = recvMessage.getRawFrame();
 
             can::protocol::frame::frame_raw_t raw_frame = {
-                linuxFrame.can_id >> 3,                    // id: bits 0-28 (shift out 29,30,31)
+                linuxFrame.can_id & CAN_ERR_MASK,          // id: bits 0-28 (shift out 29,30,31)
                 (bool)(linuxFrame.can_id & CAN_RTR_FLAG),  // rtr: bit 30 only
                 (bool)(linuxFrame.can_id & CAN_EFF_FLAG),  // ide: bit 31 only,
                 can::protocol::frame::data::EDL::CC_FRAME, // edl: libsockcanpp only supports CC frame
@@ -57,6 +56,33 @@ namespace can::providers::os::socketcan
         }
 
         return std::nullopt;
+    }
+
+    bool CANBus::hasMessage()
+    {
+        // call waitForMessages to update fdsAvailable (has packet) but don't block (0ms timeout)
+        return this->driver->waitForMessages(milliseconds(0));
+    }
+
+    bool CANBus::sendMessage(can::protocol::frame::frame_t frame)
+    {
+        // todo ID should contain flags...
+        CanId id(frame.id.combined());
+
+        can_frame rawFrame;
+        rawFrame.can_id = frame.id.combined();
+        rawFrame.can_dlc = frame.dlc.to_ulong();
+        memcpy(rawFrame.data, &frame.data, frame._bsize.to_ulong());
+        CanMessage msg(rawFrame);
+
+        // if trace logging enabled, log what we are sending
+        LIBCAN_LOG_TRACE_BUF("provider", frame.data, frame._bsize.to_ulong(), "Sending data: {}");
+
+        auto sentByteCount = driver->sendMessage(msg);
+
+        LIBCAN_LOG_DEBUG("provider", fmt::format("Sent bytes: {}", sentByteCount));
+
+        return sentByteCount != 0;
     }
 
     CANBus::~CANBus() = default;

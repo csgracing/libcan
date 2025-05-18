@@ -32,7 +32,7 @@ namespace can::providers::os::socketcan
         std::optional<std::chrono::milliseconds> readTimeout; // defaults to 3 seconds (3000ms)
     };
 
-    class CANBus : base::CANBus
+    class CANBus : public base::CANBus
     {
     private:
         CanDriver *driver;
@@ -43,6 +43,8 @@ namespace can::providers::os::socketcan
         virtual ~CANBus(); // desructor
 
         can::protocol::frame::frame_res readMessage();
+        bool hasMessage();
+        bool sendMessage(can::protocol::frame::frame_t frame);
     };
 }
 

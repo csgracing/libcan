@@ -49,3 +49,27 @@
 [submodule "lib/docs/doxygen-awesome"]
 	path = lib/docs/doxygen-awesome
 	url = https://github.com/jothepro/doxygen-awesome-css.git
+[submodule "lib/common/moodycamel/concurrentqueue"]
+	path = lib/common/moodycamel/concurrentqueue
+	url = https://github.com/cameron314/concurrentqueue
+[submodule "lib/common/boost/system"]
+	path = lib/common/boost/system
+	url = https://github.com/boostorg/system
+[submodule "lib/common/boost/variant2"]
+	path = lib/common/boost/variant2
+	url = https://github.com/boostorg/variant2
+[submodule "lib/common/boost/mp11"]
+	path = lib/common/boost/mp11
+	url = https://github.com/boostorg/mp11
+[submodule "lib/common/boost/winapi"]
+	path = lib/common/boost/winapi
+	url = https://github.com/boostorg/winapi
+[submodule "lib/common/boost/predef"]
+	path = lib/common/boost/predef
+	url = https://github.com/boostorg/predef
+[submodule "lib/common/fmt"]
+	path = lib/common/fmt
+	url = https://github.com/fmtlib/fmt
+[submodule "lib/common/spdlog"]
+	path = lib/common/spdlog
+	url = https://github.com/gabime/spdlog

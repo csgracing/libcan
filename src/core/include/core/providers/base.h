@@ -4,6 +4,8 @@
 #include <type_traits>
 #include <optional> // std::optional
 
+#include "concurrentqueue.h"
+
 #include "core/protocol/frame/frame.h"
 
 #define BITS_IN_KB 1000
@@ -34,6 +36,9 @@ namespace can::providers::base
 
     class CANBus
     {
+    private:
+        moodycamel::ConcurrentQueue<can::protocol::frame::frame_t> queue;
+
     public:
         CANBus(std::optional<bitrate_enum_t> b, Options *o);
         virtual ~CANBus(); // desructor
@@ -41,6 +46,14 @@ namespace can::providers::base
         // derived classes must provide an implementation (=0)
         // <https://stackoverflow.com/a/2089238>
         virtual can::protocol::frame::frame_res readMessage() = 0;
+        virtual bool hasMessage() = 0;
+
+        can::protocol::frame::frame_res createFrame(can::protocol::frame::identifier id, uint8_t *data, uint8_t data_length);
+
+        void handleQueue();
+        bool enqueue(can::protocol::frame::frame_t frame);
+
+        virtual bool sendMessage(can::protocol::frame::frame_t frame) = 0;
     };
 };
 

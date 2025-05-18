@@ -8,11 +8,13 @@ endif()
 
 
 if (IS_TEST_FUZZ_ENV STREQUAL "true")
-    set(CMAKE_C_COMPILER "clang")
-    set(CMAKE_CXX_COMPILER "clang++")
+    set(CMAKE_C_COMPILER "clang" CACHE STRING "C compiler to use")
+    set(CMAKE_CXX_COMPILER "clang++" CACHE STRING "C++ compiler to use")
 else()
-    set(CMAKE_C_COMPILER "gcc")
-    set(CMAKE_CXX_COMPILER "g++")
+# if cache not set vsc no happy
+# https://github.com/microsoft/vscode-cmake-tools/issues/2121#issuecomment-919324503
+    set(CMAKE_C_COMPILER "gcc" CACHE STRING "C compiler to use")
+    set(CMAKE_CXX_COMPILER "g++" CACHE STRING "C++ compiler to use")
 endif()
 
 project(
@@ -28,16 +30,14 @@ if (CAN_TARGET STREQUAL "pico")
 endif()
 
 set(CMAKE_C_STANDARD 11)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20) # "using enum" in core
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-# Tools
-
-
-add_subdirectory(lib/common/boost)
-
 if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
+
+    # for config
+    set(LIBCAN_DEBUG TRUE)
 
     # coverage setup
     set(CMAKE_BUILD_TYPE "Debug")
@@ -66,6 +66,14 @@ if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
     add_subdirectory(lib/test/google/gmock-global)
 
 endif()
+
+
+# Tools
+
+add_subdirectory(lib/common/boost)
+add_subdirectory(lib/common/moodycamel/concurrentqueue)
+add_subdirectory(lib/common/fmt)
+add_subdirectory(lib/common/spdlog)
 
 # Subprojects
 
