@@ -17,8 +17,9 @@ namespace can::isotp::tl::pci
         class SequenceNumber
         {
         private:
-            const uint8_t INITIAL_VALUE = 0b0000;
-            const uint8_t MAX_VALUE = 0b1111;
+            // Static so only one instace of var (prevents things like usage of the variable when not initialised yet resulting in random values)
+            static const uint8_t INITIAL_VALUE = 0b0000;
+            static const uint8_t MAX_VALUE = 0b1111;
 
             std::bitset<4> *num;
 
