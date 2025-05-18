@@ -4,6 +4,9 @@ cmake_minimum_required(VERSION 3.19)
 if (CAN_TARGET STREQUAL "pico")
     # Pull in pico sdk (must be before project() call)
     include(src/rp2040/pico-sdk.cmake)
+    
+    add_compile_definitions(BOOST_SYSTEM_DISABLE_THREADS)
+
 elseif (IS_TEST_FUZZ_ENV STREQUAL "true")
     set(CMAKE_C_COMPILER "clang" CACHE STRING "C compiler to use")
     set(CMAKE_CXX_COMPILER "clang++" CACHE STRING "C++ compiler to use")
@@ -70,7 +73,7 @@ endif()
 add_subdirectory(lib/common/boost)
 add_subdirectory(lib/common/moodycamel/concurrentqueue)
 add_subdirectory(lib/common/fmt)
-add_subdirectory(lib/common/spdlog)
+add_subdirectory(lib/common/plog)
 
 # Subprojects
 

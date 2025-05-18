@@ -11,7 +11,7 @@
                 "${workspaceFolder}/lib/common/moodycamel/concurrentqueue",
                 "${workspaceFolder}/lib/common/boost/**/include",
                 "${workspaceFolder}/lib/common/boost/**/**/include",
-                "${workspaceFolder}/lib/common/spdlog/include",
+                "${workspaceFolder}/lib/common/plog/include",
                 "${workspaceFolder}/out/build/**/include/"
             ],
             "defines": [],

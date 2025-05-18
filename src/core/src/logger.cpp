@@ -2,14 +2,17 @@
 
 #include <fmt/core.h>
 
+#include <plog/Initializers/ConsoleInitializer.h>
+#include <plog/Formatters/MessageOnlyFormatter.h>
+
 namespace can::logger
 {
     std::once_flag Logger::flag;
 
     std::string Logger::prefix(LIBCAN_PRODUCT_NAME);
 
-    std::shared_ptr<spdlog::sinks::sink> Logger::sink = nullptr;
-    std::shared_ptr<std::unordered_map<std::string, std::shared_ptr<spdlog::logger>>> Logger::loggers = nullptr;
+    std::shared_ptr<plog::IAppender> Logger::g_appender = nullptr;
+    std::shared_ptr<plog::Logger<PLOG_DEFAULT_INSTANCE_ID>> Logger::g_logger = nullptr;
 
     void Logger::ensure()
     {
@@ -18,25 +21,24 @@ namespace can::logger
 
     void Logger::bootstrap()
     {
-        sink = std::make_shared<spdlog::sinks::stdout_sink_mt>();
-        sink->set_level(spdlog::level::trace);
-        loggers = std::make_shared<std::unordered_map<std::string, std::shared_ptr<spdlog::logger>>>();
+        g_appender = std::make_shared<plog::ConsoleAppender<Formatter>>();
+        g_logger = std::make_shared<plog::Logger<PLOG_DEFAULT_INSTANCE_ID>>(plog::verbose);
+        g_logger->addAppender(g_appender.get());
     };
 
-    std::shared_ptr<spdlog::logger> Logger::get(std::string name)
+    std::shared_ptr<plog::Logger<PLOG_DEFAULT_INSTANCE_ID>> Logger::get()
+    {
+        ensure();
+        return g_logger;
+    }
+
+    void Logger::log(plog::Severity sev, void (*lambda)(std::shared_ptr<plog::Logger<PLOG_DEFAULT_INSTANCE_ID>>))
     {
         ensure();
 
-        if (loggers->find(name) != loggers->end())
+        if (g_logger->checkSeverity(sev))
         {
-            return loggers->at(name);
-        }
-        else
-        {
-            auto logger = std::make_shared<spdlog::logger>(fmt::format("{}.{}", prefix, name), sink);
-            logger->set_level(sink->level());
-            loggers->insert({name, logger});
-            return logger;
+            lambda(g_logger);
         }
     }
 }
