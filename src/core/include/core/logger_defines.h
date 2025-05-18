@@ -1,9 +1,17 @@
 #ifndef CORE_LOGGER_DEFINES_H_
 #define CORE_LOGGER_DEFINES_H_
 
-#if SPDLOG_ACTIVE_LEVEL <= SPDLOG_LEVEL_TRACE
+#define LIBCAN_LOG(severity, prefix, ...)                     \
+    if (!can::logger::Logger::get()->checkSeverity(severity)) \
+    {                                                         \
+        ;                                                     \
+    }                                                         \
+    else                                                      \
+        ((*can::logger::Logger::get().get()) += plog::Record(severity, nullptr, 0, nullptr, nullptr, 0).ref() << "[" << LIBCAN_PRODUCT_NAME << "." << prefix << "] " << __VA_ARGS__)
+
+#if LIBCAN_LOG_LEVEL >= LIBCAN_LOG_LEVEL_VERBOSE
 #define LIBCAN_LOG_TRACE(loggerName, ...) \
-    SPDLOG_LOGGER_TRACE(logger::Logger::get(loggerName), __VA_ARGS__)
+    LIBCAN_LOG(plog::verbose, loggerName, __VA_ARGS__);
 
 #define LIBCAN_LOG_TRACE_BUF(loggerName, bufInp, sizeInp, ...)                 \
     [](auto buf, auto &&size)                                                  \
@@ -20,30 +28,30 @@
 #define LIBCAN_LOG_TRACE_BUF(loggerName, buf, size, ...) (void)0
 #endif
 
-#if SPDLOG_ACTIVE_LEVEL <= SPDLOG_LEVEL_DEBUG
+#if LIBCAN_LOG_LEVEL >= LIBCAN_LOG_LEVEL_DEBUG
 #define LIBCAN_LOG_DEBUG(loggerName, ...) \
-    SPDLOG_LOGGER_DEBUG(logger::Logger::get(loggerName), __VA_ARGS__)
+    LIBCAN_LOG(plog::debug, loggerName, __VA_ARGS__);
 #else
 #define LIBCAN_LOG_DEBUG(loggerName, ...) (void)0
 #endif
 
-#if SPDLOG_ACTIVE_LEVEL <= SPDLOG_LEVEL_INFO
+#if LIBCAN_LOG_LEVEL >= LIBCAN_LOG_LEVEL_INFO
 #define LIBCAN_LOG_INFO(loggerName, ...) \
-    SPDLOG_LOGGER_INFO(logger::Logger::get(loggerName), __VA_ARGS__)
+    LIBCAN_LOG(plog::info, loggerName, __VA_ARGS__);
 #else
 #define LIBCAN_LOG_INFO(loggerName, ...) (void)0
 #endif
 
-#if SPDLOG_ACTIVE_LEVEL <= SPDLOG_LEVEL_WARN
+#if LIBCAN_LOG_LEVEL >= LIBCAN_LOG_LEVEL_WARN
 #define LIBCAN_LOG_WARN(loggerName, ...) \
-    SPDLOG_LOGGER_WARN(logger::Logger::get(loggerName), __VA_ARGS__)
+    LIBCAN_LOG(plog::warning, loggerName, __VA_ARGS__);
 #else
 #define LIBCAN_LOG_WARN(loggerName, ...) (void)0
 #endif
 
-#if SPDLOG_ACTIVE_LEVEL <= SPDLOG_LEVEL_ERROR
+#if LIBCAN_LOG_LEVEL >= LIBCAN_LOG_LEVEL_ERROR
 #define LIBCAN_LOG_ERROR(loggerName, ...) \
-    SPDLOG_LOGGER_ERROR(logger::Logger::get(loggerName), __VA_ARGS__)
+    LIBCAN_LOG(plog::error, loggerName, __VA_ARGS__);
 #else
 #define LIBCAN_LOG_ERROR(loggerName, ...) (void)0
 #endif

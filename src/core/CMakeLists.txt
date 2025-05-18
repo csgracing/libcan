@@ -51,4 +51,4 @@ target_include_directories(${PROJECT} PUBLIC
      ${CMAKE_CURRENT_LIST_DIR}/include/
 )
 
-target_link_libraries(${PROJECT} PUBLIC concurrentqueue Boost::system fmt::fmt spdlog::spdlog)
+target_link_libraries(${PROJECT} PUBLIC concurrentqueue Boost::system fmt::fmt plog)
