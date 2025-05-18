@@ -8,11 +8,13 @@ endif()
 
 
 if (IS_TEST_FUZZ_ENV STREQUAL "true")
-    set(CMAKE_C_COMPILER "clang")
-    set(CMAKE_CXX_COMPILER "clang++")
+    set(CMAKE_C_COMPILER "clang" CACHE STRING "C compiler to use")
+    set(CMAKE_CXX_COMPILER "clang++" CACHE STRING "C++ compiler to use")
 else()
-    set(CMAKE_C_COMPILER "gcc")
-    set(CMAKE_CXX_COMPILER "g++")
+# if cache not set vsc no happy
+# https://github.com/microsoft/vscode-cmake-tools/issues/2121#issuecomment-919324503
+    set(CMAKE_C_COMPILER "gcc" CACHE STRING "C compiler to use")
+    set(CMAKE_CXX_COMPILER "g++" CACHE STRING "C++ compiler to use")
 endif()
 
 project(
