@@ -80,7 +80,7 @@ namespace can::providers::os::socketcan
 
         auto sentByteCount = driver->sendMessage(msg);
 
-        LIBCAN_LOG_DEBUG("provider", fmt::format("Sent bytes: {}", sentByteCount));
+        LIBCAN_LOG_DEBUG("provider", "Sent bytes: {}", sentByteCount);
 
         return sentByteCount != 0;
     }

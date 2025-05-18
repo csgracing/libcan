@@ -7,21 +7,21 @@
         ;                                                     \
     }                                                         \
     else                                                      \
-        ((*can::logger::Logger::get().get()) += plog::Record(severity, nullptr, 0, nullptr, nullptr, 0).ref() << "[" << LIBCAN_PRODUCT_NAME << "." << prefix << "] " << __VA_ARGS__)
+        ((*can::logger::Logger::get().get()) += plog::Record(severity, nullptr, 0, nullptr, nullptr, 0).ref() << "[" << LIBCAN_PRODUCT_NAME << "." << prefix << "] " << fmt::format(__VA_ARGS__).c_str())
 
 #if LIBCAN_LOG_LEVEL >= LIBCAN_LOG_LEVEL_VERBOSE
 #define LIBCAN_LOG_TRACE(loggerName, ...) \
     LIBCAN_LOG(plog::verbose, loggerName, __VA_ARGS__);
 
-#define LIBCAN_LOG_TRACE_BUF(loggerName, bufInp, sizeInp, ...)                 \
-    [](auto buf, auto &&size)                                                  \
-    {                                                                          \
-        std::ostringstream hexData;                                            \
-        for (int i = 0; i < size; i++)                                         \
-        {                                                                      \
-            hexData << std::hex << (int)buf[i];                                \
-        };                                                                     \
-        LIBCAN_LOG_TRACE(loggerName, fmt::format(__VA_ARGS__, hexData.str())); \
+#define LIBCAN_LOG_TRACE_BUF(loggerName, bufInp, sizeInp, ...)    \
+    [](auto buf, auto &&size)                                     \
+    {                                                             \
+        std::ostringstream hexData;                               \
+        for (int i = 0; i < size; i++)                            \
+        {                                                         \
+            hexData << std::hex << (int)buf[i];                   \
+        };                                                        \
+        LIBCAN_LOG_TRACE(loggerName, __VA_ARGS__, hexData.str()); \
     }(bufInp, sizeInp);
 #else
 #define LIBCAN_LOG_TRACE(loggerName, ...) (void)0
