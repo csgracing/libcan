@@ -19,7 +19,7 @@ namespace can::isotp::link
         uint8_t *buffer;
         uint32_t size; // uint32_t (-1?) max isotp message size (theoretical)
         uint32_t offset;
-        can::isotp::tl::pci::cf::SequenceNumber *sequence_number;
+        can::isotp::tl::pci::cf::SequenceNumber *sequence_number = nullptr;
     };
 
     class DirectionalLink
@@ -28,7 +28,8 @@ namespace can::isotp::link
         can::protocol::frame::identifier id;
         LinkState state;
 
-        directional_link_buf_t *buffer;
+        // if not nullptr than assigned to something and hasBuffer will always be true
+        directional_link_buf_t *buffer = nullptr;
 
     public:
         DirectionalLink(can::providers::base::CANBus *bus, can::protocol::frame::identifier id);
