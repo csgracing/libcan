@@ -4,10 +4,7 @@ cmake_minimum_required(VERSION 3.19)
 if (CAN_TARGET STREQUAL "pico")
     # Pull in pico sdk (must be before project() call)
     include(src/rp2040/pico-sdk.cmake)
-endif()
-
-
-if (IS_TEST_FUZZ_ENV STREQUAL "true")
+elseif (IS_TEST_FUZZ_ENV STREQUAL "true")
     set(CMAKE_C_COMPILER "clang" CACHE STRING "C compiler to use")
     set(CMAKE_CXX_COMPILER "clang++" CACHE STRING "C++ compiler to use")
 else()
