@@ -14,6 +14,7 @@ if (IS_TEST_ENV STREQUAL "true")
     add_executable(${PROJECT}
         ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/src/protocol_frame_test.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/src/sequence_number_test.cpp
     )
 
     target_include_directories(${PROJECT}

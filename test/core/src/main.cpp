@@ -2,6 +2,7 @@
 
 #include "protocol_frame_test_input.h"
 #include "protocol_frame_test.h"
+#include "sequence_number_test.h"
 
 // Options *o = new Options();
 
