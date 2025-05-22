@@ -73,3 +73,6 @@
 [submodule "lib/common/plog"]
 	path = lib/common/plog
 	url = https://github.com/SergiusTheBest/plog
+[submodule "lib/tools/google/bloaty"]
+	path = lib/tools/google/bloaty
+	url = https://github.com/google/bloaty

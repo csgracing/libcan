@@ -67,8 +67,7 @@ if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
 
 endif()
 
-
-# Tools
+# Dependencies
 
 add_subdirectory(lib/common/boost)
 add_subdirectory(lib/common/moodycamel/concurrentqueue)
@@ -93,3 +92,16 @@ if (CAN_TARGET STREQUAL "linux")
 endif()
 
 include(docs/docs.cmake)
+
+# Tools
+
+include(ExternalProject)
+
+ExternalProject_Add(
+    bloaty
+    PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/build/tools/bloaty/src
+    SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/tools/google/bloaty
+    BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build/tools/bloaty/bin
+    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_SOURCE_DIR}/build/tools/_share/
+    UPDATE_COMMAND "" # dont rebuild every time! <https://stackoverflow.com/a/64994225>
+)
