@@ -1,3 +1,6 @@
-set(PICO_SDK_PATH ${CMAKE_SOURCE_DIR}/lib/rp2040/pico-sdk)
-
-include(${PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+if(NOT DEFINED PICO_SDK_PATH)
+    set(PICO_SDK_PATH ${CMAKE_CURRENT_SOURCE_DIR}/lib/rp2040/pico-sdk)
+    include(${PICO_SDK_PATH}/external/pico_sdk_import.cmake)
+else()
+    message("Not importing pico-sdk as it appears to already be present.")
+endif()

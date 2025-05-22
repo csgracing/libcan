@@ -5,6 +5,8 @@ if (CAN_TARGET STREQUAL "pico")
     # Pull in pico sdk (must be before project() call)
     include(src/rp2040/pico-sdk.cmake)
     
+    set(PICO_CXX_ENABLE_RTTI True)
+    
     add_compile_definitions(BOOST_SYSTEM_DISABLE_THREADS)
 
 elseif (IS_TEST_FUZZ_ENV STREQUAL "true")
