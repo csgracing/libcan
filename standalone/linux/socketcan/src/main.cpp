@@ -8,6 +8,10 @@
 
 #include <core/isotp/link/manager.h>
 
+#include <plog/Log.h>
+#include <plog/Initializers/ConsoleInitializer.h>
+#include <plog/Formatters/MessageOnlyFormatter.h>
+
 using namespace can::providers::os::socketcan;
 using namespace can::providers;
 
@@ -17,6 +21,11 @@ using can::protocol::frame::identifier;
 
 int main()
 {
+    // logging (seperate to lib logger)
+    plog::ColorConsoleAppender g_appender = plog::ColorConsoleAppender<plog::MessageOnlyFormatter>();
+    plog::Logger<PLOG_DEFAULT_INSTANCE_ID> g_logger = plog::Logger<PLOG_DEFAULT_INSTANCE_ID>(plog::verbose);
+    g_logger.addAppender(&g_appender);
+
     Options *o = new Options();
     o->canInterface = "vcan0";
     o->canProtocol = CAN_RAW;
@@ -46,11 +55,11 @@ int main()
 
                 if (code.failed())
                 {
-                    std::wcout << "Err:\t" << code << " - " << code.message().c_str() << std::endl;
+                    PLOGE << "Err:\t" << code << " - " << code.message().c_str() << std::endl;
 
                     boost::system::error_condition cond = code.default_error_condition();
 
-                    std::wcout << "Cat:\t" << cond.category().name() << " - " << cond.message().c_str() << std::endl;
+                    PLOGE << "Cat:\t" << cond.category().name() << " - " << cond.message().c_str() << std::endl;
                 }
             };
         }
@@ -70,7 +79,8 @@ int main()
                 hexData << std::hex << (int)msg.buffer[i];
             };
             hexData << std::endl;
-            std::wcout << fmt::format("Recieved isotp message of size {0:d} ({0:#x})\nData:\t{2}", msg.size, msg.size, hexData.str()).c_str();
+
+            PLOGD << fmt::format("Recieved isotp message of size {0:d} ({0:#x})\nData:\t{2}", msg.size, msg.size, hexData.str()).c_str();
         }
     };
 

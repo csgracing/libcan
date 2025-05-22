@@ -52,3 +52,7 @@ target_include_directories(${PROJECT} PUBLIC
 )
 
 target_link_libraries(${PROJECT} PUBLIC concurrentqueue Boost::system fmt::fmt plog)
+
+# set PLOG to local, so instances will not be shared across modules
+# However make this definition an interface to add to dependent's compile defs(?)
+target_compile_definitions(${PROJECT} INTERFACE PLOG_LOCAL)
