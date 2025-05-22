@@ -2,15 +2,22 @@
     "version": 3,
     "configurePresets": [
         {
+            "name": "base",
+            "hidden": true,
+            "binaryDir": "build/${presetName}",
+            "installDir": "build/${presetName}",
+            "generator": "Ninja"
+        },
+        {
             "name": "docs",
+            "inherits": "base",
             "cacheVariables": {
                 "BUILD_DOC": "true"
             }
         },
         {
             "name": "pico",
-            "binaryDir": "build/${presetName}",
-            "installDir": "build/${presetName}",
+            "inherits": "base",
             "cacheVariables": {
                 "CAN_TARGET": "pico"
             },
@@ -39,6 +46,7 @@
         },
         {
             "name": "linux",
+            "inherits": "base",
             "cacheVariables": {
                 "CAN_TARGET": "linux"
             },
