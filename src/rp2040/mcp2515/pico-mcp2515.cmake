@@ -1,6 +1,6 @@
 set(PROJECT can_rp2040_mcp2515_lib_mcp2515)
 
-set(MCP2515_LIB_DIR ${CMAKE_SOURCE_DIR}/lib/rp2040/pico-mcp2515)
+set(MCP2515_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../lib/rp2040/pico-mcp2515)
 
 project(
     ${PROJECT}
