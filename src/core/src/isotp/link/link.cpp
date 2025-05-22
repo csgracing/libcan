@@ -7,6 +7,8 @@ namespace can::isotp::link
     // TODO: dynamically resize (is probably slow)
     ISOTPLink::ISOTPLink(can::providers::base::CANBus *bus, identifier id_tx, identifier id_rx)
     {
+        this->queue = new moodycamel::ConcurrentQueue<can::isotp::link::directional_link_buf_t>();
+
         this->bus = bus;
         // create send, receive objects
 

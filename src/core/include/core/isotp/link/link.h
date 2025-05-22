@@ -15,6 +15,8 @@ namespace can::isotp::link
         can::providers::base::CANBus *bus;
         DirectionalLink *send, *receive;
 
+        moodycamel::ConcurrentQueue<can::isotp::link::directional_link_buf_t> *queue;
+
     public:
         ISOTPLink(can::providers::base::CANBus *bus, can::protocol::frame::identifier id_tx, can::protocol::frame::identifier id_rx);
         // virtual ~ISOTPLink(); // destructor
@@ -32,6 +34,9 @@ namespace can::isotp::link
 
         // "setters"
         // void setSend(directional_entry_t *send)
+
+        // queue
+        moodycamel::ConcurrentQueue<can::isotp::link::directional_link_buf_t> *getQueue() { return this->queue; };
     };
 }
 

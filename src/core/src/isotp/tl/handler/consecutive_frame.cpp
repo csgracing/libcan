@@ -61,15 +61,17 @@ namespace can::isotp::tl::handler
             // done
             recvLink->setState(can::isotp::link::LinkState::FULL);
 
-            LIBCAN_LOG_TRACE_BUF("isotp.tl.handler", buf->buffer, buf->size, "RX done, data: {}");
+            // LIBCAN_LOG_TRACE_BUF("isotp.tl.handler", buf->buffer, buf->size, "RX done, data: {}");
 
-            // todo: do something here...
+            link->getQueue()->enqueue(*buf);
+
+            delete buf; // better handling? although enqueue does copy...
         }
         else
         {
             // we still have data to recieve
             // TODO: block size handling
-            LIBCAN_LOG_DEBUG("isotp.tl.handler", "Still receiving consecutive frame");
+            LIBCAN_LOG_DEBUG("isotp.tl.handler", "Still recieving consecutive frame (got {:d} of {:d} bytes)", buf->offset, buf->size);
         }
 
         return Success::SUCCESS;

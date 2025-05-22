@@ -1,4 +1,7 @@
 #include <iostream>
+#include <sstream> // std::ostringstream
+
+#include <fmt/format.h>
 
 #include <core/providers/base.h>
 #include <linux/socketcan/provider.h>
@@ -34,19 +37,10 @@ int main()
     {
         if (cb.hasMessage())
         {
-            printf("\r\nattempting to read message...\r\n");
             can::protocol::frame::frame_res res = cb.readMessage();
             if (res.has_value())
             {
                 can::protocol::frame::frame_t frame = res.value();
-                std::wcout << "received data: ";
-                for (int i = 0; i < 8; i++)
-                {
-                    std::wcout << std::hex << frame.data[i];
-                }
-                std::wcout << "\r\n";
-                std::wcout << std::hex << frame.id.combined() << "\n";
-                // can::isotp::tl::HandleIncomingFrame(&frame);
 
                 boost::system::error_code code = lm->handle_receive(&frame);
 
@@ -63,6 +57,21 @@ int main()
 
         // send messages
         cb.handleQueue();
+
+        // handle finished isotp messages
+        can::isotp::link::directional_link_buf_t msg;
+        bool found = link1->getQueue()->try_dequeue(msg);
+
+        if (found)
+        {
+            std::ostringstream hexData;
+            for (int i = 0; i < msg.size; i++)
+            {
+                hexData << std::hex << (int)msg.buffer[i];
+            };
+            hexData << std::endl;
+            std::wcout << fmt::format("Recieved isotp message of size {0:d} ({0:#x})\nData:\t{2}", msg.size, msg.size, hexData.str()).c_str();
+        }
     };
 
     return 0;
