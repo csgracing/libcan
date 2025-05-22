@@ -54,12 +54,7 @@ if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
             ${CMAKE_SOURCE_DIR}/lib
             ${CMAKE_SOURCE_DIR}/out 
             ${CMAKE_SOURCE_DIR}/build
-        
-            ${CMAKE_SOURCE_DIR}/core/test
-        
-            ${CMAKE_SOURCE_DIR}/rp2040/lib
-            ${CMAKE_SOURCE_DIR}/rp2040/mcp2515/lib
-            ${CMAKE_SOURCE_DIR}/rp2040/mcp2515/test
+            ${CMAKE_SOURCE_DIR}/test
         )
     endif()
     
