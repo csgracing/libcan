@@ -80,7 +80,7 @@ int main()
             };
             hexData << std::endl;
 
-            PLOGD << fmt::format("Recieved isotp message of size {0:d} ({0:#x})\nData:\t{2}", msg.size, msg.size, hexData.str()).c_str();
+            PLOGD << fmt::format("Recieved isotp message of size {0:d} ({0:#x})\nData:\t{1}", msg.size, hexData.str()).c_str();
         }
     };
 

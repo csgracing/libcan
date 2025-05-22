@@ -33,7 +33,7 @@ namespace can::isotp::tl::pdu
         data[1] = block_size;
         data[2] = separation_time;
 
-        LIBCAN_LOG_DEBUG("isotp.tl.pdu", "created FC frame data of size {0:d}", getPayloadSize());
+        LIBCAN_LOG_DEBUG("isotp.tl.pdu", "created FC frame data of size {:d}", getPayloadSize());
 
         return data;
     };

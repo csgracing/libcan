@@ -47,7 +47,7 @@ namespace can::isotp::link
 
             active_links->insert({key, link});
 
-            LIBCAN_LOG_INFO("isotp.link", "Added message with rx id: {0:x}", key.combined());
+            LIBCAN_LOG_INFO("isotp.link", "Added message with rx id: {:x}", key.combined());
 
             return true;
         }
@@ -69,7 +69,7 @@ namespace can::isotp::link
         }
         else
         {
-            LIBCAN_LOG_DEBUG("isotp.link", "No match for id: {0:x}", frame->id.combined());
+            LIBCAN_LOG_DEBUG("isotp.link", "No match for id: {:x}", frame->id.combined());
             return LinkManagerError::IGNORED_ID_NOT_REGISTERED;
         }
     };

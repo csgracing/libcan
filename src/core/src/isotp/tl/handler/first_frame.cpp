@@ -78,7 +78,7 @@ namespace can::isotp::tl::handler
         // ff_dl now set
         // check for valid FF_DL and process first frame
 
-        LIBCAN_LOG_TRACE("isotp.tl.handler", "FirstFrame has FF_DL of {0:#x} ({0:d})", ff_dl, ff_dl);
+        LIBCAN_LOG_TRACE("isotp.tl.handler", "FirstFrame has FF_DL of {0:#x} ({0:d})", ff_dl);
 
         // 3. Validate FF_DL
 
@@ -104,11 +104,11 @@ namespace can::isotp::tl::handler
         recvLink->allocateBuffer(ff_dl);
 
         // determine how much to copy this frame & start byte
-        LIBCAN_LOG_TRACE("isotp.tl.handler", "FirstFrame has message offset of {0:d}", message_start_offset);
+        LIBCAN_LOG_TRACE("isotp.tl.handler", "FirstFrame has message offset of {:d}", message_start_offset);
 
         uint32_t length = frame->_bsize.to_ulong() - message_start_offset;
 
-        LIBCAN_LOG_TRACE("isotp.tl.handler", "copying FirstFrame data of size {0:d}", length);
+        LIBCAN_LOG_TRACE("isotp.tl.handler", "copying FirstFrame data of size {:d}", length);
 
         // copy into buffer
         recvLink->copyIntoBuffer(frame->data + message_start_offset, length);
@@ -119,7 +119,7 @@ namespace can::isotp::tl::handler
         can::isotp::link::directional_link_buf_t *buf = recvLink->getBuffer();
 
         // print current and  max len/size
-        LIBCAN_LOG_TRACE("isotp.tl.handler", "RX directional buffer has {0:d} of {0:d} bytes received", buf->offset, buf->size);
+        LIBCAN_LOG_TRACE("isotp.tl.handler", "RX directional buffer has {:d} of {:d} bytes received", buf->offset, buf->size);
 
         LIBCAN_LOG_TRACE_BUF("isotp.tl.handler", buf->buffer, buf->offset, "RX directional buffer contains data: {}");
 
