@@ -63,6 +63,13 @@
             }
         },
         {
+            "name": "linux-test-qemu",
+            "inherits": "linux-test",
+            "cacheVariables": {
+                "IS_TEST_ENV_QEMU": "true"
+            }
+        },
+        {
             "name": "core",
             "cacheVariables": {
                 "CAN_TARGET": "core"

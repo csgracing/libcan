@@ -36,6 +36,11 @@ set(CMAKE_CXX_STANDARD 20) # "using enum" in core
 
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
+if (IS_TEST_ENV_QEMU STREQUAL "true")
+    set(BUILD_SHARED_LIBS OFF)
+    set(CMAKE_EXE_LINKER_FLAGS "-static")
+endif()
+
 if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
 
     # for config
@@ -85,6 +90,7 @@ endif()
 if (CAN_TARGET STREQUAL "linux")
     add_subdirectory(lib/linux/socketcan/libsockcanpp)
     add_subdirectory(src/linux/socketcan)
+    add_subdirectory(test/linux/socketcan)
     add_subdirectory(standalone/linux/socketcan)
 endif()
 
