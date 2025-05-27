@@ -31,7 +31,7 @@ jobs:
     - name: "vm: checkout sil kit"
       run: |
         mkdir build/sil-kit
-        cd build-sil-kit
+        cd build/sil-kit
         git clone https://github.com/vectorgrp/sil-kit-adapters-qemu .
         git checkout ${SIL_KIT_QEMU_COMMIT}
     - name: "vm: build vm image"
