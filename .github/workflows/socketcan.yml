@@ -1,0 +1,49 @@
+name: socketcan
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+#    needs: [build]
+    runs-on: ubuntu-latest
+    container: ghcr.io/csgracing/vm-images-socketcan:main
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - preset: "linux-test-qemu"
+            target: "can_core_test"
+
+    steps:
+    - name: Checkout repository and submodules
+      uses: actions/checkout@v4
+      with:
+        submodules: 'recursive'
+    - name: Install toolchain
+      run: apt update && DEBIAN_FRONTEND=noninteractive apt-get install -y sshpass screen cmake build-essential python3 git gcovr ninja-build
+    - name: Configure
+      run: cmake -B build . --preset ${{ matrix.preset }}
+    - name: Build
+      run: cmake --build build --parallel $(nproc) -t ${{ matrix.target }}
+    - name: "vm: start"
+      run: screen -dm /bin/bash -c "cd /build && ./tools/run-silkit-qemu-demos-guest.sh" &
+    - name: "vm: wait for system to come up"
+      run: ./waitforssh.sh localhost -p10022
+    - name: "vm: make work directory"
+      run:  sshpass -proot ssh -q -p10022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null root@localhost -p root -t "mkdir -p /work"
+    - name: Copy coverage binary
+      run: sshpass -proot scp -P10022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null $(pwd)/build/${{ matrix.target }}/test-bin/${{ matrix.target }} root@localhost:/work/test
+    - name: Run test
+      run: sshpass -proot ssh -q -p10022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null root@localhost -p root -t "cd /work && ./test"
+    - name: Shutdown vm
+      run: sshpass -proot ssh -q -p10022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null root@localhost -q -t "shutdown 00"
+      if: always()
+#    - name: Test
+#      run: GTEST_OUTPUT="xml:$(pwd)/test_detail.xml" cmake --build build -t ${{ matrix.target }}_coverage
+#    - name: Report test summary
+#      uses: test-summary/action@v2
+#      with:
+#        paths: "test_detail.xml"
+#      if: always()
