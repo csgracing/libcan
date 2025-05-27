@@ -71,6 +71,7 @@
         },
         {
             "name": "core",
+            "inherits": "base",
             "cacheVariables": {
                 "CAN_TARGET": "core"
             },
