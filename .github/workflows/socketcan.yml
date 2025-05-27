@@ -17,12 +17,12 @@ jobs:
             target: "can_core_test"
 
     steps:
+    - name: Install toolchain
+      run: sudo apt update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -y sshpass screen cmake build-essential python3 git gcovr ninja-build
     - name: Checkout repository and submodules
       uses: actions/checkout@v4
       with:
         submodules: 'recursive'
-    - name: Install toolchain
-      run: sudo apt update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -y sshpass screen cmake build-essential python3 git gcovr ninja-build
     - name: Configure
       run: cmake -B build . --preset ${{ matrix.preset }}
     - name: Build
