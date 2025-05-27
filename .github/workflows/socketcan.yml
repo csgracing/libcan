@@ -21,13 +21,13 @@ jobs:
       with:
         submodules: 'recursive'
     - name: Install toolchain
-      run: apt update && DEBIAN_FRONTEND=noninteractive apt-get install -y sshpass screen cmake build-essential python3 git gcovr ninja-build
+      run: sudo apt update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -y sshpass screen cmake build-essential python3 git gcovr ninja-build
     - name: Configure
       run: cmake -B build . --preset ${{ matrix.preset }}
     - name: Build
       run: cmake --build build --parallel $(nproc) -t ${{ matrix.target }}
     - name: "vm: install toolchain"
-      run: apt-get install git gnupg2 linux-virtual libguestfs-tools -y --no-install-recommends
+      run: sudo apt-get install git gnupg2 linux-virtual libguestfs-tools -y --no-install-recommends
     - name: "vm: checkout sil kit"
       run: |
         mkdir build/sil-kit
