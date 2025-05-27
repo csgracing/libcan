@@ -90,6 +90,7 @@ endif()
 if (CAN_TARGET STREQUAL "linux")
     add_subdirectory(lib/linux/socketcan/libsockcanpp)
     add_subdirectory(src/linux/socketcan)
+    add_subdirectory(test/linux/socketcan)
     add_subdirectory(standalone/linux/socketcan)
 endif()
 

@@ -13,7 +13,7 @@ jobs:
       matrix:
         include:
           - preset: "linux-test-qemu"
-            target: "can_core_test"
+            target: "can_linux_socketcan_test"
 
     steps:
     - name: Install toolchain

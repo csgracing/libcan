@@ -39,6 +39,17 @@ do
 done
 
 echo "::endgroup::"
+echo "::group::vm: loading can kernel modules"
+
+do_ssh "modprobe -a can can-dev can-raw can-isotp vcan" || :
+
+echo "::endgroup::"
+echo "::group::vm: adding virtual can interface"
+
+do_ssh "ip link add dev vcan0 type vcan" || :
+do_ssh "ip link set up vcan0" || :
+
+echo "::endgroup::"
 echo "::group::vm: copying test binary"
 
 do_ssh "mkdir -p /work" || :
