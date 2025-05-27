@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - name: Install toolchain
-      run: sudo apt update && DEBIAN_FRONTEND=noninteractive sudo apt-get install -y sshpass screen cmake build-essential python3 git gcovr ninja-build
+      run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y sshpass screen cmake build-essential python3 git gcovr ninja-build
     - name: Checkout repository and submodules
       uses: actions/checkout@v4
       with:
@@ -28,7 +28,7 @@ jobs:
     - name: Build
       run: cmake --build build --parallel $(nproc) -t ${{ matrix.target }}
     - name: "vm: install toolchain"
-      run: sudo apt-get install git gnupg2 linux-virtual libguestfs-tools -y --no-install-recommends
+      run: apt-get install git gnupg2 linux-virtual libguestfs-tools -y --no-install-recommends
     - name: "vm: checkout sil kit"
       run: |
         mkdir build/sil-kit
@@ -38,7 +38,7 @@ jobs:
     - name: "vm: build vm image"
       run: |
         cd build/sil-kit
-        sudo ./tools/build-silkit-qemu-demos-guest.sh
+        ./tools/build-silkit-qemu-demos-guest.sh
     - name: "vm: run tests"
       run: |
         cd build/sil-kit
