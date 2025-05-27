@@ -6,6 +6,7 @@ on:
 
 jobs:
   build:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     runs-on: ubuntu-latest
     
     strategy:
@@ -27,6 +28,7 @@ jobs:
       run: cmake --build build --parallel $(nproc)
   
   test:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
@@ -82,6 +84,7 @@ jobs:
 
   # no code coverage
   test-fuzz:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
@@ -122,6 +125,7 @@ jobs:
       if: ${{ !cancelled() }}
 
   test-qemu:
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
     needs: [build]
     runs-on: ubuntu-latest
     container: ubuntu:24.04
