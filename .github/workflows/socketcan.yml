@@ -8,7 +8,6 @@ jobs:
   test:
 #    needs: [build]
     runs-on: ubuntu-latest
-    container: ghcr.io/csgracing/vm-images-socketcan:main
     strategy:
       fail-fast: false
       matrix:
@@ -27,19 +26,27 @@ jobs:
       run: cmake -B build . --preset ${{ matrix.preset }}
     - name: Build
       run: cmake --build build --parallel $(nproc) -t ${{ matrix.target }}
-    - name: "vm: start"
-      run: screen -dm /bin/bash -c "cd /build && ./tools/run-silkit-qemu-demos-guest.sh" &
-    - name: "vm: wait for system to come up"
-      run: ./waitforssh.sh localhost -p10022
-    - name: "vm: make work directory"
-      run:  sshpass -proot ssh -q -p10022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null root@localhost -p root -t "mkdir -p /work"
-    - name: Copy coverage binary
-      run: sshpass -proot scp -P10022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null $(pwd)/build/${{ matrix.target }}/test-bin/${{ matrix.target }} root@localhost:/work/test
-    - name: Run test
-      run: sshpass -proot ssh -q -p10022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null root@localhost -p root -t "cd /work && ./test"
-    - name: Shutdown vm
-      run: sshpass -proot ssh -q -p10022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null root@localhost -q -t "shutdown 00"
-      if: always()
+    - name: "vm: install toolchain"
+      run: apt-get install git gnupg2 linux-virtual libguestfs-tools -y --no-install-recommends
+    - name: "vm: checkout sil kit"
+      run: |
+        mkdir build/sil-kit
+        cd build-sil-kit
+        git clone https://github.com/vectorgrp/sil-kit-adapters-qemu .
+        git checkout ${SIL_KIT_QEMU_COMMIT}
+    - name: "vm: build vm image"
+      run: |
+        cd build/sil-kit
+        ./tools/build-silkit-qemu-demos-guest.sh
+    - name: "vm: run tests"
+      run: |
+        cd build/sil-kit
+        ./tools/run-silkit-qemu-demos-guest.sh &
+        ./waitforssh.sh localhost -p10022
+        sshpass -proot ssh -q -p10022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null root@localhost -p root -t "mkdir -p /work"
+        sshpass -proot scp -P10022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null $(pwd)/build/${{ matrix.target }}/test-bin/${{ matrix.target }} root@localhost:/work/test
+        sshpass -proot ssh -q -p10022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null root@localhost -p root -t "cd /work && ./test"
+        sshpass -proot ssh -q -p10022 -oStrictHostKeyChecking=no -oUserKnownHostsFile=/dev/null root@localhost -q -t "shutdown 00"
 #    - name: Test
 #      run: GTEST_OUTPUT="xml:$(pwd)/test_detail.xml" cmake --build build -t ${{ matrix.target }}_coverage
 #    - name: Report test summary
