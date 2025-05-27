@@ -37,7 +37,7 @@ jobs:
     - name: "vm: build vm image"
       run: |
         cd build/sil-kit
-        ./tools/build-silkit-qemu-demos-guest.sh
+        sudo ./tools/build-silkit-qemu-demos-guest.sh
     - name: "vm: run tests"
       run: |
         cd build/sil-kit
