@@ -6,7 +6,6 @@ on:
 
 jobs:
   test:
-#    needs: [build]
     runs-on: ubuntu-latest
     container: ubuntu:24.04
     strategy:
@@ -18,33 +17,40 @@ jobs:
 
     steps:
     - name: Install toolchain
-      run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y sshpass screen cmake build-essential python3 git gcovr ninja-build
+      run: apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y sshpass screen cmake build-essential python3 git nodejs gcovr ninja-build 
+
     - name: Checkout repository and submodules
       uses: actions/checkout@v4
       with:
         submodules: 'recursive'
+
     - name: Configure
       run: cmake -B build . --preset ${{ matrix.preset }}
+
     - name: Build
       run: cmake --build build --parallel $(nproc) -t ${{ matrix.target }}
-    - name: "vm: install toolchain"
+
+    - name: "VM: Install Toolchain"
       run: apt-get install git gnupg2 linux-virtual libguestfs-tools -y --no-install-recommends
-    - name: "vm: checkout sil kit"
+
+    - name: "VM: Clone SIL Kit"
       run: |
         mkdir build/sil-kit
         cd build/sil-kit
         git clone https://github.com/vectorgrp/sil-kit-adapters-qemu .
         git checkout 3e01e8578c7d8de9ac6cfafa43bdee9bff3bf3b3
-    - name: "vm: build vm image"
+
+    - name: "VM: Build vm image"
       run: |
         cd build/sil-kit
         ./tools/build-silkit-qemu-demos-guest.sh
-    - name: "vm: run tests"
-      run: ./.github/workflows/scripts/socketcan-run-tests.sh $(pwd)/build/${{ matrix.target }}/test-bin/${{ matrix.target }}
-#    - name: Test
-#      run: GTEST_OUTPUT="xml:$(pwd)/test_detail.xml" cmake --build build -t ${{ matrix.target }}_coverage
-#    - name: Report test summary
-#      uses: test-summary/action@v2
-#      with:
-#        paths: "test_detail.xml"
-#      if: always()
+
+    - name: "VM: Run tests"
+      run: ./.github/workflows/scripts/socketcan-run-tests.sh $(pwd) build/test-bin/${{ matrix.target }}
+      timeout-minutes: 5
+
+    - name: Report test summary
+      uses: test-summary/action@v2
+      with:
+        paths: "test_detail.xml"
+      if: always()
