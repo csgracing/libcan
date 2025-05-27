@@ -8,6 +8,7 @@ jobs:
   test:
 #    needs: [build]
     runs-on: ubuntu-latest
+    container: ubuntu:24.04
     strategy:
       fail-fast: false
       matrix:
@@ -33,7 +34,7 @@ jobs:
         mkdir build/sil-kit
         cd build/sil-kit
         git clone https://github.com/vectorgrp/sil-kit-adapters-qemu .
-        git checkout ${SIL_KIT_QEMU_COMMIT}
+        git checkout 3e01e8578c7d8de9ac6cfafa43bdee9bff3bf3b3
     - name: "vm: build vm image"
       run: |
         cd build/sil-kit
