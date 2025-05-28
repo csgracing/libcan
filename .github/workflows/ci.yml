@@ -175,3 +175,29 @@ jobs:
       with:
         paths: "test_detail.xml"
       if: always()
+    
+    - name: Run gcovr
+      run: /usr/bin/gcovr --xml ${{ matrix.target }}.xml -r $(pwd) -e $(pwd)/lib -e $(pwd)/out -e $(pwd)/build -e $(pwd)/test
+    
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        slug: csgracing/libcan
+        name: test-qemu-${{ github.run_id }}
+        flags: ${{ matrix.preset }}.${{ matrix.target }}
+        directory: build # search in build/ dir
+        files: ./${{ matrix.target }}.xml
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      if: ${{ !cancelled() }}
+
+    - name: Upload test results to Codecov
+      uses: codecov/test-results-action@v1
+      with:
+        slug: csgracing/libcan
+        name: test-qemu-${{ github.run_id }}
+        flags: ${{ matrix.preset }}.${{ matrix.target }}
+        files: ./test_detail.xml
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      if: ${{ !cancelled() }}
