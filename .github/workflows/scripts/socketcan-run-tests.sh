@@ -66,6 +66,11 @@ echo "::group::vm: copying test results"
 do_scp $host:/work/test_detail.xml $1/ || :
 
 echo "::endgroup::"
+echo "::group::vm: copying coverage data"
+
+do_scp $host:$1 $1 || :
+
+echo "::endgroup::"
 echo "::group::vm: shutting down virtual machine"
 
 do_ssh "shutdown 00"
