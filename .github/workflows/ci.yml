@@ -177,7 +177,7 @@ jobs:
       if: always()
     
     - name: Run gcovr
-      run: /usr/bin/gcovr --xml build/${{ matrix.target }}.xml -r $(pwd)
+      run: /usr/bin/gcovr --xml ${{ matrix.target }}.xml -r $(pwd) -e $(pwd)/lib -e $(pwd)/out -e $(pwd)/build -e $(pwd)/test
     
     - name: Upload coverage reports to Codecov
       uses: codecov/codecov-action@v5
@@ -186,6 +186,7 @@ jobs:
         name: test-qemu-${{ github.run_id }}
         flags: ${{ matrix.preset }}.${{ matrix.target }}
         directory: build # search in build/ dir
+        files: ./${{ matrix.target }}.xml
       env:
         CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       if: ${{ !cancelled() }}
