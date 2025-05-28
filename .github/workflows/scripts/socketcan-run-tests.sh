@@ -16,7 +16,7 @@ do_ssh () {
 }
 
 do_scp ()  {
-    sshpass -proot scp -P$port $(get_params) $1 $2
+    sshpass -proot scp -P$port $(get_params) -r $1 $2
 }
 
 echo "::group::vm: booting virtual machine"
