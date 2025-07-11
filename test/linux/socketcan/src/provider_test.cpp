@@ -35,7 +35,7 @@ void LinuxSocketcanProviderTest::SetUp()
     ASSERT_FALSE(m_cb->hasMessage());
 };
 
-TEST_F(LinuxSocketcanProviderTest, testSendMessage)
+TEST_F(LinuxSocketcanProviderTest, testReadMessage)
 {
     // send message using other lib
     can_frame d_frame;
@@ -52,4 +52,42 @@ TEST_F(LinuxSocketcanProviderTest, testSendMessage)
     ASSERT_TRUE(res.has_value());
 
     frame_t frame = res.value();
+};
+
+TEST_F(LinuxSocketcanProviderTest, testReadMessageNoneQueued)
+{
+    ASSERT_FALSE(m_cb->hasMessage());
+    ASSERT_EQ(m_cb->readMessage(), std::nullopt);
+};
+
+TEST_F(LinuxSocketcanProviderTest, testSendMessage)
+{
+    std::string data("12345678");
+
+    frame_res msg = can::protocol::frame::create({0x321,                // id
+                                                  false,                // rtr
+                                                  false,                // ide
+                                                  false,                // edl
+                                                  8,                    // dlc
+                                                  (void *)data.c_str(), // data (ptr)
+                                                  dlc_t(8),             // dlc max for proto
+                                                  8});                  // byte size
+    ASSERT_TRUE(msg.has_value());
+
+    // prepare to send
+    ASSERT_FALSE(m_cb->hasMessage());
+
+    // send and rx same mesasge
+    m_cb->enqueue(msg.value()); // place message in TX queue
+
+    m_cb->handleQueue(); // transmit
+
+    ASSERT_TRUE(m_testDriver->waitForMessages(std::chrono::milliseconds(0)));
+
+    sockcanpp::CanMessage recv = m_testDriver->readMessage();
+    uint32_t recvId = recv.getCanId();
+    std::string recvData = recv.getFrameData();
+
+    ASSERT_EQ(msg.value().id.combined(), recvId);
+    ASSERT_EQ(data, recvData);
 };
