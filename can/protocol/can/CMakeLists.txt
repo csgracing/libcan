@@ -17,4 +17,9 @@ target_include_directories(${PROJECT}
           ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
+# as the "main" subproject, set once here and have it propagate to dependents.
+# set PLOG to local, so instances will not be shared across modules
+# However make this definition an interface to add to dependent's compile defs(?)
+target_compile_definitions(${PROJECT} INTERFACE PLOG_LOCAL)
+
 add_subdirectory(test)
