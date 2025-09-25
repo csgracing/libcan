@@ -3,7 +3,7 @@
 
 #include "gtest/gtest.h"
 
-#include <linux/driver/socketcan/provider.h>
+#include <can/driver/linux/socketcan/provider.h>
 
 // The fixture for testing class Foo.
 class LinuxSocketcanProviderTest : public ::testing::Test
