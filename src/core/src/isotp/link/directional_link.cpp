@@ -18,7 +18,7 @@ namespace can::isotp::link
 
         buf->offset = 0;
 
-        // try not tu use malloc/calloc here, we are in CPP after all.
+        // try not to use malloc/calloc here, we are in CPP after all.
         buf->buffer = new uint8_t[buf_size];
 
         this->buffer = buf;
