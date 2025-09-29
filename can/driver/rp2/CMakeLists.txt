@@ -1,5 +1,5 @@
-set(CAN_NAMESPACE_PREFIX "can::driver::rp2xxx")
-set(CAN_PROJECT_PREFIX "can_driver_rp2xxx")
+set(CAN_NAMESPACE_PREFIX "can::driver::rp2")
+set(CAN_PROJECT_PREFIX "can_driver_rp2")
 
 if (CAN_DRIVER_RP2)
 

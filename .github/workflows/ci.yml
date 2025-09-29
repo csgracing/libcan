@@ -44,7 +44,7 @@ jobs:
       matrix:
         include:
           - preset: "pico-test"
-            target: "can_driver_rp2xxx_mcp2515_test_unit"
+            target: "can_driver_rp2_mcp2515_test_unit"
           - preset: "core-test"
             target: "can_protocol_can_test_unit"
 
