@@ -1,4 +1,4 @@
-#include "can/driver/rp2xxx/mcp2515/provider.h"
+#include "can/driver/rp2/mcp2515/provider.h"
 
 #include "provider_test.h"
 

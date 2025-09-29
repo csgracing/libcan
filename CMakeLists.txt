@@ -7,7 +7,7 @@ include(can/options.cmake)
 
 if (CAN_DRIVER_RP2)
     # Pull in pico sdk (must be before project() call)
-    include(can/driver/rp2xxx/pico-sdk.cmake)
+    include(can/driver/rp2/pico-sdk.cmake)
     
     set(PICO_CXX_ENABLE_RTTI True)
     
