@@ -6,7 +6,7 @@
 
 #include "can/protocol/isotp/error/condition/category/isotp_condition.h"
 
-namespace can::isotp::error::condition
+namespace can::protocol::isotp::error::condition
 {
     enum FrameCondition
     {
@@ -27,7 +27,7 @@ namespace boost
     namespace system
     {
         template <>
-        struct is_error_condition_enum<::can::isotp::error::condition::FrameCondition> : std::true_type
+        struct is_error_condition_enum<::can::protocol::isotp::error::condition::FrameCondition> : std::true_type
         {
         };
     };

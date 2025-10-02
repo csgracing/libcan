@@ -6,18 +6,18 @@
 
 #include "can/util/log/logger.h"
 
-using can::isotp::error::code::SingleFrameError;
+using can::protocol::isotp::error::code::SingleFrameError;
 
-namespace can::isotp::tl::handler
+namespace can::protocol::isotp::tl::handler
 {
-    boost::system::error_code SingleFrameHandler::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
+    boost::system::error_code SingleFrameHandler::handle(can::protocol::classic::frame::frame_t *frame, can::protocol::isotp::link::ISOTPLink *link)
     {
 
         uint8_t sf_dl;
 
         // determine SF_DL (SingleFrame DataLength)
         // check against frametype bitmask
-        if (can::protocol::frame::isType(frame->_type, can::protocol::frame::FrameType::CC))
+        if (can::protocol::classic::frame::isType(frame->_type, can::protocol::classic::frame::FrameType::CC))
         {
 
             // CAN CC
@@ -44,7 +44,7 @@ namespace can::isotp::tl::handler
             else if (sf_dl == pci::sf::cc::DATA_LENGTH_7)
             {
                 // same as previous but only allowed with normal addressing
-                if (frame->ide == can::protocol::frame::data::IDE::EXTENDED_FORMAT)
+                if (frame->ide == can::protocol::classic::frame::data::IDE::EXTENDED_FORMAT)
                 {
                     // invalid as is using extended format, ignore
                     return SingleFrameError::PKT_CC_INVALID_DL_WHILE_EXTENDED;
@@ -79,7 +79,7 @@ namespace can::isotp::tl::handler
 
             LIBCAN_LOG_TRACE_BUF("isotp.tl.handler", message_ptr, length, "SingleFrame contains data: {}");
         }
-        else if (can::protocol::frame::isType(frame->_type, can::protocol::frame::FrameType::FD))
+        else if (can::protocol::classic::frame::isType(frame->_type, can::protocol::classic::frame::FrameType::FD))
         {
             // CAN FD
 

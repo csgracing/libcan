@@ -32,8 +32,8 @@ endmacro()
 
 # Options
 option(CAN_USE_DRIVER "Use a driver to enable sending of CAN frames." OFF)
-can_add_driver_option(rp2 "CAN_USE_DRIVER; NOT CAN_DRIVER_LINUX_SOCKETCAN")
-can_add_driver_option(linux/socketcan "CAN_USE_DRIVER;NOT CAN_DRIVER_RP2")
+can_add_driver_option(rp2 "CAN_USE_DRIVER; NOT CAN_DRIVER_OS_SOCKETCAN")
+can_add_driver_option(os/socketcan "CAN_USE_DRIVER;NOT CAN_DRIVER_RP2")
 
 # Informational logging
 message(STATUS "libcan: version ${CAN_VERSION}")

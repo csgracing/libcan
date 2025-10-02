@@ -15,4 +15,4 @@ target_include_directories(${PROJECT}
           ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_link_libraries(${PROJECT} PUBLIC can::protocol::can can::util::log concurrentqueue)
+target_link_libraries(${PROJECT} PUBLIC can::protocol::classic can::util::log concurrentqueue)

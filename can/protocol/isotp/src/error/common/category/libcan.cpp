@@ -1,6 +1,6 @@
 #include "can/protocol/isotp/error/common/category/libcan.h"
 
-namespace can::isotp::error::common::category
+namespace can::protocol::isotp::error::common::category
 {
     namespace impl
     {

@@ -6,7 +6,7 @@
 
 #include "can/protocol/isotp/error/code/category/isotp_code.h"
 
-namespace can::isotp::error::code
+namespace can::protocol::isotp::error::code
 {
     enum SingleFrameError
     {
@@ -30,7 +30,7 @@ namespace boost
     namespace system
     {
         template <>
-        struct is_error_code_enum<::can::isotp::error::code::SingleFrameError> : std::true_type
+        struct is_error_code_enum<::can::protocol::isotp::error::code::SingleFrameError> : std::true_type
         {
         };
     };

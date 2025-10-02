@@ -1,7 +1,7 @@
 #ifndef LINK_STATE_H_
 #define LINK_STATE_H_
 
-namespace can::isotp::link
+namespace can::protocol::isotp::link
 {
 
     enum LinkState

@@ -4,14 +4,14 @@
 #include "can/protocol/isotp/tl/handler/base.h"
 #include "can/protocol/isotp/tl/pci/frame_type.h"
 
-namespace can::isotp::tl::handler
+namespace can::protocol::isotp::tl::handler
 {
     class SingleFrameHandler : public BaseHandler
     {
     public:
-        SingleFrameHandler() : BaseHandler(can::isotp::tl::pci::FrameType::SINGLE_FRAME) {};
+        SingleFrameHandler() : BaseHandler(can::protocol::isotp::tl::pci::FrameType::SINGLE_FRAME) {};
 
-        boost::system::error_code handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link);
+        boost::system::error_code handle(can::protocol::classic::frame::frame_t *frame, can::protocol::isotp::link::ISOTPLink *link);
     };
 };
 

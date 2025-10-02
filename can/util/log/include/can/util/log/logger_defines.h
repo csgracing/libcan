@@ -1,13 +1,13 @@
 #ifndef CORE_LOGGER_DEFINES_H_
 #define CORE_LOGGER_DEFINES_H_
 
-#define LIBCAN_LOG(severity, prefix, ...)                     \
-    if (!can::logger::Logger::get()->checkSeverity(severity)) \
-    {                                                         \
-        ;                                                     \
-    }                                                         \
-    else                                                      \
-        ((*can::logger::Logger::get().get()) += plog::Record(severity, nullptr, 0, nullptr, nullptr, 0).ref() << "[" << LIBCAN_PRODUCT_NAME << "." << prefix << "] " << fmt::format(__VA_ARGS__).c_str())
+#define LIBCAN_LOG(severity, prefix, ...)                        \
+    if (!can::util::log::Logger::get()->checkSeverity(severity)) \
+    {                                                            \
+        ;                                                        \
+    }                                                            \
+    else                                                         \
+        ((*can::util::log::Logger::get().get()) += plog::Record(severity, nullptr, 0, nullptr, nullptr, 0).ref() << "[" << LIBCAN_PRODUCT_NAME << "." << prefix << "] " << fmt::format(__VA_ARGS__).c_str())
 
 #if LIBCAN_LOG_LEVEL >= LIBCAN_LOG_LEVEL_VERBOSE
 #define LIBCAN_LOG_TRACE(loggerName, ...) \

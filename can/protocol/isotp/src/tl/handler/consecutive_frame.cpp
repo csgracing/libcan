@@ -5,26 +5,26 @@
 
 #include "can/util/log/logger.h"
 
-using can::isotp::error::code::ConsecutiveFrameError;
-using can::isotp::error::code::Success;
+using can::protocol::isotp::error::code::ConsecutiveFrameError;
+using can::protocol::isotp::error::code::Success;
 
-namespace can::isotp::tl::handler
+namespace can::protocol::isotp::tl::handler
 {
-    boost::system::error_code ConsecutiveFrameHandler::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
+    boost::system::error_code ConsecutiveFrameHandler::handle(can::protocol::classic::frame::frame_t *frame, can::protocol::isotp::link::ISOTPLink *link)
     {
-        can::isotp::link::DirectionalLink *recvLink = link->getReceive();
+        can::protocol::isotp::link::DirectionalLink *recvLink = link->getReceive();
 
-        if (recvLink->getState() != can::isotp::link::LinkState::IN_PROGRESS)
+        if (recvLink->getState() != can::protocol::isotp::link::LinkState::IN_PROGRESS)
         {
             // not in progress, ignore
             return ConsecutiveFrameError::LINK_STATE_MISMATCH;
         }
 
-        can::isotp::link::directional_link_buf_t *buf = recvLink->getBuffer();
+        can::protocol::isotp::link::directional_link_buf_t *buf = recvLink->getBuffer();
 
         // parse: sequence number
-        can::isotp::tl::pci::cf::SequenceNumber received_sn = can::isotp::tl::pci::cf::SequenceNumber(frame->data[0] & 0x0F); // byte 1 (bits 3-0 inclusive)
-        can::isotp::tl::pci::cf::SequenceNumber *last_sn = buf->sequence_number;
+        can::protocol::isotp::tl::pci::cf::SequenceNumber received_sn = can::protocol::isotp::tl::pci::cf::SequenceNumber(frame->data[0] & 0x0F); // byte 1 (bits 3-0 inclusive)
+        can::protocol::isotp::tl::pci::cf::SequenceNumber *last_sn = buf->sequence_number;
         // check if SN is expected
         if (!last_sn->precedes(received_sn))
         {
@@ -59,7 +59,7 @@ namespace can::isotp::tl::handler
         if (buf->offset >= buf->size)
         {
             // done
-            recvLink->setState(can::isotp::link::LinkState::FULL);
+            recvLink->setState(can::protocol::isotp::link::LinkState::FULL);
 
             // LIBCAN_LOG_TRACE_BUF("isotp.tl.handler", buf->buffer, buf->size, "RX done, data: {}");
 

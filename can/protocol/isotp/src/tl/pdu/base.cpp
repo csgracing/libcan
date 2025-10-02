@@ -2,9 +2,9 @@
 
 #include "can/protocol/isotp/tl/pci/frame_type.h"
 
-using can::isotp::tl::pci::FrameType;
+using can::protocol::isotp::tl::pci::FrameType;
 
-namespace can::isotp::tl::pdu
+namespace can::protocol::isotp::tl::pdu
 {
     Base::Base(FrameType type, uint8_t payload_size)
     {

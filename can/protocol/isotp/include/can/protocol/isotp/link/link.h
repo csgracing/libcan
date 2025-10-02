@@ -3,22 +3,22 @@
 
 #include "can/protocol/isotp/link/directional_link.h"
 
-#include "can/protocol/can/frame/identifier.h"
+#include "can/protocol/classic/frame/identifier.h"
 #include "can/driver/base/base.h"
 
-namespace can::isotp::link
+namespace can::protocol::isotp::link
 {
 
     class ISOTPLink
     {
     private:
-        can::providers::base::CANBus *bus;
+        can::driver::base::CANBus *bus;
         DirectionalLink *send, *receive;
 
-        moodycamel::ConcurrentQueue<can::isotp::link::directional_link_buf_t> *queue;
+        moodycamel::ConcurrentQueue<can::protocol::isotp::link::directional_link_buf_t> *queue;
 
     public:
-        ISOTPLink(can::providers::base::CANBus *bus, can::protocol::frame::identifier id_tx, can::protocol::frame::identifier id_rx);
+        ISOTPLink(can::driver::base::CANBus *bus, can::protocol::classic::frame::identifier id_tx, can::protocol::classic::frame::identifier id_rx);
         // virtual ~ISOTPLink(); // destructor
 
         // "getters"
@@ -28,15 +28,15 @@ namespace can::isotp::link
         inline void setSend(DirectionalLink *entry) { this->send = entry; };
         inline void setReceive(DirectionalLink *entry) { this->receive = entry; };
 
-        can::protocol::frame::identifier getKey() { return receive->getId(); };
+        can::protocol::classic::frame::identifier getKey() { return receive->getId(); };
 
-        can::providers::base::CANBus *getBus() { return bus; };
+        can::driver::base::CANBus *getBus() { return bus; };
 
         // "setters"
         // void setSend(directional_entry_t *send)
 
         // queue
-        moodycamel::ConcurrentQueue<can::isotp::link::directional_link_buf_t> *getQueue() { return this->queue; };
+        moodycamel::ConcurrentQueue<can::protocol::isotp::link::directional_link_buf_t> *getQueue() { return this->queue; };
     };
 }
 

@@ -2,15 +2,15 @@
 
 #include "can/protocol/isotp/tl/pci/frame_type.h"
 
-#include "can/protocol/can/frame/frame.h"
+#include "can/protocol/classic/frame/frame.h"
 
 #include "can/util/log/logger.h"
 
-using can::isotp::tl::pci::FrameType;
+using can::protocol::isotp::tl::pci::FrameType;
 
-namespace can::isotp::tl::pdu
+namespace can::protocol::isotp::tl::pdu
 {
-    FlowControl::FlowControl(can::isotp::tl::pci::fc::FlowStatus status, uint8_t block_size, uint8_t separation_time) : Base::Base(FrameType::FLOW_CONTROL_FRAME, 3)
+    FlowControl::FlowControl(can::protocol::isotp::tl::pci::fc::FlowStatus status, uint8_t block_size, uint8_t separation_time) : Base::Base(FrameType::FLOW_CONTROL_FRAME, 3)
     {
         this->status = status;
         this->block_size = block_size;

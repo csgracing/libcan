@@ -80,7 +80,7 @@ add_subdirectory(lib/common/moodycamel/concurrentqueue)
 add_subdirectory(lib/common/fmt)
 add_subdirectory(lib/common/plog)
 
-if (CAN_DRIVER_LINUX_SOCKETCAN)
+if (CAN_DRIVER_OS_SOCKETCAN)
     add_subdirectory(lib/linux/socketcan/libsockcanpp)
 endif()
 

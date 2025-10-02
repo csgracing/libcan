@@ -3,9 +3,9 @@
 
 #include "can/protocol/isotp/link/link.h"
 #include "can/protocol/isotp/tl/pci/frame_type.h"
-#include "can/protocol/can/frame/frame.h"
+#include "can/protocol/classic/frame/frame.h"
 
-namespace can::isotp::tl
+namespace can::protocol::isotp::tl
 {
     /**
      * Protocol Data Unit
@@ -17,14 +17,14 @@ namespace can::isotp::tl
         class Base
         {
         private:
-            can::isotp::tl::pci::FrameType type;
+            can::protocol::isotp::tl::pci::FrameType type;
             uint8_t payload_size;
 
         public:
-            Base(can::isotp::tl::pci::FrameType type, uint8_t payload_size);
+            Base(can::protocol::isotp::tl::pci::FrameType type, uint8_t payload_size);
             // virtual ~Base(); // desructor
 
-            inline can::isotp::tl::pci::FrameType getType() { return type; };
+            inline can::protocol::isotp::tl::pci::FrameType getType() { return type; };
             inline uint8_t getPayloadSize() { return payload_size; };
 
             // derived classes must provide an implementation (=0)

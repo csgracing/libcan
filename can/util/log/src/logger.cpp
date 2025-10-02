@@ -5,7 +5,7 @@
 #include <plog/Initializers/ConsoleInitializer.h>
 #include <plog/Formatters/MessageOnlyFormatter.h>
 
-namespace can::logger
+namespace can::util::log
 {
     std::once_flag Logger::flag;
 

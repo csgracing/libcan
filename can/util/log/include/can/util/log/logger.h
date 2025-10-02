@@ -23,7 +23,7 @@
 #include <plog/Log.h>
 #include <plog/Logger.h>
 
-namespace can::logger
+namespace can::util::log
 {
 
     class Logger

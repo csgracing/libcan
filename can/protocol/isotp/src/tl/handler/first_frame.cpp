@@ -7,12 +7,12 @@
 
 #include "can/util/log/logger.h"
 
-using can::isotp::error::code::FirstFrameError;
-using can::isotp::error::code::Success;
+using can::protocol::isotp::error::code::FirstFrameError;
+using can::protocol::isotp::error::code::Success;
 
-namespace can::isotp::tl::handler
+namespace can::protocol::isotp::tl::handler
 {
-    boost::system::error_code FirstFrameHandler::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
+    boost::system::error_code FirstFrameHandler::handle(can::protocol::classic::frame::frame_t *frame, can::protocol::isotp::link::ISOTPLink *link)
     {
 
         LIBCAN_LOG_TRACE("isotp.tl.handler", "Handling FirstFrame");
@@ -28,15 +28,15 @@ namespace can::isotp::tl::handler
         // MINIMUM data length for first frame
         uint32_t min_ff_dl;
 
-        bool isExtendedAddressing = can::protocol::frame::isType(frame->_type, can::protocol::frame::FrameType::UNKNOWN_EXTENDED);
+        bool isExtendedAddressing = can::protocol::classic::frame::isType(frame->_type, can::protocol::classic::frame::FrameType::UNKNOWN_EXTENDED);
 
         // TODO: frame->_max_dlc never set/used.
-        if (frame->_max_dlc == can::protocol::frame::MaxDLC::MAX_DLC_CC)
+        if (frame->_max_dlc == can::protocol::classic::frame::MaxDLC::MAX_DLC_CC)
         {
             // If extended addressing, FF_DL (min) is 7, otherwise 8 (normal addressing)
             min_ff_dl = isExtendedAddressing ? 7 : 8;
         }
-        else if (frame->_max_dlc == can::protocol::frame::MaxDLC::MAX_DLC_FD)
+        else if (frame->_max_dlc == can::protocol::classic::frame::MaxDLC::MAX_DLC_FD)
         {
             // If extended addressing, FF_DL (min) is bsize-2, otherwise bsize-1 (normal addressing)
             min_ff_dl = isExtendedAddressing ? (frame->_bsize.to_ulong() - 2) : (frame->_bsize.to_ulong() - 1);
@@ -99,8 +99,8 @@ namespace can::isotp::tl::handler
         // -- Directional Entry Creation
 
         // allocate link buffer of size ff_dl
-        can::isotp::link::DirectionalLink *recvLink = link->getReceive();
-        recvLink->setState(can::isotp::link::LinkState::IN_PROGRESS);
+        can::protocol::isotp::link::DirectionalLink *recvLink = link->getReceive();
+        recvLink->setState(can::protocol::isotp::link::LinkState::IN_PROGRESS);
         recvLink->allocateBuffer(ff_dl);
 
         // determine how much to copy this frame & start byte
@@ -116,7 +116,7 @@ namespace can::isotp::tl::handler
         // -- Response sending (TODO)
 
         // for now we just print.
-        can::isotp::link::directional_link_buf_t *buf = recvLink->getBuffer();
+        can::protocol::isotp::link::directional_link_buf_t *buf = recvLink->getBuffer();
 
         // print current and  max len/size
         LIBCAN_LOG_TRACE("isotp.tl.handler", "RX directional buffer has {:d} of {:d} bytes received", buf->offset, buf->size);
@@ -127,16 +127,16 @@ namespace can::isotp::tl::handler
 
         // FC TL_PDU(CTS)
 
-        can::isotp::tl::pci::fc::FlowStatus status = can::isotp::tl::pci::fc::FlowStatus::CONTINUE_TO_SEND;
-        can::isotp::tl::pdu::FlowControl *fc = new can::isotp::tl::pdu::FlowControl(status, 0x0, 0x0);
+        can::protocol::isotp::tl::pci::fc::FlowStatus status = can::protocol::isotp::tl::pci::fc::FlowStatus::CONTINUE_TO_SEND;
+        can::protocol::isotp::tl::pdu::FlowControl *fc = new can::protocol::isotp::tl::pdu::FlowControl(status, 0x0, 0x0);
 
         uint8_t *payload = fc->createPayload();
         uint8_t payload_size = fc->getPayloadSize();
-        can::protocol::frame::frame_res res = link->getBus()->createFrame(link->getSend()->getId(), payload, payload_size);
+        can::protocol::classic::frame::frame_res res = link->getBus()->createFrame(link->getSend()->getId(), payload, payload_size);
 
         if (res.has_value())
         {
-            can::protocol::frame::frame_t frame = res.value();
+            can::protocol::classic::frame::frame_t frame = res.value();
 
             LIBCAN_LOG_TRACE_BUF("isotp.tl.handler", frame.data, frame._bsize.to_ulong(), "Response FlowControl frame contains data: {}");
 

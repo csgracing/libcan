@@ -2,7 +2,7 @@
 
 #include "can/protocol/isotp/link/directional_link.h"
 
-using can::isotp::tl::pci::cf::SequenceNumber;
+using can::protocol::isotp::tl::pci::cf::SequenceNumber;
 
 TEST_F(SequenceNumberTest, initialisationNewDefValue)
 {

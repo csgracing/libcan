@@ -5,7 +5,7 @@
 
 #include <cstdint> // uint8_t
 
-namespace can::isotp::tl::pci
+namespace can::protocol::isotp::tl::pci
 {
     /**
      * ConsecutiveFrame TL_PCI parameter definition

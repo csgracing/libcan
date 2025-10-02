@@ -1,7 +1,7 @@
 #ifndef COMMON_OVERLOAD_H_
 #define COMMON_OVERLOAD_H_
 
-namespace can::isotp::error::common
+namespace can::protocol::isotp::error::common
 {
     // std visit "switch" style
     // https://stackoverflow.com/a/63483353

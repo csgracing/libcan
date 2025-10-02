@@ -13,7 +13,7 @@
 #include "can/protocol/isotp/error/code/link_manager.h"
 #include "can/protocol/isotp/error/code/single_frame.h"
 
-namespace can::isotp::error::code
+namespace can::protocol::isotp::error::code
 {
     enum Success
     {

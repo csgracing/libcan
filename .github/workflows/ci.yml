@@ -142,7 +142,7 @@ jobs:
       matrix:
         include:
           - preset: "linux-test-qemu"
-            target: "can_driver_linux_socketcan_test_unit"
+            target: "can_driver_os_socketcan_test_unit"
 
     steps:
     - name: Install toolchain

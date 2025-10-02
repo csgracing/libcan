@@ -11,9 +11,9 @@
 #include "hardware/gpio.h"
 #endif
 
-namespace can::providers::rp2040::mcp2515
+namespace can::driver::rp2::mcp2515
 {
-    CANBus::CANBus(std::optional<can::providers::base::bitrate_enum_t> b, can::providers::base::Options *o) : CANBusInterface(b, o)
+    CANBus::CANBus(std::optional<can::driver::base::bitrate_enum_t> b, can::driver::base::Options *o) : CANBusInterface(b, o)
     {
         printf("MCP2515 CANBus init\n");
 
@@ -37,22 +37,22 @@ namespace can::providers::rp2040::mcp2515
         this->chip.setNormalMode();
     }
 
-    can::protocol::frame::frame_res CANBus::readMessage()
+    can::protocol::classic::frame::frame_res CANBus::readMessage()
     {
         ::mcp2515::can_frame rx;
         if (this->chip.readMessage(&rx) == ::mcp2515::MCP2515::ERROR_OK)
         {
-            can::protocol::frame::frame_raw_t raw_frame = {
-                rx.can_id >> 3,                            // id: bits 0-28 (shift out 29,30,31)
-                (bool)(rx.can_id & CAN_RTR_FLAG),          // rtr: bit 30
-                (bool)(rx.can_id & CAN_EFF_FLAG),          // ide: bit 31
-                can::protocol::frame::data::EDL::CC_FRAME, // edl: we only support CC frames
-                rx.can_dlc,                                // dlc
-                &rx.data,                                  // data
-                8                                          // (max) data size
+            can::protocol::classic::frame::frame_raw_t raw_frame = {
+                rx.can_id >> 3,                                     // id: bits 0-28 (shift out 29,30,31)
+                (bool)(rx.can_id & CAN_RTR_FLAG),                   // rtr: bit 30
+                (bool)(rx.can_id & CAN_EFF_FLAG),                   // ide: bit 31
+                can::protocol::classic::frame::data::EDL::CC_FRAME, // edl: we only support CC frames
+                rx.can_dlc,                                         // dlc
+                &rx.data,                                           // data
+                8                                                   // (max) data size
             };
 
-            return can::protocol::frame::create(raw_frame);
+            return can::protocol::classic::frame::create(raw_frame);
         }
         return std::nullopt;
     }

@@ -50,7 +50,7 @@
             "inherits": "base",
             "cacheVariables": {
                 "CAN_USE_DRIVER": true,
-                "CAN_DRIVER_LINUX_SOCKETCAN": true
+                "CAN_DRIVER_OS_SOCKETCAN": true
             },
             "architecture": {
                 "value": "x64",

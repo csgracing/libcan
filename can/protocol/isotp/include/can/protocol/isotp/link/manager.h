@@ -5,29 +5,29 @@
 
 #include <boost/system/error_code.hpp>
 
-#include "can/protocol/can/frame/identifier.h"
+#include "can/protocol/classic/frame/identifier.h"
 
 #include "can/protocol/isotp/link/link.h"
 
 #include "can/protocol/isotp/tl/handler/manager.h"
 
-namespace can::isotp::link
+namespace can::protocol::isotp::link
 {
     class LinkManager
     {
     private:
-        std::unordered_map<can::protocol::frame::identifier, ISOTPLink *, can::protocol::frame::identifier_hasher> *active_links;
-        can::isotp::tl::handler::HandlerManager *handlers;
+        std::unordered_map<can::protocol::classic::frame::identifier, ISOTPLink *, can::protocol::classic::frame::identifier_hasher> *active_links;
+        can::protocol::isotp::tl::handler::HandlerManager *handlers;
 
     public:
         LinkManager();
         // virtual ~LinkManager(); // destructor
 
-        bool contains(can::protocol::frame::identifier id);
+        bool contains(can::protocol::classic::frame::identifier id);
 
         bool add(ISOTPLink *link);
 
-        boost::system::error_code handle_receive(can::protocol::frame::frame_t *frame);
+        boost::system::error_code handle_receive(can::protocol::classic::frame::frame_t *frame);
     };
 }
 

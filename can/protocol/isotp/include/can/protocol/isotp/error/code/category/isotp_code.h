@@ -3,11 +3,11 @@
 
 #include "can/protocol/isotp/error/common/category/isotp.h"
 
-namespace can::isotp::error::code::category
+namespace can::protocol::isotp::error::code::category
 {
     namespace impl
     {
-        class ISOTPCodeCategory : public can::isotp::error::common::category::impl::ISOTP
+        class ISOTPCodeCategory : public can::protocol::isotp::error::common::category::impl::ISOTP
         {
         public:
             const char *name() const noexcept override;

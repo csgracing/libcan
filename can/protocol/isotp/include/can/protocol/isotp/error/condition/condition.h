@@ -5,7 +5,7 @@
 
 #include "can/protocol/isotp/error/condition/frame_condition.h"
 
-namespace can::isotp::error::condition
+namespace can::protocol::isotp::error::condition
 {
     struct Condition
     {

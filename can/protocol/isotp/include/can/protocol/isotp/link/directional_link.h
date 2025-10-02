@@ -5,12 +5,12 @@
 
 #include "can/protocol/isotp/link/state.h"
 
-#include "can/protocol/can/frame/identifier.h"
+#include "can/protocol/classic/frame/identifier.h"
 #include "can/driver/base/base.h"
 
 #include "can/protocol/isotp/tl/pci/consecutive_frame.h"
 
-namespace can::isotp::link
+namespace can::protocol::isotp::link
 {
 
     struct directional_link_buf_t
@@ -19,20 +19,20 @@ namespace can::isotp::link
         uint8_t *buffer;
         uint32_t size; // uint32_t (-1?) max isotp message size (theoretical)
         uint32_t offset;
-        can::isotp::tl::pci::cf::SequenceNumber *sequence_number = nullptr;
+        can::protocol::isotp::tl::pci::cf::SequenceNumber *sequence_number = nullptr;
     };
 
     class DirectionalLink
     {
     private:
-        can::protocol::frame::identifier id;
+        can::protocol::classic::frame::identifier id;
         LinkState state;
 
         // if not nullptr than assigned to something and hasBuffer will always be true
         directional_link_buf_t *buffer = nullptr;
 
     public:
-        DirectionalLink(can::providers::base::CANBus *bus, can::protocol::frame::identifier id);
+        DirectionalLink(can::driver::base::CANBus *bus, can::protocol::classic::frame::identifier id);
 
         void allocateBuffer(uint32_t buf_size);
 
@@ -41,7 +41,7 @@ namespace can::isotp::link
             return this->buffer != nullptr;
         };
 
-        inline can::protocol::frame::identifier getId() { return this->id; };
+        inline can::protocol::classic::frame::identifier getId() { return this->id; };
 
         inline directional_link_buf_t *getBuffer() { return this->buffer; };
 

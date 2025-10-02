@@ -4,16 +4,16 @@
 
 #include <iostream>
 
-using can::isotp::error::code::FrameHandleError;
+using can::protocol::isotp::error::code::FrameHandleError;
 
-namespace can::isotp::tl::handler
+namespace can::protocol::isotp::tl::handler
 {
     HandlerManager::HandlerManager()
     {
-        active_handlers = new std::unordered_map<can::isotp::tl::pci::FrameType, BaseHandler *, can::isotp::tl::pci::FrameType::frame_type_hasher>;
+        active_handlers = new std::unordered_map<can::protocol::isotp::tl::pci::FrameType, BaseHandler *, can::protocol::isotp::tl::pci::FrameType::frame_type_hasher>;
     }
 
-    bool HandlerManager::contains(can::isotp::tl::pci::FrameType type)
+    bool HandlerManager::contains(can::protocol::isotp::tl::pci::FrameType type)
     {
         // note that C++20 has contains()
         return (active_handlers->find(type) != active_handlers->end());
@@ -21,7 +21,7 @@ namespace can::isotp::tl::handler
 
     bool HandlerManager::add(BaseHandler *handler)
     {
-        can::isotp::tl::pci::FrameType key = handler->getType();
+        can::protocol::isotp::tl::pci::FrameType key = handler->getType();
 
         // check if if already registered
         if (!contains(key))
@@ -38,9 +38,9 @@ namespace can::isotp::tl::handler
         return false;
     };
 
-    boost::system::error_code HandlerManager::handle(can::protocol::frame::frame_t *frame, can::isotp::link::ISOTPLink *link)
+    boost::system::error_code HandlerManager::handle(can::protocol::classic::frame::frame_t *frame, can::protocol::isotp::link::ISOTPLink *link)
     {
-        can::isotp::tl::pci::FrameType key = can::isotp::tl::pci::FrameType::GetFrameType(frame);
+        can::protocol::isotp::tl::pci::FrameType key = can::protocol::isotp::tl::pci::FrameType::GetFrameType(frame);
         // check if frame rx id is in map
         if (contains(key))
         {

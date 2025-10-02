@@ -1,8 +1,8 @@
 #include "can/protocol/isotp/error/code/code.h"
 
-using can::isotp::error::condition::FrameCondition;
+using can::protocol::isotp::error::condition::FrameCondition;
 
-namespace can::isotp::error::code
+namespace can::protocol::isotp::error::code
 {
     std::unordered_map<int, code_property_t> code_messages = {
         {ConsecutiveFrameError::LINK_STATE_MISMATCH,
@@ -47,18 +47,18 @@ namespace can::isotp::error::code
 
 //{Success::SUCCESS},
 /**
-{ConsecutiveFrameError::LINK_STATE_MISMATCH, {"Link state mismatch", can::isotp::error::condition::FrameCondition::ISOTP_FRAME_IGNORED}},
-{ConsecutiveFrameError::PKT_SEQUENCE_NUMBER_MISMATCH, {"Sequence number mismatch", can::isotp::error::condition::FrameCondition::ISOTP_FRAME_IGNORED}},
+{ConsecutiveFrameError::LINK_STATE_MISMATCH, {"Link state mismatch", can::protocol::isotp::error::condition::FrameCondition::ISOTP_FRAME_IGNORED}},
+{ConsecutiveFrameError::PKT_SEQUENCE_NUMBER_MISMATCH, {"Sequence number mismatch", can::protocol::isotp::error::condition::FrameCondition::ISOTP_FRAME_IGNORED}},
 {
     ConsecutiveFrameError::PKT_PAYLOAD_TOO_LONG,
     {"Payload too long",
-     can::isotp::error::condition::FrameCondition::ISOTP_FRAME_INVALID},
+     can::protocol::isotp::error::condition::FrameCondition::ISOTP_FRAME_INVALID},
 },
 
-{FirstFrameError::PKT_UNEXPECTED_SIGNALLING, {"Unexpected signalling.", can::isotp::error::condition::FrameCondition::ISOTP_FRAME_INVALID}},
+{FirstFrameError::PKT_UNEXPECTED_SIGNALLING, {"Unexpected signalling.", can::protocol::isotp::error::condition::FrameCondition::ISOTP_FRAME_INVALID}},
 
 {FrameHandleError::NO_HANDLER_FOR_TYPE,
- {"No handler for type", can::isotp::error::condition::FrameCondition::ISOTP_FRAME_IGNORED}},
+ {"No handler for type", can::protocol::isotp::error::condition::FrameCondition::ISOTP_FRAME_IGNORED}},
 
-{LinkManagerError::IGNORED_ID_NOT_REGISTERED, {"Packet was ignored.", can::isotp::error::condition::FrameCondition::ISOTP_FRAME_IGNORED}},
+{LinkManagerError::IGNORED_ID_NOT_REGISTERED, {"Packet was ignored.", can::protocol::isotp::error::condition::FrameCondition::ISOTP_FRAME_IGNORED}},
 */

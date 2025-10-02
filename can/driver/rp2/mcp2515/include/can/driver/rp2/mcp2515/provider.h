@@ -25,11 +25,11 @@
         func = CANBus::global_isr_##n; \
         break;
 
-namespace can::providers::rp2040::mcp2515
+namespace can::driver::rp2::mcp2515
 {
 
     // implementation specific
-    enum class Bitrate : can::providers::base::bitrate_enum_t
+    enum class Bitrate : can::driver::base::bitrate_enum_t
     {
         BITRATE_5000 = ::mcp2515::CAN_SPEED::CAN_5KBPS,
         BITRATE_10000 = ::mcp2515::CAN_SPEED::CAN_10KBPS,
@@ -49,14 +49,14 @@ namespace can::providers::rp2040::mcp2515
         BITRATE_1000000 = ::mcp2515::CAN_SPEED::CAN_1000KBPS
     };
 
-    enum class Clock : can::providers::base::clock_enum_t
+    enum class Clock : can::driver::base::clock_enum_t
     {
         CLOCK_8_MHZ = ::mcp2515::CAN_CLOCK::MCP_8MHZ,
         CLOCK_16_MHZ = ::mcp2515::CAN_CLOCK::MCP_16MHZ,
         CLOCK_20_MHZ = ::mcp2515::CAN_CLOCK::MCP_20MHZ
     };
 
-    struct Options : can::providers::base::Options
+    struct Options : can::driver::base::Options
     {
         Clock clock;
         uint interrupt_pin;
@@ -65,13 +65,13 @@ namespace can::providers::rp2040::mcp2515
     /**
      * An interface that defines internal functions for the provider so that these functions can be mocked.
      */
-    class CANBusInterface : can::providers::base::CANBus
+    class CANBusInterface : can::driver::base::CANBus
     {
     private:
         virtual uint8_t bindToNextIsrId() = 0;
 
     public:
-        CANBusInterface(std::optional<can::providers::base::bitrate_enum_t> b, can::providers::base::Options *o) : can::providers::base::CANBus(b, o) {};
+        CANBusInterface(std::optional<can::driver::base::bitrate_enum_t> b, can::driver::base::Options *o) : can::driver::base::CANBus(b, o) {};
         virtual ~CANBusInterface() = default; // desructor
     };
 
@@ -87,10 +87,10 @@ namespace can::providers::rp2040::mcp2515
         // gpio_irq_level level;
 
     public:
-        CANBus(std::optional<can::providers::base::bitrate_enum_t> b, can::providers::base::Options *o);
+        CANBus(std::optional<can::driver::base::bitrate_enum_t> b, can::driver::base::Options *o);
         virtual ~CANBus(); // desructor
 
-        can::protocol::frame::frame_res readMessage();
+        can::protocol::classic::frame::frame_res readMessage();
         bool hasMessage();
 
         // inline to define not just declare

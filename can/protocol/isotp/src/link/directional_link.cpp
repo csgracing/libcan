@@ -1,8 +1,8 @@
 #include "can/protocol/isotp/link/directional_link.h"
 
-namespace can::isotp::link
+namespace can::protocol::isotp::link
 {
-    DirectionalLink::DirectionalLink(can::providers::base::CANBus *bus, can::protocol::frame::identifier id)
+    DirectionalLink::DirectionalLink(can::driver::base::CANBus *bus, can::protocol::classic::frame::identifier id)
     {
         this->id = id;
         this->state = LinkState::IDLE; // default state
@@ -12,7 +12,7 @@ namespace can::isotp::link
     {
         directional_link_buf_t *buf = new directional_link_buf_t();
 
-        buf->sequence_number = new can::isotp::tl::pci::cf::SequenceNumber();
+        buf->sequence_number = new can::protocol::isotp::tl::pci::cf::SequenceNumber();
 
         buf->size = buf_size;
 

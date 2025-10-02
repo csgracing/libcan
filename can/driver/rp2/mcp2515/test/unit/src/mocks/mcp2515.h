@@ -3,7 +3,7 @@
 // pico-mcp2515
 #include "mcp2515/mcp2515.h"
 
-using namespace can::providers::rp2040::mcp2515;
+using namespace can::driver::rp2::mcp2515;
 
 class MockMCP2515 : MCP2515
 {

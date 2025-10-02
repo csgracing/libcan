@@ -3,9 +3,9 @@
 
 #include <cstdint> // uint8_t
 
-#include "can/protocol/can/frame/frame.h"
+#include "can/protocol/classic/frame/frame.h"
 
-namespace can::isotp::tl
+namespace can::protocol::isotp::tl
 {
     /**
      * Protocol Control Information
@@ -52,7 +52,7 @@ namespace can::isotp::tl
                 };
             };
 
-            static const inline pci::FrameType GetFrameType(can::protocol::frame::frame_t *frame)
+            static const inline pci::FrameType GetFrameType(can::protocol::classic::frame::frame_t *frame)
             {
                 // first bite, bits 7-4
                 return pci::FrameType(frame->data[0] >> 4);

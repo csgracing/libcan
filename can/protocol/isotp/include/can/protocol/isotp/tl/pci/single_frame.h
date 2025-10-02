@@ -1,7 +1,7 @@
 #ifndef DL_SINGLE_FRAME_H_
 #define DL_SINGLE_FRAME_H_
 
-namespace can::isotp::tl::pci
+namespace can::protocol::isotp::tl::pci
 {
     /**
      * SingleFrame TL_PCI parameter definition

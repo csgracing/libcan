@@ -28,6 +28,6 @@ target_include_directories(${PROJECT}
           ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_link_libraries(${PROJECT} PUBLIC can::protocol::can can::driver::base Boost::system fmt::fmt)
+target_link_libraries(${PROJECT} PUBLIC can::protocol::classic can::driver::base Boost::system fmt::fmt)
 
 add_subdirectory(test)

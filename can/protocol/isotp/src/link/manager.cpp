@@ -8,17 +8,17 @@
 
 #include "can/util/log/logger.h"
 
-using can::isotp::error::code::LinkManagerError;
+using can::protocol::isotp::error::code::LinkManagerError;
 
-using namespace can::isotp::tl;
+using namespace can::protocol::isotp::tl;
 
-namespace can::isotp::link
+namespace can::protocol::isotp::link
 {
     LinkManager::LinkManager()
     {
         LIBCAN_LOG_DEBUG("isotp.link", "Created new link manager");
         // init unordered map
-        active_links = new std::unordered_map<can::protocol::frame::identifier, ISOTPLink *, can::protocol::frame::identifier_hasher>();
+        active_links = new std::unordered_map<can::protocol::classic::frame::identifier, ISOTPLink *, can::protocol::classic::frame::identifier_hasher>();
 
         // register handlers
         handlers = new handler::HandlerManager();
@@ -27,7 +27,7 @@ namespace can::isotp::link
         handlers->add(new handler::ConsecutiveFrameHandler());
     };
 
-    bool LinkManager::contains(can::protocol::frame::identifier id)
+    bool LinkManager::contains(can::protocol::classic::frame::identifier id)
     {
         // note that C++20 has contains()
         return (active_links->find(id) != active_links->end());
@@ -35,7 +35,7 @@ namespace can::isotp::link
 
     bool LinkManager::add(ISOTPLink *link)
     {
-        can::protocol::frame::identifier key = link->getKey();
+        can::protocol::classic::frame::identifier key = link->getKey();
 
         // check if if already registered
         if (!contains(key))
@@ -55,7 +55,7 @@ namespace can::isotp::link
         return false;
     };
 
-    boost::system::error_code LinkManager::handle_receive(can::protocol::frame::frame_t *frame)
+    boost::system::error_code LinkManager::handle_receive(can::protocol::classic::frame::frame_t *frame)
     {
         // check if frame rx id is in map
         if (contains(frame->id))

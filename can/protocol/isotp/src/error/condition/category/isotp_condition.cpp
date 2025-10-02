@@ -8,11 +8,11 @@
 #include "can/protocol/isotp/error/condition/condition.h"
 #include "can/protocol/isotp/error/condition/frame_condition.h"
 
-using can::isotp::error::common::overloaded;
-using can::isotp::error::condition::Condition;
-using can::isotp::error::condition::FrameCondition;
+using can::protocol::isotp::error::common::overloaded;
+using can::protocol::isotp::error::condition::Condition;
+using can::protocol::isotp::error::condition::FrameCondition;
 
-namespace can::isotp::error::condition::category
+namespace can::protocol::isotp::error::condition::category
 {
     namespace impl
     {
