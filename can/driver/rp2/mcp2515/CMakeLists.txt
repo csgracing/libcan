@@ -20,7 +20,7 @@ set(LINK_LIBS Boost::preprocessor Boost::conversion pico_stdlib can::driver::bas
 
 if (IS_TEST_ENV STREQUAL "true")
     message("${PROJECT}: Adding test-only dependencies...")
-    set(LINK_LIBS ${LINK_LIBS} can::driver::rp2xxx::mcp2515::test_stubs)
+    set(LINK_LIBS ${LINK_LIBS} can::driver::rp2::mcp2515::test_stubs)
     message("${PROJECT}: Setting test env define...")
     target_compile_definitions(${PROJECT} PRIVATE IS_TEST_ENV=1)
 else()

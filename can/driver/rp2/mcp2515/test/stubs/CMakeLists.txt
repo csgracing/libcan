@@ -1,6 +1,6 @@
 if (IS_TEST_ENV STREQUAL "true")
 
-    set(PROJECT can_driver_rp2xxx_mcp2515_test_stubs)
+    set(PROJECT can_driver_rp2_mcp2515_test_stubs)
 
     project(
         ${PROJECT}
@@ -10,7 +10,7 @@ if (IS_TEST_ENV STREQUAL "true")
 
     add_library(${PROJECT} ${CMAKE_CURRENT_SOURCE_DIR}/null.c)
 
-    add_library(can::driver::rp2xxx::mcp2515::test_stubs ALIAS ${PROJECT})
+    add_library(can::driver::rp2::mcp2515::test_stubs ALIAS ${PROJECT})
 
     target_include_directories(${PROJECT} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 

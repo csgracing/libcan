@@ -19,7 +19,7 @@ set(LINK_LIBS pico_stdlib)
 
 if (IS_TEST_ENV STREQUAL "true")
     message("${PROJECT}: Adding test-only dependencies...")
-    set(LINK_LIBS ${LINK_LIBS} can::driver::rp2xxx::mcp2515::test_stubs)
+    set(LINK_LIBS ${LINK_LIBS} can::driver::rp2::mcp2515::test_stubs)
 else()
     message("${PROJECT}: Adding production-only dependencies...")
     set(LINK_LIBS ${LINK_LIBS} hardware_spi)

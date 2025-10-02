@@ -1,7 +1,7 @@
 #include <gmock/gmock.h> // Brings in gMock.
 
 // impl
-#include "can/driver/rp2xxx/mcp2515/provider.h"
+#include "can/driver/rp2/mcp2515/provider.h"
 
 using namespace can::driver::rp2::mcp2515;
 
