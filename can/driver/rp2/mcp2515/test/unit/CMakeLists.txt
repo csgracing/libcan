@@ -6,7 +6,7 @@ if (IS_TEST_ENV STREQUAL "true")
         ${CMAKE_CURRENT_SOURCE_DIR}/src/provider_test.cpp
     )
 
-    target_link_libraries(${PROJECT} can::driver::rp2xxx::mcp2515 gmock-global::gmock-global GTest::gtest_main GTest::gmock_main)
+    target_link_libraries(${PROJECT} can::driver::rp2::mcp2515 gmock-global::gmock-global GTest::gtest_main GTest::gmock_main)
 
     set_target_properties(${PROJECT} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/test-bin)
     include(GoogleTest)
