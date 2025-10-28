@@ -12,12 +12,12 @@
 #include <plog/Initializers/ConsoleInitializer.h>
 #include <plog/Formatters/MessageOnlyFormatter.h>
 
-using namespace can::providers::os::socketcan;
+using namespace can::driver::os::socketcan;
 using namespace can::providers;
 
-using namespace can::isotp::link;
+using namespace can::protocol::isotp::link;
 
-using can::protocol::frame::identifier;
+using can::protocol::classic::frame::identifier;
 
 int main()
 {
@@ -46,10 +46,10 @@ int main()
     {
         if (cb.hasMessage())
         {
-            can::protocol::frame::frame_res res = cb.readMessage();
+            can::protocol::classic::frame::frame_res res = cb.readMessage();
             if (res.has_value())
             {
-                can::protocol::frame::frame_t frame = res.value();
+                can::protocol::classic::frame::frame_t frame = res.value();
 
                 boost::system::error_code code = lm->handle_receive(&frame);
 
@@ -68,7 +68,7 @@ int main()
         cb.handleQueue();
 
         // handle finished isotp messages
-        can::isotp::link::directional_link_buf_t msg;
+        can::protocol::isotp::link::directional_link_buf_t msg;
         bool found = link1->getQueue()->try_dequeue(msg);
 
         if (found)

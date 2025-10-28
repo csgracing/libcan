@@ -1,9 +1,13 @@
 # Min CMake version
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.25)
 
-if (CAN_TARGET STREQUAL "pico")
+set(CAN_VERSION 0.0.1 CACHE STRING "libcan version string")
+
+include(can/options.cmake)
+
+if (CAN_DRIVER_RP2)
     # Pull in pico sdk (must be before project() call)
-    include(src/rp2040/pico-sdk.cmake)
+    include(can/driver/rp2/pico-sdk.cmake)
     
     set(PICO_CXX_ENABLE_RTTI True)
     
@@ -20,14 +24,13 @@ else()
 endif()
 
 project(
-    libcan
+    can
     VERSION 0.0.1
     DESCRIPTION "Provider-agnostic CAN library"
     LANGUAGES CXX
 )
 
-
-if (CAN_TARGET STREQUAL "pico")
+if (CAN_DRIVER_RP2)
     pico_sdk_init()
 endif()
 
@@ -43,6 +46,8 @@ endif()
 
 if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
 
+    set(CMAKE_CTEST_ARGUMENTS "-L" "can")
+    include(CTest)
     # for config
     set(LIBCAN_DEBUG TRUE)
 
@@ -69,30 +74,18 @@ if (IS_TEST_ENV STREQUAL "true" OR IS_TEST_FUZZ_ENV STREQUAL "true")
 
 endif()
 
-# Dependencies
-
+# External libraries
 add_subdirectory(lib/common/boost)
 add_subdirectory(lib/common/moodycamel/concurrentqueue)
 add_subdirectory(lib/common/fmt)
 add_subdirectory(lib/common/plog)
 
-# Subprojects
-
-add_subdirectory(src/core)
-add_subdirectory(test/core)
-
-if (CAN_TARGET STREQUAL "pico")
-    add_subdirectory(src/rp2040)
-    add_subdirectory(test/rp2040)
-    
-endif()
-
-if (CAN_TARGET STREQUAL "linux")
+if (CAN_DRIVER_OS_SOCKETCAN)
     add_subdirectory(lib/linux/socketcan/libsockcanpp)
-    add_subdirectory(src/linux/socketcan)
-    add_subdirectory(test/linux/socketcan)
-    add_subdirectory(standalone/linux/socketcan)
 endif()
+
+add_subdirectory(can)
+
 
 include(docs/docs.cmake)
 
@@ -107,4 +100,5 @@ ExternalProject_Add(
     BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build/tools/bloaty/bin
     CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_SOURCE_DIR}/build/tools/_share/
     UPDATE_COMMAND "" # dont rebuild every time! <https://stackoverflow.com/a/64994225>
+    EXCLUDE_FROM_ALL
 )
