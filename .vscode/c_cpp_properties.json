@@ -6,8 +6,6 @@
                 "${workspaceFolder}/**/src",
                 "${workspaceFolder}/**/include",
                 "${workspaceFolder}/**/**/include",
-                "${workspaceFolder}/rp2040/mcp2515/impl/src",
-                "${workspaceFolder}/rp2040/mcp2515/impl/include",
                 "${workspaceFolder}/lib/common/moodycamel/concurrentqueue",
                 "${workspaceFolder}/lib/common/boost/**/include",
                 "${workspaceFolder}/lib/common/boost/**/**/include",
@@ -18,7 +16,10 @@
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c17",
             "cppStandard": "c++17",
-            "intelliSenseMode": "linux-gcc-x64"
+            "intelliSenseMode": "linux-gcc-x64",
+            "recursiveIncludes": {
+                "reduce": "always"
+            }
         }
     ],
     "version": 4
