@@ -3,17 +3,16 @@
 
 #include <fmt/format.h>
 
-#include <core/providers/base.h>
-#include <linux/socketcan/provider.h>
+#include <can/driver/base/base.h>
+#include <can/driver/linux/socketcan/provider.h>
 
-#include <core/isotp/link/manager.h>
+#include <can/protocol/isotp/link/manager.h>
 
 #include <plog/Log.h>
 #include <plog/Initializers/ConsoleInitializer.h>
 #include <plog/Formatters/MessageOnlyFormatter.h>
 
 using namespace can::driver::os::socketcan;
-using namespace can::providers;
 
 using namespace can::protocol::isotp::link;
 

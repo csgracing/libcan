@@ -25,4 +25,4 @@ target_include_directories(${PROJECT}
           ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_link_libraries(${PROJECT} PUBLIC libcan::linux::socketcan libcan::core)
+target_link_libraries(${PROJECT} PUBLIC can::driver::os::socketcan can::protocol::classic can::protocol::isotp can::util::log)

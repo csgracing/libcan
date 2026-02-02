@@ -82,6 +82,7 @@ add_subdirectory(lib/common/plog)
 
 if (CAN_DRIVER_OS_SOCKETCAN)
     add_subdirectory(lib/linux/socketcan/libsockcanpp)
+    add_subdirectory(standalone/linux/socketcan)
 endif()
 
 add_subdirectory(can)
@@ -98,7 +99,7 @@ ExternalProject_Add(
     PREFIX ${CMAKE_CURRENT_SOURCE_DIR}/build/tools/bloaty/src
     SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib/tools/google/bloaty
     BINARY_DIR ${CMAKE_CURRENT_SOURCE_DIR}/build/tools/bloaty/bin
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_SOURCE_DIR}/build/tools/_share/
+    CMAKE_ARGS -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -DCMAKE_INSTALL_PREFIX=${CMAKE_CURRENT_SOURCE_DIR}/build/tools/_share/
     UPDATE_COMMAND "" # dont rebuild every time! <https://stackoverflow.com/a/64994225>
     EXCLUDE_FROM_ALL
 )
