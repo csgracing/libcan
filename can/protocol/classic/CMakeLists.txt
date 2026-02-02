@@ -22,4 +22,10 @@ target_include_directories(${PROJECT}
 # However make this definition an interface to add to dependent's compile defs(?)
 target_compile_definitions(${PROJECT} INTERFACE PLOG_LOCAL)
 
+
+set(CMAKE_FOLDER_BAK ${CMAKE_FOLDER})
+set(CMAKE_FOLDER ${CMAKE_FOLDER}/test)
+
 add_subdirectory(test)
+
+set(CMAKE_FOLDER ${CMAKE_FOLDER_BAK})

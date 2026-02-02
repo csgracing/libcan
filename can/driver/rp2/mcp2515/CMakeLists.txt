@@ -30,6 +30,15 @@ endif()
 target_link_libraries(${PROJECT} PUBLIC ${LINK_LIBS})
 
 
+
+
+set(CMAKE_FOLDER_BAK ${CMAKE_FOLDER})
+
+set(CMAKE_FOLDER "can/drivers/lib")
 include(pico-mcp2515.cmake)
 
+set(CMAKE_FOLDER "can/drivers/test")
 add_subdirectory(test)
+
+
+set(CMAKE_FOLDER ${CMAKE_FOLDER_BAK})

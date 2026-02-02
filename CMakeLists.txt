@@ -1,6 +1,8 @@
 # Min CMake version
 cmake_minimum_required(VERSION 3.25)
 
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+
 set(CAN_VERSION 0.0.1 CACHE STRING "libcan version string")
 
 include(can/options.cmake)
