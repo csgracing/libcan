@@ -92,6 +92,7 @@ namespace can::driver::rp2::mcp2515
 
         can::protocol::classic::frame::frame_res readMessage();
         bool hasMessage();
+        bool sendMessage(can::protocol::classic::frame::frame_t frame);
 
         // inline to define not just declare
         // https://stackoverflow.com/a/66569786

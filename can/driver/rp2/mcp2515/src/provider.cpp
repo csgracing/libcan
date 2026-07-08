@@ -5,6 +5,8 @@
 
 #include <boost/polymorphic_cast.hpp> // boost::conversion
 
+#include "can/util/log/logger.h" // needed for LIBCAN_LOG_DEBUG in sendMessage()
+
 #ifdef IS_TEST_ENV
 #include "hardware/gpio.stub.h"
 #else
@@ -60,6 +62,36 @@ namespace can::driver::rp2::mcp2515
     bool CANBus::hasMessage()
     {
         return this->chip.checkReceive();
+    }
+
+    bool CANBus::sendMessage(can::protocol::classic::frame::frame_t frame)
+    {
+        ::mcp2515::can_frame tx = {};
+
+        // Reconstruct the 29-bit CAN ID and flag bits the same way readMessage() decodes them,
+        // just in reverse (id.combined() undoes the ">> 3" shift used on RX).
+        tx.can_id = frame.id.combined();
+
+        if (frame.ide == can::protocol::classic::frame::data::IDE::EXTENDED_FORMAT)
+        {
+            tx.can_id |= CAN_EFF_FLAG;
+        }
+
+        if (frame.rtr == can::protocol::classic::frame::data::RTR::REMOTE_REQUEST_FRAME)
+        {
+            tx.can_id |= CAN_RTR_FLAG;
+        }
+
+        // CC frames only — this driver's readMessage() hard-codes EDL::CC_FRAME on RX, so we
+        // mirror that assumption on TX rather than handling an FD payload that can never occur.
+        tx.can_dlc = frame.dlc.to_ulong();
+        memcpy(tx.data, &frame.data, frame._bsize.to_ulong());
+
+        ::mcp2515::MCP2515::ERROR err = this->chip.sendMessage(&tx);
+
+        LIBCAN_LOG_DEBUG("provider", "sendMessage result: {}", (int)err);
+
+        return err == ::mcp2515::MCP2515::ERROR_OK;
     }
 
     void CANBus::rawIrqHandler()
