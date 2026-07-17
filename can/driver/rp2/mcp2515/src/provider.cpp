@@ -45,7 +45,7 @@ namespace can::driver::rp2::mcp2515
         if (this->chip.readMessage(&rx) == ::mcp2515::MCP2515::ERROR_OK)
         {
             can::protocol::classic::frame::frame_raw_t raw_frame = {
-                rx.can_id >> 3,                                     // id: bits 0-28 (shift out 29,30,31)
+                (uint32_t)(rx.can_id & CAN_ERR_MASK),                // id: bits 0-28 (mask out 29,30,31 - NOT a shift)
                 (bool)(rx.can_id & CAN_RTR_FLAG),                   // rtr: bit 30
                 (bool)(rx.can_id & CAN_EFF_FLAG),                   // ide: bit 31
                 can::protocol::classic::frame::data::EDL::CC_FRAME, // edl: we only support CC frames
